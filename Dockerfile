@@ -4,8 +4,7 @@ FROM oven/bun:1 AS builder
 WORKDIR /app
 
 COPY package.json bun.lock bunfig.toml ./
-RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
-    NODE_AUTH_TOKEN=$(cat /run/secrets/NODE_AUTH_TOKEN) bun install --frozen-lockfile
+RUN bun install --frozen-lockfile
 
 COPY . .
 

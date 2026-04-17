@@ -12,7 +12,7 @@ export function createDeclicWorker() {
     url: config.declic.url,
     key: config.declic.key,
     app: 'plateform',
-    env: config.isProduction ? 'production' : 'development',
+    env: config.env === 'staging' ? 'staging' : config.isProduction ? 'production' : 'development',
     concurrency: 5,
   }).register(platformFlows);
 }
