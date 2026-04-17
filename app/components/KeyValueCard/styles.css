@@ -1,0 +1,41 @@
+.fx-kvc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.fx-kvc__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-mention-grey);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding-right: 2rem;
+}
+
+.fx-kvc__copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border-radius: 50%;
+}
+
+.fx-kvc:hover .fx-kvc__copy {
+  opacity: 1;
+}
+
+.fx-kvc__value {
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.fx-kvc__value--mono {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-title-grey);
+  font-family: "Courier New", monospace;
+}

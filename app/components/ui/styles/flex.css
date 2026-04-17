@@ -1,0 +1,215 @@
+/**
+ * Flex utility classes — @dataesr/ui
+ * Naming convention: fx-[property]-[value]
+ *
+ * These utilities complement DSFR. Use DSFR classes first for spacing,
+ * typography, colors, containers. Use fx-* for flexbox layout.
+ */
+
+/* Flex container */
+.fx-flex {
+  display: flex;
+}
+
+.fx-inline-flex {
+  display: inline-flex;
+}
+
+/* Flex direction */
+.fx-flex-row {
+  flex-direction: row;
+}
+
+.fx-flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.fx-flex-col {
+  flex-direction: column;
+}
+
+.fx-flex-col-reverse {
+  flex-direction: column-reverse;
+}
+
+/* Flex wrap */
+.fx-flex-wrap {
+  flex-wrap: wrap;
+}
+
+.fx-flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.fx-flex-wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+
+/* Justify content (main axis) */
+.fx-justify-start {
+  justify-content: flex-start;
+}
+
+.fx-justify-end {
+  justify-content: flex-end;
+}
+
+.fx-justify-center {
+  justify-content: center;
+}
+
+.fx-justify-between {
+  justify-content: space-between;
+}
+
+.fx-justify-around {
+  justify-content: space-around;
+}
+
+.fx-justify-evenly {
+  justify-content: space-evenly;
+}
+
+/* Align items (cross axis) */
+.fx-items-start {
+  align-items: flex-start;
+}
+
+.fx-items-end {
+  align-items: flex-end;
+}
+
+.fx-items-center {
+  align-items: center;
+}
+
+.fx-items-baseline {
+  align-items: baseline;
+}
+
+.fx-items-stretch {
+  align-items: stretch;
+}
+
+/* Align self */
+.fx-self-start {
+  align-self: flex-start;
+}
+
+.fx-self-end {
+  align-self: flex-end;
+}
+
+.fx-self-center {
+  align-self: center;
+}
+
+.fx-self-stretch {
+  align-self: stretch;
+}
+
+/* Flex grow/shrink */
+.fx-flex-grow {
+  flex-grow: 1;
+}
+
+.fx-flex-grow-0 {
+  flex-grow: 0;
+}
+
+.fx-flex-shrink {
+  flex-shrink: 1;
+}
+
+.fx-flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+/* Flex basis */
+.fx-flex-basis-auto {
+  flex-basis: auto;
+}
+
+.fx-flex-basis-0 {
+  flex-basis: 0;
+}
+
+.fx-flex-basis-full {
+  flex-basis: 100%;
+}
+
+/* Gap utilities (following DSFR spacing scale: 1w = 0.25rem) */
+.fx-gap-1w {
+  gap: 0.25rem;
+}
+
+.fx-gap-2w {
+  gap: 0.5rem;
+}
+
+.fx-gap-3w {
+  gap: 0.75rem;
+}
+
+.fx-gap-4w {
+  gap: 1rem;
+}
+
+.fx-gap-5w {
+  gap: 1.25rem;
+}
+
+.fx-gap-6w {
+  gap: 1.5rem;
+}
+
+.fx-gap-8w {
+  gap: 2rem;
+}
+
+/* Column gap */
+.fx-gap-x-1w {
+  column-gap: 0.25rem;
+}
+
+.fx-gap-x-2w {
+  column-gap: 0.5rem;
+}
+
+.fx-gap-x-3w {
+  column-gap: 0.75rem;
+}
+
+.fx-gap-x-4w {
+  column-gap: 1rem;
+}
+
+/* Row gap */
+.fx-gap-y-1w {
+  row-gap: 0.25rem;
+}
+
+.fx-gap-y-2w {
+  row-gap: 0.5rem;
+}
+
+.fx-gap-y-3w {
+  row-gap: 0.75rem;
+}
+
+.fx-gap-y-4w {
+  row-gap: 1rem;
+}
+
+/* Common flex patterns (shorthand) */
+.fx-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fx-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

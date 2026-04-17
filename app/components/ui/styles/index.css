@@ -1,0 +1,18 @@
+/* ========================================
+   @dataesr/ui — Shared Styles
+   Master index importing all utility CSS.
+   Apps import via: import '@dataesr/ui/styles';
+   ======================================== */
+
+@import "./animations.css";
+@import "./flex.css";
+@import "./utility.css";
+@import "./card.css";
+@import "./icon-box.css";
+
+/* DSFR extensions (colors not provided by @gouvfr/dsfr) */
+@import "./button.css";
+@import "./badge.css";
+@import "./tag.css";
+@import "./nav.css";
+@import "./notice.css";

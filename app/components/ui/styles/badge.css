@@ -1,0 +1,10 @@
+/* ========================================
+   DSFR Badge Extensions
+   ======================================== */
+
+.fr-badge.fr-badge--xs {
+  min-height: 1rem;
+  padding: 0 0.25rem;
+  font-size: 0.625rem;
+  line-height: 1.125rem;
+}

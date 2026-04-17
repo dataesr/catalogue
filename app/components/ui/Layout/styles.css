@@ -1,0 +1,47 @@
+.fx-col-sidemenu {
+  flex: 0 0 100%;
+  max-width: 100%;
+  display: none;
+}
+@media (width >= 62rem) {
+  .fx-col-sidemenu {
+    display: block;
+    flex: 0 0 300px;
+    max-width: 300px;
+  }
+}
+
+.fx-col-content {
+  container-type: inline-size;
+  container-name: fx-content;
+  flex: 0 0 100%;
+  max-width: 100%;
+  min-height: 100%;
+}
+@media (width >= 62rem) {
+  .fx-col-content {
+    flex: 1 1 0%;
+    max-width: none;
+    min-width: 0;
+  }
+}
+
+.fx-col-content > * {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  @container fx-content (width >= 78rem) {
+    margin-left: auto;
+    margin-right: auto;
+    width: min(92%, 112rem);
+    max-width: 100%;
+  }
+}
+
+#root > .fr-header > .fr-header__body > .fr-container--fluid {
+  @media (min-width: 62rem) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  padding-left: 1rem;
+  padding-right: 1rem;
+}

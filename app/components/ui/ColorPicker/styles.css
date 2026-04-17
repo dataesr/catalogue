@@ -1,0 +1,143 @@
+.color-picker {
+  margin-bottom: 1rem;
+}
+
+.color-picker__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.color-picker__swatch {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.color-picker__swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-picker__swatch--selected {
+  border-color: var(--text-default-grey);
+  box-shadow:
+    0 0 0 2px var(--background-default-grey),
+    0 0 0 4px var(--text-default-grey);
+}
+
+.color-picker__check {
+  color: var(--text-default-grey);
+  font-size: 0.875rem;
+}
+
+/* DSFR Color backgrounds using artwork-minor/major variables */
+.color-picker__swatch--green-tilleul-verveine {
+  --hover-tint: var(--artwork-major-green-tilleul-verveine);
+  --active-tint: var(--artwork-minor-green-tilleul-verveine);
+  background-color: var(--artwork-minor-green-tilleul-verveine);
+}
+
+.color-picker__swatch--green-bourgeon {
+  --hover-tint: var(--artwork-major-green-bourgeon);
+  --active-tint: var(--artwork-minor-green-bourgeon);
+  background-color: var(--artwork-minor-green-bourgeon);
+}
+
+.color-picker__swatch--green-emeraude {
+  --hover-tint: var(--artwork-major-green-emeraude);
+  --active-tint: var(--artwork-minor-green-emeraude);
+  background-color: var(--artwork-minor-green-emeraude);
+}
+
+.color-picker__swatch--green-menthe {
+  --hover-tint: var(--artwork-major-green-menthe);
+  --active-tint: var(--artwork-minor-green-menthe);
+  background-color: var(--artwork-minor-green-menthe);
+}
+
+.color-picker__swatch--green-archipel {
+  --hover-tint: var(--artwork-major-green-archipel);
+  --active-tint: var(--artwork-minor-green-archipel);
+  background-color: var(--artwork-minor-green-archipel);
+}
+
+.color-picker__swatch--blue-ecume {
+  --hover-tint: var(--artwork-major-blue-ecume);
+  --active-tint: var(--artwork-minor-blue-ecume);
+  background-color: var(--artwork-minor-blue-ecume);
+}
+
+.color-picker__swatch--blue-cumulus {
+  --hover-tint: var(--artwork-major-blue-cumulus);
+  --active-tint: var(--artwork-minor-blue-cumulus);
+  background-color: var(--artwork-minor-blue-cumulus);
+}
+
+.color-picker__swatch--purple-glycine {
+  --hover-tint: var(--artwork-major-purple-glycine);
+  --active-tint: var(--artwork-minor-purple-glycine);
+  background-color: var(--artwork-minor-purple-glycine);
+}
+
+.color-picker__swatch--pink-macaron {
+  --hover-tint: var(--artwork-major-pink-macaron);
+  --active-tint: var(--artwork-minor-pink-macaron);
+  background-color: var(--artwork-minor-pink-macaron);
+}
+
+.color-picker__swatch--pink-tuile {
+  --hover-tint: var(--artwork-major-pink-tuile);
+  --active-tint: var(--artwork-minor-pink-tuile);
+  background-color: var(--artwork-minor-pink-tuile);
+}
+
+.color-picker__swatch--yellow-tournesol {
+  --hover-tint: var(--artwork-major-yellow-tournesol);
+  --active-tint: var(--artwork-minor-yellow-tournesol);
+  background-color: var(--artwork-minor-yellow-tournesol);
+}
+
+.color-picker__swatch--yellow-moutarde {
+  --hover-tint: var(--artwork-major-yellow-moutarde);
+  --active-tint: var(--artwork-minor-yellow-moutarde);
+  background-color: var(--artwork-minor-yellow-moutarde);
+}
+
+.color-picker__swatch--orange-terre-battue {
+  --hover-tint: var(--artwork-major-orange-terre-battue);
+  --active-tint: var(--artwork-minor-orange-terre-battue);
+  background-color: var(--artwork-minor-orange-terre-battue);
+}
+
+.color-picker__swatch--brown-cafe-creme {
+  --hover-tint: var(--artwork-major-brown-cafe-creme);
+  --active-tint: var(--artwork-minor-brown-cafe-creme);
+  background-color: var(--artwork-minor-brown-cafe-creme);
+}
+
+.color-picker__swatch--brown-caramel {
+  --hover-tint: var(--artwork-major-brown-caramel);
+  --active-tint: var(--artwork-minor-brown-caramel);
+  background-color: var(--artwork-minor-brown-caramel);
+}
+
+.color-picker__swatch--brown-opera {
+  --hover-tint: var(--artwork-major-brown-opera);
+  --active-tint: var(--artwork-minor-brown-opera);
+  background-color: var(--artwork-minor-brown-opera);
+}
+
+.color-picker__swatch--beige-gris-galet {
+  --hover-tint: var(--artwork-major-beige-gris-galet);
+  --active-tint: var(--artwork-minor-beige-gris-galet);
+  background-color: var(--artwork-minor-beige-gris-galet);
+}

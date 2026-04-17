@@ -1,0 +1,100 @@
+/* ========================================
+   Card utilities — @dataesr/ui
+   ======================================== */
+
+.fx-card {
+  border: 1px solid var(--border-default-grey);
+  padding: 1.5rem;
+}
+
+/* Padding variants */
+.fx-card--xs {
+  padding: 0.5rem;
+}
+
+.fx-card--sm {
+  padding: 1rem;
+}
+
+.fx-card--md {
+  padding: 1.5rem;
+}
+
+.fx-card--lg {
+  padding: 2rem;
+}
+
+/* Border variants */
+.fx-card--rounded {
+  border-radius: 0.25rem;
+}
+
+.fx-card--no-border {
+  border: none !important;
+}
+
+/* Shadow variant (DSFR raised pattern) */
+.fx-card--shadow {
+  border: none !important;
+  --idle: transparent;
+  --hover: var(--background-raised-grey-hover);
+  --active: var(--background-raised-grey-active);
+  background-color: var(--background-raised-grey);
+  filter: drop-shadow(var(--raised-shadow));
+  z-index: calc(var(--ground) + 500);
+}
+
+/* Hover border highlight */
+.fx-card--hover-border:hover {
+  border-color: var(--border-default-blue-france);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Animate on hover (border + shadow) */
+.fx-card--animate {
+  transition: all 0.2s ease;
+}
+
+.fx-card--animate:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--border-default-blue-france);
+}
+
+/* Lift on hover (translateY + shadow) */
+.fx-card--lift {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.fx-card--lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Background variants */
+.fx-card--bg-default {
+  background: var(--background-default-grey);
+}
+
+.fx-card--bg-alt {
+  background: var(--background-alt-grey);
+}
+
+.fx-card--bg-contrast {
+  background: var(--background-contrast-grey);
+}
+
+.fx-card--bg-transparent {
+  background: transparent;
+}
+
+.fx-card--highlight {
+  background: linear-gradient(
+    135deg,
+    var(--background-contrast-blue-france) 0%,
+    var(--background-alt-blue-france) 100%
+  );
+  border-color: var(--border-default-blue-france);
+  border-width: 2px;
+}

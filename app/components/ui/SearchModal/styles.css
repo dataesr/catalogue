@@ -1,0 +1,112 @@
+/* Top-align the modal instead of vertical centering */
+.fr-modal.search-modal::before {
+  content: none;
+}
+
+.fr-modal.search-modal::after {
+  content: none;
+}
+
+.fr-modal.search-modal {
+  align-items: flex-start;
+  background-color: rgba(22, 22, 22, 0.4) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Modal body — override DSFR internals that cause scroll */
+.search-modal__body {
+  padding: 0;
+  margin-top: 5rem;
+  --modal-max-height: 80vh;
+  background-image: none !important;
+  overflow: hidden;
+}
+
+/* Reset DSFR's content margin-bottom (designed for sticky footer pattern) */
+.search-modal__body .fr-modal__content {
+  margin-bottom: 0;
+}
+
+/* Reset DSFR's footer negative margin-top and sticky positioning */
+.search-modal__body .fr-modal__footer {
+  margin-top: 0;
+  position: static;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* Search input */
+.fr-input.search-modal__input {
+  box-shadow: none !important;
+  height: 3rem;
+  max-height: 3rem;
+  border-radius: 0;
+}
+
+.fr-input.search-modal__input:focus-visible {
+  outline-offset: -2px !important;
+}
+
+/* Clear button inside input */
+.search-modal__clear-btn {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  margin: auto;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  right: 0.5rem;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+
+.search-modal__clear-btn:hover {
+  background-color: var(--hover-tint) !important;
+}
+
+.search-modal__clear-btn:active {
+  background-color: var(--active-tint);
+}
+
+/* Scrollable results listbox */
+.search-modal__listbox {
+  max-height: calc(100vh - 14rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Result item */
+.search-modal__item {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  text-align: left;
+}
+
+.search-modal__item[aria-selected="true"] {
+  background-color: var(--active-tint);
+}
+
+.search-modal__item:hover {
+  background-color: var(--background-action-low-blue-france-hover);
+}
+
+/* Keyboard hint badges */
+.search-modal__kbd {
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  font-size: 0.75rem;
+  font-family: inherit;
+  line-height: 1;
+  color: var(--text-mention-grey);
+  background-color: var(--background-alt-grey);
+  border: 1px solid var(--border-default-grey);
+  border-radius: 0.25rem;
+}

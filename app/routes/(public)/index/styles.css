@@ -1,0 +1,114 @@
+/* ===================================================================
+   Landing page — styles
+   =================================================================== */
+
+/* --- Hero section ------------------------------------------------- */
+
+.home-hero {
+  background: linear-gradient(
+    160deg,
+    var(--background-alt-grey) 0%,
+    var(--background-default-grey) 50%,
+    var(--background-contrast-blue-france) 100%
+  );
+  padding: 5rem 0 6rem;
+}
+
+/* --- Hero stat card links ----------------------------------------- */
+
+.home-hero__stat-link,
+.home-hero__stat-link:hover,
+.home-hero__stat-link:visited {
+  text-decoration: none !important;
+  background-image: none !important;
+  color: inherit;
+}
+
+/* --- Bento grid --------------------------------------------------- */
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.bento-grid__item--featured {
+  grid-column: span 2;
+}
+
+/* --- Recent cards ------------------------------------------------- */
+
+.recent-card--publications {
+  border-top: 3px solid var(--text-action-high-purple-glycine);
+}
+
+.recent-card--datasets {
+  border-top: 3px solid var(--text-action-high-blue-ecume);
+}
+
+.recent-row {
+  transition: background-color 0.15s ease;
+}
+
+.recent-row:hover {
+  background-color: var(--background-alt-grey);
+}
+
+/* --- Alt background section --------------------------------------- */
+
+.home-section--alt {
+  background-color: var(--background-alt-grey);
+}
+
+/* --- Open source banner -------------------------------------------- */
+
+.home-opensource {
+  background: linear-gradient(
+    135deg,
+    var(--background-contrast-blue-france) 0%,
+    var(--background-default-grey) 60%
+  );
+  border-top: 2px solid var(--border-plain-blue-france);
+  border-bottom: 2px solid var(--border-plain-blue-france);
+}
+
+.home-opensource__pictogram {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 145, 0.12));
+}
+
+.home-opensource__pictogram--inner {
+  max-width: 40%;
+  max-height: 350px;
+}
+
+/* ===================================================================
+   Responsive
+   =================================================================== */
+
+@media (max-width: 767px) {
+  .home-opensource__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 575px) {
+  .home-hero {
+    padding: 3rem 0 3.5rem;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bento-grid__item--featured {
+    grid-column: span 1;
+  }
+}

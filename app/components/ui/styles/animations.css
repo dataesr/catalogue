@@ -1,0 +1,43 @@
+/* ========================================
+   Shared Animations — @dataesr/ui
+   ======================================== */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Utility class for spinning icons — works with DSFR mask-based icons */
+.fr-icon--spin::before {
+  animation: spin 1s linear infinite !important;
+}
+
+/* Target any element with both an fr-icon class and the spin modifier */
+[class*="fr-icon-"].fr-icon--spin::before {
+  animation: spin 1s linear infinite !important;
+}
+
+/* Support for DSFR buttons with spinning icons */
+.fr-btn.fr-icon--spin::before {
+  animation: spin 1s linear infinite !important;
+}

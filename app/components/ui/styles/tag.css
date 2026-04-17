@@ -1,0 +1,1008 @@
+/* ========================================
+   DSFR Tag Color Extensions - Complete
+   ======================================== */
+
+/* ========================================
+   SIMPLE TAGS (p.fr-tag)
+   Static display tags
+   ======================================== */
+
+/* Green variants - Simple */
+p.fr-tag--green-tilleul-verveine {
+  background-color: var(--background-action-high-green-tilleul-verveine);
+  color: var(--text-inverted-green-tilleul-verveine);
+}
+
+p.fr-tag--green-bourgeon {
+  background-color: var(--background-action-high-green-bourgeon);
+  color: var(--text-inverted-green-bourgeon);
+}
+
+p.fr-tag--green-emeraude {
+  background-color: var(--background-action-high-green-emeraude);
+  color: var(--text-inverted-green-emeraude);
+}
+
+p.fr-tag--green-menthe {
+  background-color: var(--background-action-high-green-menthe);
+  color: var(--text-inverted-green-menthe);
+}
+
+p.fr-tag--green-archipel {
+  background-color: var(--background-action-high-green-archipel);
+  color: var(--text-inverted-green-archipel);
+}
+
+/* Blue variants - Simple */
+p.fr-tag--blue-ecume {
+  background-color: var(--background-action-high-blue-ecume);
+  color: var(--text-inverted-blue-ecume);
+}
+
+p.fr-tag--blue-cumulus {
+  background-color: var(--background-action-high-blue-cumulus);
+  color: var(--text-inverted-blue-cumulus);
+}
+
+/* Purple variant - Simple */
+p.fr-tag--purple-glycine {
+  background-color: var(--background-action-high-purple-glycine);
+  color: var(--text-inverted-purple-glycine);
+}
+
+/* Pink variants - Simple */
+p.fr-tag--pink-macaron {
+  background-color: var(--background-action-high-pink-macaron);
+  color: var(--text-inverted-pink-macaron);
+}
+
+p.fr-tag--pink-tuile {
+  background-color: var(--background-action-high-pink-tuile);
+  color: var(--text-inverted-pink-tuile);
+}
+
+/* Yellow variants - Simple */
+p.fr-tag--yellow-tournesol {
+  background-color: var(--background-action-high-yellow-tournesol);
+  color: var(--text-inverted-yellow-tournesol);
+}
+
+p.fr-tag--yellow-moutarde {
+  background-color: var(--background-action-high-yellow-moutarde);
+  color: var(--text-inverted-yellow-moutarde);
+}
+
+/* Orange variant - Simple */
+p.fr-tag--orange-terre-battue {
+  background-color: var(--background-action-high-orange-terre-battue);
+  color: var(--text-inverted-orange-terre-battue);
+}
+
+/* Brown variants - Simple */
+p.fr-tag--brown-cafe-creme {
+  background-color: var(--background-action-high-brown-cafe-creme);
+  color: var(--text-inverted-brown-cafe-creme);
+}
+
+p.fr-tag--brown-caramel {
+  background-color: var(--background-action-high-brown-caramel);
+  color: var(--text-inverted-brown-caramel);
+}
+
+p.fr-tag--brown-opera {
+  background-color: var(--background-action-high-brown-opera);
+  color: var(--text-inverted-brown-opera);
+}
+
+/* Beige variant - Simple */
+p.fr-tag--beige-gris-galet {
+  background-color: var(--background-action-high-beige-gris-galet);
+  color: var(--text-inverted-beige-gris-galet);
+}
+
+/* Semantic variants - Simple */
+p.fr-tag--success {
+  background-color: var(--background-action-high-success);
+  color: var(--text-inverted-success);
+}
+
+p.fr-tag--warning {
+  background-color: var(--background-action-high-warning);
+  color: var(--text-inverted-warning);
+}
+
+p.fr-tag--info {
+  background-color: var(--background-action-high-info);
+  color: var(--text-inverted-info);
+}
+
+p.fr-tag--error {
+  background-color: var(--background-action-high-error);
+  color: var(--text-inverted-error);
+}
+
+/* ========================================
+   SELECTABLE TAGS - NOT PRESSED
+   aria-pressed="false"
+   ======================================== */
+
+/* Green variants - Not Pressed */
+.fr-tag.fr-tag--green-tilleul-verveine[aria-pressed="false"] {
+  color: var(--text-action-high-green-tilleul-verveine);
+  background-color: var(--background-action-low-green-tilleul-verveine);
+  --idle: transparent;
+  --hover: var(--background-action-low-green-tilleul-verveine-hover);
+  --active: var(--background-action-low-green-tilleul-verveine-active);
+}
+
+.fr-tag.fr-tag--green-bourgeon[aria-pressed="false"] {
+  color: var(--text-action-high-green-bourgeon);
+  background-color: var(--background-action-low-green-bourgeon);
+  --idle: transparent;
+  --hover: var(--background-action-low-green-bourgeon-hover);
+  --active: var(--background-action-low-green-bourgeon-active);
+}
+
+.fr-tag.fr-tag--green-emeraude[aria-pressed="false"] {
+  color: var(--text-action-high-green-emeraude);
+  background-color: var(--background-action-low-green-emeraude);
+  --idle: transparent;
+  --hover: var(--background-action-low-green-emeraude-hover);
+  --active: var(--background-action-low-green-emeraude-active);
+}
+
+.fr-tag.fr-tag--green-menthe[aria-pressed="false"] {
+  color: var(--text-action-high-green-menthe);
+  background-color: var(--background-action-low-green-menthe);
+  --idle: transparent;
+  --hover: var(--background-action-low-green-menthe-hover);
+  --active: var(--background-action-low-green-menthe-active);
+}
+
+.fr-tag.fr-tag--green-archipel[aria-pressed="false"] {
+  color: var(--text-action-high-green-archipel);
+  background-color: var(--background-action-low-green-archipel);
+  --idle: transparent;
+  --hover: var(--background-action-low-green-archipel-hover);
+  --active: var(--background-action-low-green-archipel-active);
+}
+
+/* Blue variants - Not Pressed */
+.fr-tag.fr-tag--blue-ecume[aria-pressed="false"] {
+  color: var(--text-action-high-blue-ecume);
+  background-color: var(--background-action-low-blue-ecume);
+  --idle: transparent;
+  --hover: var(--background-action-low-blue-ecume-hover);
+  --active: var(--background-action-low-blue-ecume-active);
+}
+
+.fr-tag.fr-tag--blue-cumulus[aria-pressed="false"] {
+  color: var(--text-action-high-blue-cumulus);
+  background-color: var(--background-action-low-blue-cumulus);
+  --idle: transparent;
+  --hover: var(--background-action-low-blue-cumulus-hover);
+  --active: var(--background-action-low-blue-cumulus-active);
+}
+
+/* Purple variant - Not Pressed */
+.fr-tag.fr-tag--purple-glycine[aria-pressed="false"] {
+  color: var(--text-action-high-purple-glycine);
+  background-color: var(--background-action-low-purple-glycine);
+  --idle: transparent;
+  --hover: var(--background-action-low-purple-glycine-hover);
+  --active: var(--background-action-low-purple-glycine-active);
+}
+
+/* Pink variants - Not Pressed */
+.fr-tag.fr-tag--pink-macaron[aria-pressed="false"] {
+  color: var(--text-action-high-pink-macaron);
+  background-color: var(--background-action-low-pink-macaron);
+  --idle: transparent;
+  --hover: var(--background-action-low-pink-macaron-hover);
+  --active: var(--background-action-low-pink-macaron-active);
+}
+
+.fr-tag.fr-tag--pink-tuile[aria-pressed="false"] {
+  color: var(--text-action-high-pink-tuile);
+  background-color: var(--background-action-low-pink-tuile);
+  --idle: transparent;
+  --hover: var(--background-action-low-pink-tuile-hover);
+  --active: var(--background-action-low-pink-tuile-active);
+}
+
+/* Yellow variants - Not Pressed */
+.fr-tag.fr-tag--yellow-tournesol[aria-pressed="false"] {
+  color: var(--text-action-high-yellow-tournesol);
+  background-color: var(--background-action-low-yellow-tournesol);
+  --idle: transparent;
+  --hover: var(--background-action-low-yellow-tournesol-hover);
+  --active: var(--background-action-low-yellow-tournesol-active);
+}
+
+.fr-tag.fr-tag--yellow-moutarde[aria-pressed="false"] {
+  color: var(--text-action-high-yellow-moutarde);
+  background-color: var(--background-action-low-yellow-moutarde);
+  --idle: transparent;
+  --hover: var(--background-action-low-yellow-moutarde-hover);
+  --active: var(--background-action-low-yellow-moutarde-active);
+}
+
+/* Orange variant - Not Pressed */
+.fr-tag.fr-tag--orange-terre-battue[aria-pressed="false"] {
+  color: var(--text-action-high-orange-terre-battue);
+  background-color: var(--background-action-low-orange-terre-battue);
+  --idle: transparent;
+  --hover: var(--background-action-low-orange-terre-battue-hover);
+  --active: var(--background-action-low-orange-terre-battue-active);
+}
+
+/* Brown variants - Not Pressed */
+.fr-tag.fr-tag--brown-cafe-creme[aria-pressed="false"] {
+  color: var(--text-action-high-brown-cafe-creme);
+  background-color: var(--background-action-low-brown-cafe-creme);
+  --idle: transparent;
+  --hover: var(--background-action-low-brown-cafe-creme-hover);
+  --active: var(--background-action-low-brown-cafe-creme-active);
+}
+
+.fr-tag.fr-tag--brown-caramel[aria-pressed="false"] {
+  color: var(--text-action-high-brown-caramel);
+  background-color: var(--background-action-low-brown-caramel);
+  --idle: transparent;
+  --hover: var(--background-action-low-brown-caramel-hover);
+  --active: var(--background-action-low-brown-caramel-active);
+}
+
+.fr-tag.fr-tag--brown-opera[aria-pressed="false"] {
+  color: var(--text-action-high-brown-opera);
+  background-color: var(--background-action-low-brown-opera);
+  --idle: transparent;
+  --hover: var(--background-action-low-brown-opera-hover);
+  --active: var(--background-action-low-brown-opera-active);
+}
+
+/* Beige variant - Not Pressed */
+.fr-tag.fr-tag--beige-gris-galet[aria-pressed="false"] {
+  color: var(--text-action-high-beige-gris-galet);
+  background-color: var(--background-action-low-beige-gris-galet);
+  --idle: transparent;
+  --hover: var(--background-action-low-beige-gris-galet-hover);
+  --active: var(--background-action-low-beige-gris-galet-active);
+}
+
+/* Semantic variants - Not Pressed */
+.fr-tag.fr-tag--success[aria-pressed="false"] {
+  color: var(--text-action-high-success);
+  background-color: var(--background-action-low-success);
+  --idle: transparent;
+  --hover: var(--background-action-low-success-hover);
+  --active: var(--background-action-low-success-active);
+}
+
+.fr-tag.fr-tag--warning[aria-pressed="false"] {
+  color: var(--text-action-high-warning);
+  background-color: var(--background-action-low-warning);
+  --idle: transparent;
+  --hover: var(--background-action-low-warning-hover);
+  --active: var(--background-action-low-warning-active);
+}
+
+.fr-tag.fr-tag--info[aria-pressed="false"] {
+  color: var(--text-action-high-info);
+  background-color: var(--background-action-low-info);
+  --idle: transparent;
+  --hover: var(--background-action-low-info-hover);
+  --active: var(--background-action-low-info-active);
+}
+
+.fr-tag.fr-tag--error[aria-pressed="false"] {
+  color: var(--text-action-high-error);
+  background-color: var(--background-action-low-error);
+  --idle: transparent;
+  --hover: var(--background-action-low-error-hover);
+  --active: var(--background-action-low-error-active);
+}
+
+/* ========================================
+   SELECTABLE TAGS - PRESSED - CHECKMARK
+   aria-pressed="true" ::after pseudo-element
+   ======================================== */
+
+/* Green variants - Pressed Checkmark */
+button.fr-tag[aria-pressed="true"].fr-tag--green-tilleul-verveine::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-tilleul-verveine::after {
+  color: var(--text-action-high-green-tilleul-verveine);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--green-bourgeon::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-bourgeon::after {
+  color: var(--text-action-high-green-bourgeon);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--green-emeraude::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-emeraude::after {
+  color: var(--text-action-high-green-emeraude);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--green-menthe::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-menthe::after {
+  color: var(--text-action-high-green-menthe);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--green-archipel::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-archipel::after {
+  color: var(--text-action-high-green-archipel);
+}
+
+/* Blue variants - Pressed Checkmark */
+button.fr-tag[aria-pressed="true"].fr-tag--blue-ecume::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--blue-ecume::after {
+  color: var(--text-action-high-blue-ecume);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--blue-cumulus::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--blue-cumulus::after {
+  color: var(--text-action-high-blue-cumulus);
+}
+
+/* Purple variant - Pressed Checkmark */
+button.fr-tag[aria-pressed="true"].fr-tag--purple-glycine::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--purple-glycine::after {
+  color: var(--text-action-high-purple-glycine);
+}
+
+/* Pink variants - Pressed Checkmark */
+button.fr-tag[aria-pressed="true"].fr-tag--pink-macaron::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--pink-macaron::after {
+  color: var(--text-action-high-pink-macaron);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--pink-tuile::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--pink-tuile::after {
+  color: var(--text-action-high-pink-tuile);
+}
+
+/* Yellow variants - Pressed Checkmark */
+button.fr-tag[aria-pressed="true"].fr-tag--yellow-tournesol::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--yellow-tournesol::after {
+  color: var(--text-action-high-yellow-tournesol);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--yellow-moutarde::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--yellow-moutarde::after {
+  color: var(--text-action-high-yellow-moutarde);
+}
+
+/* Orange variant - Pressed Checkmark */
+button.fr-tag[aria-pressed="true"].fr-tag--orange-terre-battue::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--orange-terre-battue::after {
+  color: var(--text-action-high-orange-terre-battue);
+}
+
+/* Brown variants - Pressed Checkmark */
+button.fr-tag[aria-pressed="true"].fr-tag--brown-cafe-creme::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-cafe-creme::after {
+  color: var(--text-action-high-brown-cafe-creme);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--brown-caramel::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-caramel::after {
+  color: var(--text-action-high-brown-caramel);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--brown-opera::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-opera::after {
+  color: var(--text-action-high-brown-opera);
+}
+
+/* Beige variant - Pressed Checkmark */
+button.fr-tag[aria-pressed="true"].fr-tag--beige-gris-galet::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--beige-gris-galet::after {
+  color: var(--text-action-high-beige-gris-galet);
+}
+
+/* Semantic variants - Pressed Checkmark */
+button.fr-tag[aria-pressed="true"].fr-tag--success::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--success::after {
+  color: var(--text-action-high-success);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--warning::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--warning::after {
+  color: var(--text-action-high-warning);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--info::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--info::after {
+  color: var(--text-action-high-info);
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--error::after,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--error::after {
+  color: var(--text-action-high-error);
+}
+
+/* ========================================
+   SELECTABLE TAGS - PRESSED - BACKGROUND
+   aria-pressed="true" with corner cutout
+   ======================================== */
+
+/* Green variants - Pressed */
+button.fr-tag[aria-pressed="true"].fr-tag--green-tilleul-verveine:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-tilleul-verveine:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-tilleul-verveine) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-tilleul-verveine:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-tilleul-verveine:not(
+    :disabled
+  ):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-tilleul-verveine-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-tilleul-verveine:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-tilleul-verveine:not(
+    :disabled
+  ):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-tilleul-verveine-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--green-bourgeon:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-bourgeon:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-bourgeon) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-bourgeon:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-bourgeon:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-bourgeon-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-bourgeon:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-bourgeon:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-bourgeon-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--green-emeraude:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-emeraude:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-emeraude) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-emeraude:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-emeraude:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-emeraude-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-emeraude:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-emeraude:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-emeraude-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--green-menthe:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-menthe:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-menthe) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-menthe:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-menthe:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-menthe-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-menthe:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-menthe:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-menthe-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--green-archipel:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-archipel:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-archipel) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-archipel:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-archipel:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-archipel-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--green-archipel:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--green-archipel:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-green-archipel-active) 0.625rem
+  );
+}
+
+/* Blue variants - Pressed */
+button.fr-tag[aria-pressed="true"].fr-tag--blue-ecume:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--blue-ecume:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-blue-ecume) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--blue-ecume:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--blue-ecume:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-blue-ecume-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--blue-ecume:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--blue-ecume:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-blue-ecume-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--blue-cumulus:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--blue-cumulus:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-blue-cumulus) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--blue-cumulus:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--blue-cumulus:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-blue-cumulus-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--blue-cumulus:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--blue-cumulus:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-blue-cumulus-active) 0.625rem
+  );
+}
+
+/* Purple variant - Pressed */
+button.fr-tag[aria-pressed="true"].fr-tag--purple-glycine:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--purple-glycine:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-purple-glycine) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--purple-glycine:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--purple-glycine:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-purple-glycine-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--purple-glycine:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--purple-glycine:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-purple-glycine-active) 0.625rem
+  );
+}
+
+/* Pink variants - Pressed */
+button.fr-tag[aria-pressed="true"].fr-tag--pink-macaron:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--pink-macaron:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-pink-macaron) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--pink-macaron:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--pink-macaron:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-pink-macaron-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--pink-macaron:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--pink-macaron:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-pink-macaron-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--pink-tuile:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--pink-tuile:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-pink-tuile) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--pink-tuile:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--pink-tuile:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-pink-tuile-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--pink-tuile:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--pink-tuile:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-pink-tuile-active) 0.625rem
+  );
+}
+
+/* Yellow variants - Pressed */
+button.fr-tag[aria-pressed="true"].fr-tag--yellow-tournesol:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--yellow-tournesol:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-yellow-tournesol) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--yellow-tournesol:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--yellow-tournesol:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-yellow-tournesol-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--yellow-tournesol:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--yellow-tournesol:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-yellow-tournesol-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--yellow-moutarde:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--yellow-moutarde:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-yellow-moutarde) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--yellow-moutarde:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--yellow-moutarde:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-yellow-moutarde-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--yellow-moutarde:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--yellow-moutarde:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-yellow-moutarde-active) 0.625rem
+  );
+}
+
+/* Orange variant - Pressed */
+button.fr-tag[aria-pressed="true"].fr-tag--orange-terre-battue:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--orange-terre-battue:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-orange-terre-battue) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--orange-terre-battue:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--orange-terre-battue:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-orange-terre-battue-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--orange-terre-battue:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--orange-terre-battue:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-orange-terre-battue-active) 0.625rem
+  );
+}
+
+/* Brown variants - Pressed */
+button.fr-tag[aria-pressed="true"].fr-tag--brown-cafe-creme:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-cafe-creme:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-brown-cafe-creme) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--brown-cafe-creme:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-cafe-creme:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-brown-cafe-creme-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--brown-cafe-creme:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-cafe-creme:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-brown-cafe-creme-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--brown-caramel:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-caramel:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-brown-caramel) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--brown-caramel:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-caramel:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-brown-caramel-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--brown-caramel:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-caramel:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-brown-caramel-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--brown-opera:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-opera:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-brown-opera) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--brown-opera:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-opera:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-brown-opera-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--brown-opera:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--brown-opera:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-brown-opera-active) 0.625rem
+  );
+}
+
+/* Beige variant - Pressed */
+button.fr-tag[aria-pressed="true"].fr-tag--beige-gris-galet:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--beige-gris-galet:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-beige-gris-galet) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--beige-gris-galet:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--beige-gris-galet:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-beige-gris-galet-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--beige-gris-galet:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--beige-gris-galet:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-beige-gris-galet-active) 0.625rem
+  );
+}
+
+/* Semantic variants - Pressed */
+button.fr-tag[aria-pressed="true"].fr-tag--success:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--success:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-success) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--success:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--success:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-success-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--success:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--success:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-success-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--warning:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--warning:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-warning) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--warning:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--warning:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-warning-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--warning:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--warning:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-warning-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--info:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--info:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-info) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--info:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--info:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-info-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--info:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--info:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-info-active) 0.625rem
+  );
+}
+
+button.fr-tag[aria-pressed="true"].fr-tag--error:not(:disabled),
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--error:not(:disabled) {
+  background-color: transparent;
+  color: var(--text-inverted-grey);
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-error) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--error:not(:disabled):hover,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--error:not(:disabled):hover {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-error-hover) 0.625rem
+  );
+}
+button.fr-tag[aria-pressed="true"].fr-tag--error:not(:disabled):active,
+input[type="button"].fr-tag[aria-pressed="true"].fr-tag--error:not(:disabled):active {
+  background-image: radial-gradient(
+    circle at 100% 0.25rem,
+    transparent 0.578125rem,
+    var(--background-action-high-error-active) 0.625rem
+  );
+}

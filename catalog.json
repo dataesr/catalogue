@@ -1,0 +1,209 @@
+{
+  "topics": [
+    {
+      "id": "etudiants-formations",
+      "slug": "etudiants-formations",
+      "label": "Étudiants & formations",
+      "shortLabel": "Formations",
+      "description": "Effectifs étudiants, inscriptions, Parcoursup, réussite et diplômes de l'enseignement supérieur.",
+      "icon": "fr-icon-team-line",
+      "color": "blue-ecume"
+    },
+    {
+      "id": "insertion-professionnelle",
+      "slug": "insertion-professionnelle",
+      "label": "Insertion professionnelle",
+      "shortLabel": "Insertion",
+      "description": "Emploi et devenir professionnel des diplômés de l'enseignement supérieur.",
+      "icon": "fr-icon-briefcase-line",
+      "color": "green-bourgeon"
+    },
+    {
+      "id": "recherche",
+      "slug": "recherche",
+      "label": "Recherche",
+      "shortLabel": "Recherche",
+      "description": "Laboratoires, publications scientifiques, analyse bibliométrique et structures de recherche.",
+      "icon": "fr-icon-microscope-line",
+      "color": "purple-glycine"
+    },
+    {
+      "id": "financements",
+      "slug": "financements",
+      "label": "Financements",
+      "shortLabel": "Financements",
+      "description": "Participations et financements dans les programmes de recherche : ANR, Horizon Europe, etc.",
+      "icon": "fr-icon-global-line",
+      "color": "blue-cumulus"
+    },
+    {
+      "id": "science-ouverte",
+      "slug": "science-ouverte",
+      "label": "Science ouverte",
+      "shortLabel": "Science ouverte",
+      "description": "Indicateurs et données sur l'ouverture des publications et des données de la recherche.",
+      "icon": "fr-icon-lock-unlock-line",
+      "color": "green-emeraude"
+    },
+    {
+      "id": "etablissements-personnels",
+      "slug": "etablissements-personnels",
+      "label": "Établissements & personnels",
+      "shortLabel": "Établissements",
+      "description": "Établissements d'enseignement supérieur, enseignants, enseignants-chercheurs, personnels et finances.",
+      "icon": "fr-icon-building-line",
+      "color": "yellow-tournesol"
+    },
+    {
+      "id": "innovation-entreprises",
+      "slug": "innovation-entreprises",
+      "label": "Innovation & entreprises",
+      "shortLabel": "Innovation",
+      "description": "R&D des entreprises, brevets et startups.",
+      "icon": "fr-icon-lightbulb-line",
+      "color": "orange-terre-battue"
+    },
+    {
+      "id": "territoires",
+      "slug": "territoires",
+      "label": "Territoires",
+      "shortLabel": "Territoires",
+      "description": "Données régionales, atlas, cartographies et analyses géographiques de l'ESR.",
+      "icon": "fr-icon-map-pin-2-line",
+      "color": "pink-macaron"
+    }
+  ],
+  "formats": [
+    {
+      "id": "application",
+      "label": "Application",
+      "icon": "fr-icon-terminal-box-line",
+      "color": "green-emeraude"
+    },
+    {
+      "id": "tableau-de-bord",
+      "label": "Tableau de bord",
+      "icon": "fr-icon-dashboard-3-line",
+      "color": "blue-cumulus"
+    },
+    {
+      "id": "api",
+      "label": "API",
+      "icon": "fr-icon-code-s-slash-line",
+      "color": "pink-tuile"
+    }
+  ],
+  "resources": [
+    {
+      "id": "A01",
+      "title": "BSO — Baromètre de la Science Ouverte",
+      "description": "Indicateurs nationaux sur l'ouverture des publications et des données scientifiques françaises.",
+      "format": "application",
+      "topics": ["science-ouverte", "recherche"],
+      "url": "https://barometredelascienceouverte.esr.gouv.fr",
+      "internalPath": null,
+      "requiresAuth": false,
+      "keywords": ["BSO", "science ouverte", "open access", "publications", "baromètre", "open science"]
+    },
+    {
+      "id": "A02",
+      "title": "scanR — Moteur de la recherche et de l'innovation",
+      "description": "Moteur de recherche pour explorer le paysage français de la recherche et de l'innovation : laboratoires, publications, brevets, thèses et entreprises innovantes.",
+      "format": "application",
+      "topics": ["recherche", "innovation-entreprises"],
+      "url": "https://scanr.enseignementsup-recherche.gouv.fr",
+      "internalPath": null,
+      "requiresAuth": false,
+      "keywords": ["scanR", "recherche", "innovation", "laboratoires", "publications", "brevets", "thèses"]
+    },
+    {
+      "id": "A03",
+      "title": "Paysage",
+      "description": "Annuaire et cartographie des acteurs de l'enseignement supérieur, de la recherche et de l'innovation en France.",
+      "format": "application",
+      "topics": ["etablissements-personnels"],
+      "url": "https://paysage.enseignementsup-recherche.gouv.fr",
+      "internalPath": null,
+      "requiresAuth": true,
+      "keywords": ["paysage", "annuaire", "acteurs", "établissements", "structures"]
+    },
+    {
+      "id": "A04",
+      "title": "dataFRESQ",
+      "description": "Application de consultation et d'analyse des données des formations de l'enseignement supérieur : effectifs, parcours, insertion professionnelle.",
+      "format": "application",
+      "topics": ["etudiants-formations", "insertion-professionnelle"],
+      "url": "https://datafresq.staging.dataesr.ovh",
+      "internalPath": "/formations",
+      "requiresAuth": true,
+      "keywords": ["FRESQ", "formations", "analyse", "effectifs", "insertion", "parcours"]
+    },
+    {
+      "id": "A05",
+      "title": "CurieXplore",
+      "description": "Plateforme d'exploration des systèmes d'enseignement supérieur, de recherche et d'innovation à l'international.",
+      "format": "application",
+      "topics": ["etudiants-formations", "recherche", "territoires"],
+      "url": "https://curiexplore.enseignementsup-recherche.gouv.fr/",
+      "internalPath": null,
+      "requiresAuth": false,
+      "keywords": ["CurieXplore", "international", "systèmes", "enseignement supérieur", "comparaison", "pays"]
+    },
+    {
+      "id": "A06",
+      "title": "Works-magnet",
+      "description": "Outil de curation de métadonnées scientifiques. Interroge OpenAlex, BSO et Datacite pour faciliter l'exploration, la correction et l'amélioration des affiliations et métadonnées de la recherche.",
+      "format": "application",
+      "topics": ["recherche", "science-ouverte"],
+      "url": "https://works-magnet.esr.gouv.fr/",
+      "internalPath": null,
+      "requiresAuth": false,
+      "keywords": ["works-magnet", "curation", "métadonnées", "affiliations", "OpenAlex", "Datacite", "bibliométrie"]
+    },
+    {
+      "id": "T01",
+      "title": "Affiliation matcher",
+      "description": "API de matching d'affiliations : identifie et relie les affiliations des publications scientifiques aux structures de recherche référencées.",
+      "format": "api",
+      "topics": ["recherche"],
+      "url": "https://affiliation-matcher.staging.dataesr.ovh",
+      "internalPath": null,
+      "requiresAuth": false,
+      "keywords": ["affiliation", "matching", "API", "structures", "RNSR", "RoR"]
+    },
+    {
+      "id": "T02",
+      "title": "pyderef",
+      "description": "API de matching de personnes avec les référentiels IdRef et ORCID : aide à l'identification et à la désambiguïsation des auteurs scientifiques.",
+      "format": "api",
+      "topics": ["recherche"],
+      "url": "https://pydref.staging.dataesr.ovh/identify?name=",
+      "internalPath": null,
+      "requiresAuth": false,
+      "keywords": ["pyderef", "IdRef", "ORCID", "auteurs", "désambiguïsation", "personnes", "identifiants"]
+    },
+    {
+      "id": "D04",
+      "title": "Suivi des financements par appels à projets",
+      "description": "Suivi et analyse de la participation des établissements français aux projets de recherche financés par appels à projets nationaux (ANR, PIA) et européens.",
+      "format": "tableau-de-bord",
+      "topics": ["financements", "recherche"],
+      "url": "https://tableaux.data.esr.gouv.fr/financements-par-aap",
+      "internalPath": null,
+      "requiresAuth": false,
+      "keywords": ["ANR", "PIA", "financements", "appels à projets", "établissements", "recherche"]
+    },
+    {
+      "id": "D06",
+      "title": "Finances des établissements",
+      "description": "Données financières des universités et établissements d'enseignement supérieur : budget, SCSP, ressources propres, positionnement et comparaison.",
+      "format": "tableau-de-bord",
+      "topics": ["etablissements-personnels"],
+      "url": "https://tableaux.data.esr.gouv.fr/structures-finance",
+      "internalPath": null,
+      "requiresAuth": false,
+      "keywords": ["finances", "budget", "ressources propres", "universités", "établissements"]
+    }
+  ],
+  "highlightedResourceIds": ["A01", "A02", "A05", "A06", "A04", "D04"]
+}

@@ -1,0 +1,86 @@
+/* ===================================================================
+   ResourceCard — shared card used by bento grid + /outils page
+   =================================================================== */
+
+/* Full height + flex column so CTA is always pinned to bottom */
+.resource-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+}
+
+/* Link resets — kill underlines, background-image & color inheritance */
+.resource-card,
+.resource-card:hover,
+.resource-card:visited {
+  text-decoration: none !important;
+  background-image: none !important;
+  color: inherit;
+}
+
+/* Kill DSFR external-link ::after icon on card links */
+.resource-card[target="_blank"]::after {
+  display: none !important;
+}
+
+/* --- Colored left accent per format ------------------------------- */
+/* Uses ::before so it never conflicts with fx-card border/box-shadow */
+
+.resource-card--application::before,
+.resource-card--tableau-de-bord::before,
+.resource-card--api::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 3px;
+  bottom: 4rem;
+  border-radius: 0 1px 1px 0;
+  pointer-events: none;
+  transition: top 0.25s ease, bottom 0.25s ease;
+}
+
+.resource-card--application::before {
+  background: var(--border-plain-green-emeraude);
+}
+
+.resource-card--tableau-de-bord::before {
+  background: var(--border-plain-blue-cumulus);
+}
+
+.resource-card--api::before {
+  background: var(--border-plain-pink-tuile);
+}
+
+.resource-card:hover::before {
+  top: 0;
+  bottom: 0;
+  border-radius: 0;
+}
+
+/* --- Keywords — subtle, fade on hover ----------------------------- */
+
+.resource-card__keywords {
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.resource-card:hover .resource-card__keywords {
+  opacity: 0.85;
+}
+
+/* --- Hover CTA reveal --------------------------------------------- */
+
+.resource-card__cta {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.resource-card:hover .resource-card__cta,
+.resource-card:focus-visible .resource-card__cta {
+  opacity: 1;
+  transform: translateY(0);
+}

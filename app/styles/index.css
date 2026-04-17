@@ -1,0 +1,8 @@
+/* Override DSFR's aggressive [href] underline on card-style links */
+a.fx-card,
+a.fx-card:hover,
+a.fx-card:visited {
+  text-decoration: none !important;
+  background-image: none !important;
+  color: inherit;
+}

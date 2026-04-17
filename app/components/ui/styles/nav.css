@@ -1,0 +1,214 @@
+.fx-nav--sticky {
+  position: sticky;
+  top: 0;
+  z-index: calc(var(--ground) + 650);
+  background-color: var(--background-default-grey);
+}
+
+.fx-nav--horizontal {
+  padding-top: 2rem !important;
+  margin-bottom: 2rem !important;
+  max-width: 100%;
+  contain: inline-size;
+
+  .fr-nav__list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    background-image: linear-gradient(0deg, var(--border-default-grey), var(--border-default-grey));
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+    .fr-nav__item::before {
+      content: none !important;
+    }
+    .fr-nav__item {
+      align-items: flex-start;
+      position: static;
+      .fr-nav__link:hover:not([aria-current="page"]) {
+        background-position: 0 100%;
+        background-size: 100% 2px;
+        background-image: linear-gradient(
+          0deg,
+          var(--border-contrast-grey),
+          var(--border-contrast-grey)
+        );
+      }
+      .fr-nav__link {
+        background-repeat: no-repeat;
+        padding: 0.75rem;
+        font-weight: 400;
+        height: 100%;
+        margin: 0;
+        width: auto;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        min-height: 2.5rem;
+        text-wrap: nowrap;
+      }
+      .fr-nav__link::before {
+        bottom: 0;
+        height: 2px;
+        left: 0;
+        margin-top: 0;
+        position: absolute;
+        top: auto;
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* Green Tilleul Verveine */
+.fr-nav--green-tilleul-verveine .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-green-tilleul-verveine) !important;
+}
+
+.fr-nav--green-tilleul-verveine .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-green-tilleul-verveine) !important;
+}
+
+/* Green Bourgeon */
+.fr-nav--green-bourgeon .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-green-bourgeon) !important;
+}
+
+.fr-nav--green-bourgeon .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-green-bourgeon) !important;
+}
+
+/* Green Emeraude */
+.fr-nav--green-emeraude .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-green-emeraude) !important;
+}
+
+.fr-nav--green-emeraude .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-green-emeraude) !important;
+}
+
+/* Green Menthe */
+.fr-nav--green-menthe .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-green-menthe) !important;
+}
+
+.fr-nav--green-menthe .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-green-menthe) !important;
+}
+
+/* Green Archipel */
+.fr-nav--green-archipel .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-green-archipel) !important;
+}
+
+.fr-nav--green-archipel .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-green-archipel) !important;
+}
+
+/* Blue Ecume */
+.fr-nav--blue-ecume .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-blue-ecume) !important;
+}
+
+.fr-nav--blue-ecume .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-blue-ecume) !important;
+}
+
+/* Blue Cumulus */
+.fr-nav--blue-cumulus .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-blue-cumulus) !important;
+}
+
+.fr-nav--blue-cumulus .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-blue-cumulus) !important;
+}
+
+/* Purple Glycine */
+.fr-nav--purple-glycine .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-purple-glycine) !important;
+}
+
+.fr-nav--purple-glycine .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-purple-glycine) !important;
+}
+
+/* Pink Macaron */
+.fr-nav--pink-macaron .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-pink-macaron) !important;
+}
+
+.fr-nav--pink-macaron .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-pink-macaron) !important;
+}
+
+/* Pink Tuile */
+.fr-nav--pink-tuile .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-pink-tuile) !important;
+}
+
+.fr-nav--pink-tuile .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-pink-tuile) !important;
+}
+
+/* Yellow Tournesol */
+.fr-nav--yellow-tournesol .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-yellow-tournesol) !important;
+}
+
+.fr-nav--yellow-tournesol .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-yellow-tournesol) !important;
+}
+
+/* Yellow Moutarde */
+.fr-nav--yellow-moutarde .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-yellow-moutarde) !important;
+}
+
+.fr-nav--yellow-moutarde .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-yellow-moutarde) !important;
+}
+
+/* Orange Terre Battue */
+.fr-nav--orange-terre-battue .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-orange-terre-battue) !important;
+}
+
+.fr-nav--orange-terre-battue .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-orange-terre-battue) !important;
+}
+
+/* Brown Cafe Creme */
+.fr-nav--brown-cafe-creme .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-brown-cafe-creme) !important;
+}
+
+.fr-nav--brown-cafe-creme .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-brown-cafe-creme) !important;
+}
+
+/* Brown Caramel */
+.fr-nav--brown-caramel .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-brown-caramel) !important;
+}
+
+.fr-nav--brown-caramel .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-brown-caramel) !important;
+}
+
+/* Brown Opera */
+.fr-nav--brown-opera .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-brown-opera) !important;
+}
+
+.fr-nav--brown-opera .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-brown-opera) !important;
+}
+
+/* Beige Gris Galet */
+.fr-nav--beige-gris-galet .fr-nav__link[aria-current]:not([aria-current="false"]) {
+  color: var(--artwork-major-beige-gris-galet) !important;
+}
+
+.fr-nav--beige-gris-galet .fr-nav__link[aria-current]:not([aria-current="false"])::before {
+  background-color: var(--artwork-major-beige-gris-galet) !important;
+}
