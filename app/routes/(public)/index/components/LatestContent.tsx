@@ -65,7 +65,7 @@ function PublicationRow({ item, index }: { item: CatalogItem; index: number }) {
       <div className="fx-flex-grow" style={{ minWidth: 0 }}>
         <div className="fx-flex fx-justify-between fx-items-start fx-gap-3w">
           <p className="fr-text--sm fr-text--bold fr-mb-0 fx-clamp-1">
-            <Link to={`/publications?q=${encodeURIComponent(item.title)}`}>
+            <Link to={`/publications/${item.id}`}>
               {item.title}
             </Link>
           </p>
@@ -101,7 +101,7 @@ function DatasetRow({ item, index }: { item: CatalogItem; index: number }) {
       <div className="fx-flex-grow" style={{ minWidth: 0 }}>
         <div className="fx-flex fx-justify-between fx-items-start fx-gap-3w">
           <p className="fr-text--sm fr-text--bold fr-mb-0 fx-clamp-1">
-            <Link to={`/donnees-ouvertes?q=${encodeURIComponent(item.title)}`}>
+            <Link to={`/donnees-ouvertes/${item.id}`}>
               {item.title}
             </Link>
           </p>

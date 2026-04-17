@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { SiesLogo } from '../SiesLogo';
 
 export interface FooterProps {
   /** Smaller logo variant */
@@ -12,8 +13,6 @@ export interface FooterProps {
   /** Additional links to add in the bottom section */
   bottomLinks?: Array<{ label: string; href: string }>;
 }
-
-const siesLogo = '/public/sies_logo_signature.svg';
 
 const EXTERNAL_LINKS = [
   { label: 'info.gouv.fr', href: 'https://info.gouv.fr' },
@@ -55,15 +54,7 @@ export function Footer({
                 <br />
                 et de l'espace
               </p>
-              <svg
-                role="img"
-                aria-label="Logo SIES"
-                viewBox="0 0 1167.77 752.85"
-                width={sm ? '200px' : '300px'}
-              >
-                <use className="fr-text-black-white--grey" href={`${siesLogo}#sies-logo-text`} />
-                <use href={`${siesLogo}#sies-logo-artwork`} />
-              </svg>
+              <SiesLogo width={sm ? 200 : 300} />
             </a>
           </div>
           <div className="fr-footer__content">
