@@ -22,7 +22,7 @@ export default function ResourceCard({
   const format = getFormatMeta(resource.format);
 
   const cardClassName = cn(
-    'resource-card fx-card fx-card--rounded',
+    'resource-card fx-card',
     format && `resource-card--${format.id}`,
     extraClassName,
   );

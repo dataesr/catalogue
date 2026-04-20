@@ -132,7 +132,7 @@ function RecentPublications() {
   const total = data?.totalCount ?? 0;
 
   return (
-    <div className="fx-card fx-card--rounded fr-p-0 recent-card recent-card--publications">
+    <div className="fx-card fr-p-0 recent-card recent-card--publications">
       <div className="fr-px-3w fr-pt-2w fr-pb-2w fx-shadow-border-bottom fx-flex fx-items-center fx-gap-2w">
         <IconBox icon="fr-icon-article-fill" color="purple-glycine" size="sm" />
         <h3 className="fr-h6 fr-mb-0 fx-flex-grow">Dernières publications</h3>

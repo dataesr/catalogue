@@ -1,6 +1,10 @@
 import cn from 'classnames';
 import { SiesLogo } from '../SiesLogo';
 
+import sunSvg from '@gouvfr/dsfr/dist/artwork/pictograms/environment/sun.svg' with { type: 'file' };
+import moonSvg from '@gouvfr/dsfr/dist/artwork/pictograms/environment/moon.svg' with { type: 'file' };
+import systemSvg from '@gouvfr/dsfr/dist/artwork/pictograms/system/system.svg' with { type: 'file' };
+
 export interface FooterProps {
   /** Smaller logo variant */
   sm?: boolean;
@@ -85,6 +89,9 @@ export function Footer({
                 </a>
               </li>
             ))}
+            <li className="fr-footer__bottom-item">
+              <button aria-controls="footer-display" data-fr-opened="false" id="footer__bottom-link-13" className="fr-icon-theme-fill fr-btn--icon-left fr-footer__bottom-link">Paramètres d'affichage</button>
+            </li>
           </ul>
           <div className="fr-footer__bottom-copy">
             <p>
@@ -102,6 +109,67 @@ export function Footer({
           </div>
         </div>
       </div>
+      <dialog id="footer-display" className="fr-modal" aria-labelledby="footer-display-title">
+        <div className="fr-container fr-container--fluid fr-container-md">
+        <div className="fr-grid-row fr-grid-row--center">
+          <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
+            <div className="fr-modal__body">
+              <div className="fr-modal__header">
+                <button aria-controls="footer-display" title="Fermer" type="button" id="button-14" className="fr-btn--close fr-btn">Fermer</button>
+                </div>
+                <div className="fr-modal__content">
+                  <h2 id="footer-display-title" className="fr-modal__title"> Paramètres d’affichage </h2>
+                  <div id="fr-display" className="fr-display">
+                    <fieldset className="fr-fieldset" id="display-fieldset" aria-labelledby="display-fieldset-legend display-fieldset-messages">
+                      <legend className="fr-fieldset__legend--regular fr-fieldset__legend" id="display-fieldset-legend"> Choisissez un thème pour personnaliser l’apparence du site. </legend>
+                      <div className="fr-fieldset__element">
+                        <div className="fr-radio-group fr-radio-rich">
+                          <input value="light" type="radio" id="fr-radios-theme-light" name="fr-radios-theme" />
+                          <label className="fr-label" htmlFor="fr-radios-theme-light"> Thème clair </label>
+                          <div className="fr-radio-rich__pictogram">
+                            <svg aria-hidden="true" className="fr-artwork" viewBox="0 0 80 80" width="80px" height="80px">
+                              <use className="fr-artwork-decorative" href={`${sunSvg}#artwork-decorative`}></use>
+                              <use className="fr-artwork-minor" href={`${sunSvg}#artwork-minor`}></use>
+                              <use className="fr-artwork-major" href={`${sunSvg}#artwork-major`}></use>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="fr-fieldset__element">
+                        <div className="fr-radio-group fr-radio-rich">
+                          <input value="dark" type="radio" id="fr-radios-theme-dark" name="fr-radios-theme" />
+                          <label className="fr-label" htmlFor="fr-radios-theme-dark"> Thème sombre </label>
+                          <div className="fr-radio-rich__pictogram">
+                            <svg aria-hidden="true" className="fr-artwork" viewBox="0 0 80 80" width="80px" height="80px">
+                              <use className="fr-artwork-decorative" href={`${moonSvg}#artwork-decorative`}></use>
+                              <use className="fr-artwork-minor" href={`${moonSvg}#artwork-minor`}></use>
+                              <use className="fr-artwork-major" href={`${moonSvg}#artwork-major`}></use>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="fr-fieldset__element">
+                        <div className="fr-radio-group fr-radio-rich">
+                          <input value="system" type="radio" id="fr-radios-theme-system" name="fr-radios-theme" />
+                          <label className="fr-label" htmlFor="fr-radios-theme-system"> Système <span className="fr-hint-text">Utilise les paramètres système</span>
+                          </label>
+                          <div className="fr-radio-rich__pictogram">
+                            <svg aria-hidden="true" className="fr-artwork" viewBox="0 0 80 80" width="80px" height="80px">
+                              <use className="fr-artwork-decorative" href={`${systemSvg}#artwork-decorative`}></use>
+                              <use className="fr-artwork-minor" href={`${systemSvg}#artwork-minor`}></use>
+                              <use className="fr-artwork-major" href={`${systemSvg}#artwork-major`}></use>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </dialog>
     </footer>
   );
 }

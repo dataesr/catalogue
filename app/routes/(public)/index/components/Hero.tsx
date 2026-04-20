@@ -38,7 +38,7 @@ export default function Hero() {
         <AutoGrid type="fit" min={220} gap="sm">
           {STATS.map(({ key, label, description, icon, color, to }) => (
             <Link key={key} to={to} className="home-hero__stat-link">
-              <div className="fx-card fx-card--shadow fx-card--sm fx-card--rounded fx-card--animate">
+              <div className="fx-card fx-card--shadow fx-card--sm fx-card--animate">
                 <StatCard
                   value={getCount(key)}
                   label={label}
