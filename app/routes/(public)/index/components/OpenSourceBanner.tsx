@@ -57,7 +57,7 @@ export default function OpenSourceBanner() {
                 </a>
               ))}
               <a
-                href="https://github.com/dataesr/data.esr.gouv.fr"
+                href="https://github.com/dataesr/catalogue"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="fr-btn fr-btn--tertiary fr-btn--icon-left fr-icon-external-link-line"

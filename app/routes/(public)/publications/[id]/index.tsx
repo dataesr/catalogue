@@ -33,21 +33,11 @@ function PublicationContent({ item }: { item: CatalogItem }) {
       {/* Header: title, source link */}
       <div className="fx-flex fx-justify-between fx-items-start fx-gap-3w fr-mb-2w">
         <h1 className="fr-h3 fr-mb-0">{item.title}</h1>
-        {item.url && (
-          <a
-            href={item.url}
-            className="fr-btn fr-btn--tertiary fr-btn--sm fr-btn--icon-right fr-icon-external-link-line"
-            target="_blank"
-            rel="noopener"
-          >
-            Voir sur Zenodo
-          </a>
-        )}
       </div>
 
       {/* Authors */}
       {item.authors.length > 0 && (
-        <div className="fx-flex fx-flex-wrap fx-gap-2w fr-mb-2w">
+        <div className="fx-flex fx-flex-col fr-mb-2w">
           {item.authors.map((author) => (
             <span key={author.name} className="fx-flex fx-items-center fx-gap-1w">
               <span className="fr-icon-user-line fr-icon--sm" aria-hidden="true" />

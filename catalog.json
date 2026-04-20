@@ -101,7 +101,6 @@
       "format": "application",
       "topics": ["science-ouverte", "recherche"],
       "url": "https://barometredelascienceouverte.esr.gouv.fr",
-      "internalPath": null,
       "requiresAuth": false,
       "keywords": ["BSO", "science ouverte", "open access", "publications", "baromètre", "open science"]
     },
@@ -112,7 +111,6 @@
       "format": "application",
       "topics": ["recherche", "innovation-entreprises"],
       "url": "https://scanr.enseignementsup-recherche.gouv.fr",
-      "internalPath": null,
       "requiresAuth": false,
       "keywords": ["scanR", "recherche", "innovation", "laboratoires", "publications", "brevets", "thèses"]
     },
@@ -123,7 +121,6 @@
       "format": "application",
       "topics": ["etablissements-personnels"],
       "url": "https://paysage.enseignementsup-recherche.gouv.fr",
-      "internalPath": null,
       "requiresAuth": true,
       "keywords": ["paysage", "annuaire", "acteurs", "établissements", "structures"]
     },
@@ -134,7 +131,6 @@
       "format": "application",
       "topics": ["etudiants-formations", "insertion-professionnelle"],
       "url": "https://datafresq.staging.dataesr.ovh",
-      "internalPath": "/formations",
       "requiresAuth": true,
       "keywords": ["FRESQ", "formations", "analyse", "effectifs", "insertion", "parcours"]
     },
@@ -145,7 +141,6 @@
       "format": "application",
       "topics": ["etudiants-formations", "recherche", "territoires"],
       "url": "https://curiexplore.enseignementsup-recherche.gouv.fr/",
-      "internalPath": null,
       "requiresAuth": false,
       "keywords": ["CurieXplore", "international", "systèmes", "enseignement supérieur", "comparaison", "pays"]
     },
@@ -156,7 +151,6 @@
       "format": "application",
       "topics": ["recherche", "science-ouverte"],
       "url": "https://works-magnet.esr.gouv.fr/",
-      "internalPath": null,
       "requiresAuth": false,
       "keywords": ["works-magnet", "curation", "métadonnées", "affiliations", "OpenAlex", "Datacite", "bibliométrie"]
     },
@@ -167,7 +161,6 @@
       "format": "api",
       "topics": ["recherche"],
       "url": "https://affiliation-matcher.staging.dataesr.ovh",
-      "internalPath": null,
       "requiresAuth": false,
       "keywords": ["affiliation", "matching", "API", "structures", "RNSR", "RoR"]
     },
@@ -178,7 +171,6 @@
       "format": "api",
       "topics": ["recherche"],
       "url": "https://pydref.staging.dataesr.ovh/identify?name=",
-      "internalPath": null,
       "requiresAuth": false,
       "keywords": ["pyderef", "IdRef", "ORCID", "auteurs", "désambiguïsation", "personnes", "identifiants"]
     },
@@ -189,7 +181,6 @@
       "format": "tableau-de-bord",
       "topics": ["financements", "recherche"],
       "url": "https://tableaux.data.esr.gouv.fr/financements-par-aap",
-      "internalPath": null,
       "requiresAuth": false,
       "keywords": ["ANR", "PIA", "financements", "appels à projets", "établissements", "recherche"]
     },
@@ -200,10 +191,9 @@
       "format": "tableau-de-bord",
       "topics": ["etablissements-personnels"],
       "url": "https://tableaux.data.esr.gouv.fr/structures-finance",
-      "internalPath": null,
       "requiresAuth": false,
       "keywords": ["finances", "budget", "ressources propres", "universités", "établissements"]
     }
   ],
-  "highlightedResourceIds": ["A01", "A02", "A05", "A06", "A04", "D04"]
+  "highlightedResourceIds": ["D04", "A01", "D06", "A02", "A05", "A06"]
 }

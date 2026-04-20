@@ -7,9 +7,10 @@ import { IconBox } from '@/components/ui/IconBox';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { formatNumber } from '@/components/catalog/utils';
 import type { ColorFamily } from '@/components/ui/ColorPicker';
+import '@/components/catalog/styles.css';
 import type { CatalogItem } from '~/schemas/catalog';
 
-const LIMIT = 5;
+const LIMIT = 8;
 
 function getHref(item: CatalogItem): string {
   if (item.type === 'dataset') return `/donnees-ouvertes/${item.id}`;
@@ -19,7 +20,7 @@ function getHref(item: CatalogItem): string {
 }
 
 function getMeta(item: CatalogItem): string {
-  if (item.type === 'resource') return item.format ?? item.publisher ?? '';
+  if (item.type === 'resource') return item.description ?? item.publisher ?? '';
   if (item.type === 'dataset') {
     if (item.publisher) return item.publisher;
     if (item.recordsCount > 0) return `${formatNumber(item.recordsCount)} enregistrements`;
@@ -31,34 +32,22 @@ function getMeta(item: CatalogItem): string {
   return [author ? author + suffix : '', year].filter(Boolean).join(' · ');
 }
 
-function ResultRow({ item, index }: { item: CatalogItem; index: number }) {
+function ResultRow({ item }: { item: CatalogItem }) {
   const meta = getMeta(item);
   const href = getHref(item);
-  const isExternal = false;
 
   return (
-    <div
-      className={cn('fx-flex fx-items-center fr-px-3w fr-py-2w fr-enlarge-link', {
-        'fx-shadow-border-top': index > 0,
-      })}
-    >
-      <div className="fx-flex-grow" style={{ minWidth: 0 }}>
-        <p className="fr-text--sm fr-text--bold fr-mb-0 fx-clamp-1">
-          {isExternal ? (
-            <a href={href} target="_blank" rel="noopener noreferrer">
-              {item.title}
-            </a>
-          ) : (
-            <Link to={href}>{item.title}</Link>
-          )}
-        </p>
+    <Link to={href} className="catalog-card catalog-card--no-bg">
+      <div className="catalog-card__body">
+        <p className="catalog-card__title fr-text--sm fx-clamp-1 fr-mb-0">{item.title}</p>
         {meta && (
-          <p className="fr-text--xs fr-text-mention--grey fr-mb-0 fr-mt-1v fx-clamp-1">
-            {meta}
-          </p>
+          <div className="catalog-card__meta fr-mt-0">
+            <span className="catalog-card__meta-item">{meta}</span>
+          </div>
         )}
       </div>
-    </div>
+      <span className="catalog-card__arrow fr-icon-arrow-right-line" aria-hidden="true" />
+    </Link>
   );
 }
 
@@ -90,34 +79,29 @@ function Section({ icon, color, title, results, totalCount, isLoading, moreHref 
 
   return (
     <div className="fr-py-3w">
-      <div className="fr-px-3w fr-pt-2w fr-pb-2w fx-shadow-border-bottom fx-flex fx-items-center fx-gap-2w">
+      <div className="fr-pt-2w fr-pb-2w fx-shadow-border-bottom fx-flex fx-items-center fx-gap-2w">
         <IconBox icon={icon} color={color} size="sm" />
         <h2 className="fr-h6 fr-mb-0 fx-flex-grow">{formatNumber(totalCount)} {title}</h2>
-        {!isLoading && (
-          <span className="fr-badge fr-badge--sm fr-badge--no-icon fr-badge--grey">
-            {formatNumber(totalCount)}
-          </span>
-        )}
-      </div>
-
-      {isLoading ? (
-        <SkeletonRows count={LIMIT} />
-      ) : (
-        results.map((item, index) => (
-          <ResultRow key={item.id} item={item} index={index} />
-        ))
-      )}
-
-      {!isLoading && totalCount > LIMIT && (
-        <div className="fx-shadow-border-top fr-px-3w fr-py-1w fx-flex fx-justify-end">
+        {!isLoading && totalCount > LIMIT && (
           <Link
             to={moreHref}
             className="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-btn--icon-right fr-icon-arrow-right-line"
           >
             Voir les {formatNumber(totalCount)}
           </Link>
+        )}
+      </div>
+
+      {isLoading ? (
+        <SkeletonRows count={LIMIT} />
+      ) : (
+        <div className="catalog-results">
+          {results.map((item) => (
+            <ResultRow key={item.id} item={item} />
+          ))}
         </div>
       )}
+
     </div>
   );
 }
@@ -187,7 +171,7 @@ export default function Recherche() {
           <Section
             icon="fr-icon-tools-fill"
             color="green-emeraude"
-            title="Outils & applications"
+            title={resources.totalCount > 1 ? 'outils' : 'outil'}
             results={resources.results}
             totalCount={resources.totalCount}
             isLoading={isLoading}
@@ -196,7 +180,7 @@ export default function Recherche() {
           <Section
             icon="fr-icon-database-fill"
             color="blue-ecume"
-            title="Jeux de données"
+            title={datasets.totalCount > 1 ? 'jeux de données' : 'jeu de données'}
             results={datasets.results}
             totalCount={datasets.totalCount}
             isLoading={isLoading}
@@ -205,7 +189,7 @@ export default function Recherche() {
           <Section
             icon="fr-icon-article-fill"
             color="purple-glycine"
-            title="Publications"
+            title={publications.totalCount > 1 ? 'publications' : 'publication'}
             results={publications.results}
             totalCount={publications.totalCount}
             isLoading={isLoading}

@@ -320,6 +320,10 @@
   outline-offset: -2px;
 }
 
+.catalog-card--no-bg:hover {
+  background-color: transparent;
+}
+
 .catalog-results .catalog-card:last-child {
   border-bottom: none;
 }

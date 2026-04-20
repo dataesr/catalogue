@@ -3,7 +3,7 @@ import ResourceCard from '@/components/ResourceCard';
 import { catalog } from '@/data/catalog';
 import type { Resource } from '@/data/types';
 
-const BENTO_IDS = ['A01', 'A02', 'A05', 'A06', 'A04', 'D02'];
+const BENTO_IDS = catalog.highlightedResourceIds;
 
 export default function ToolsShowcase() {
   const tools = BENTO_IDS

@@ -19,11 +19,16 @@ export default function ResourceCard({
   className: extraClassName,
 }: ResourceCardProps) {
   const href = `/outils/${resource.id}`;
-  const isExternal = false;
   const format = getFormatMeta(resource.format);
 
-  const content = (
-    <>
+  const cardClassName = cn(
+    'resource-card fx-card fx-card--rounded',
+    format && `resource-card--${format.id}`,
+    extraClassName,
+  );
+
+  return (
+    <Link to={href} className={cardClassName}>
       <div className="fx-flex fx-items-center fx-justify-between">
         <div className="fx-flex fx-items-center fx-gap-2w">
           {format && <IconBox icon={format.icon} color={format.color} size="sm" />}
@@ -36,9 +41,6 @@ export default function ResourceCard({
         <div className="fx-flex fx-items-center fx-gap-1w">
           {resource.requiresAuth && (
             <IconBox icon="fr-icon-lock-line" color="yellow-tournesol" size="sm" />
-          )}
-          {isExternal && (
-            <span className="fr-icon-external-link-line fr-icon--sm fr-text-mention--grey" aria-hidden="true" />
           )}
         </div>
       </div>
@@ -74,35 +76,6 @@ export default function ResourceCard({
           {resource.keywords.slice(0, 4).join(' · ')}
         </p>
       )}
-
-      <div className="resource-card__cta fx-flex fx-justify-end">
-        <span className={cn(
-          'fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-btn--icon-right',
-          isExternal ? 'fr-icon-external-link-line' : 'fr-icon-arrow-right-line',
-        )}>
-          Accéder
-        </span>
-      </div>
-    </>
-  );
-
-  const cardClassName = cn(
-    'resource-card fx-card fx-card--rounded',
-    format && `resource-card--${format.id}`,
-    extraClassName,
-  );
-
-  if (isExternal) {
-    return (
-      <a href={href} target="_blank" rel="noopener" className={cardClassName}>
-        {content}
-      </a>
-    );
-  }
-
-  return (
-    <Link to={href} className={cardClassName}>
-      {content}
     </Link>
   );
 }

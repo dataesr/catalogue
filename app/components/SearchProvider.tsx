@@ -51,7 +51,7 @@ function getDetailPath(item: CatalogItem): string | null {
     case 'publication':
       return `/publications/${item.id}`;
     case 'resource':
-      return `/outils/${item.id}`;
+      return `/outils/${item.sourceId}`;
   }
 }
 
@@ -79,6 +79,7 @@ export function SearchProvider({ children }: { children: ReactNode }) {
         return;
       }
       const item = results[index];
+      console.log(item)
       if (!item) return;
       const path = getDetailPath(item);
       if (path) navigate(path);

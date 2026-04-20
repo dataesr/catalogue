@@ -30,7 +30,7 @@ const FREQUENCY_LABELS: Record<string, string> = {
 
 function DatasetDetail({ item }: { item: CatalogItem }) {
   const sourceUrl = item.sourceId
-    ? `https://data.enseignementsup-recherche.gouv.fr/explore/dataset/${item.sourceId}/view`
+    ? `https://data.enseignementsup-recherche.gouv.fr/explore/assets/${item.sourceId}/view/`
     : null;
 
   const metadataCards: { label: string; value: string }[] = [];
@@ -62,7 +62,13 @@ function DatasetDetail({ item }: { item: CatalogItem }) {
     });
   }
   if (item.territory.length > 0) {
-    metadataCards.push({ label: 'Territoire', value: item.territory.join(', ') });
+    const value = item.territory.join(', ');
+    if (value?.toLowerCase() !== "world") {
+      metadataCards.push({ label: 'Territoire', value });
+    } else {
+      metadataCards.push({ label: 'Territoire', value: 'Monde' });
+    }
+
   }
 
   return (
@@ -80,7 +86,7 @@ function DatasetDetail({ item }: { item: CatalogItem }) {
             href={sourceUrl}
             className="fr-btn fr-btn--icon-right fr-icon-external-link-line"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             Accéder aux données
           </a>

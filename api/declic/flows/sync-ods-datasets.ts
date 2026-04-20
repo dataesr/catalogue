@@ -89,7 +89,7 @@ function normalizeOdsDataset(raw: OdsDataset) {
   const topics = themes;
 
   const datasetId = raw.dataset_id;
-  const odsPageUrl = `https://data.enseignementsup-recherche.gouv.fr/explore/dataset/${datasetId}/`;
+  const odsPageUrl = `https://data.enseignementsup-recherche.gouv.fr/explore/assets/${datasetId}/`;
 
   const fields = (raw.fields ?? []).map((f) => ({
     name: f.name,
