@@ -1,0 +1,76 @@
+{
+  "id": "RES-APP-BSO-UI",
+  "kind": "Resource",
+  "apiVersion": "catalog/v1",
+
+  "metadata": {
+    "name": "BSO Web Application",
+    "slug": "bso-ui",
+    "description": "Interface web publique du Baromètre de la Science Ouverte.",
+    "resourceType": "application",
+    "status": "production",
+    "visibility": "public",
+    "tags": [
+      "frontend",
+      "react",
+      "datavisualisation",
+      "science-ouverte",
+      "open-science"
+    ],
+
+    "createdAt": "2021-01-01"
+  },
+
+  "ownership": {
+    "organization": "MESRE",
+    "team": "Département Ingénierie et Science des Données",
+    "contacts": [
+      {
+        "type": "email",
+        "value": "bso@recherche.gouv.fr"
+      }
+    ]
+  },
+
+  "technical": {
+
+    "framework": {
+      "name": "node",
+      "version": "18"
+    },
+
+    "repository": "https://github.com/dataesr/bso-ui",
+
+    "deployment": {
+      "platform": "kubernetes",
+      "environment": ["production", "staging"]
+    }
+  },
+
+  "access": {
+    "url": "https://barometredelascienceouverte.esr.gouv.fr",
+    "alternativeUrls": ["https://frenchopensciencemonitor.esr.gouv.fr", "https://bso.esr.gouv.fr"],
+    "requiresAuthentication": false
+  },
+
+  "relationships": {
+    "partOfDataProducts": [
+      "DP-BSO"
+    ],
+
+    "dependsOnResources": [
+      "RES-API-BSO"
+    ],
+
+    "consumesApis": [
+      "RES-API-BSO"
+    ]
+  },
+
+  "observability": {
+  },
+
+  "lifecycle": {
+    "stage": "production"
+  }
+}

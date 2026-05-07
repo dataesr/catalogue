@@ -1,0 +1,94 @@
+{
+  "id": "DP-BSO",
+  "kind": "DataProduct",
+  "apiVersion": "catalog/v1",
+
+  "metadata": {
+    "slug": "barometre-science-ouverte",
+    "name": "Baromètre de la Science Ouverte",
+    "shortName": "BSO",
+
+    "description": "Suivi et pilotage de la poltique publique de science ouverte en France à partir de données fiables, ouvertes et maîtrisées",
+
+    "topics": [
+      "science-ouverte",
+      "recherche"
+    ],
+
+    "tags": [
+      "open-access",
+      "publications",
+      "clinical-trials",
+      "research-software",
+      "research-dataset",
+      "open-science"
+    ],
+    "status": "production",
+    "visibility": "partial-public",
+    "createdAt": "2018-12-01"
+  },
+
+  "ownership": {
+    "sponsor": {
+      "organization": "MESRE",
+      "division": "DGRI",
+      "team": "Science ouverte"
+    },
+
+    "technicalOwner": {
+      "organization": "MESRE",
+      "team": "Département Ingénierie et Science des Données"
+    },
+
+    "contacts": [
+      {
+        "type": "email",
+        "value": "bso@recherche.gouv.fr"
+      }
+    ]
+  },
+
+  "governance": {
+    "domain": "science-ouverte",
+    "dataClassification": "public",
+    "containsPersonalData": false,
+    "license": "etalab-2.0"
+  },
+
+  "artefacts": [
+    {
+      "resourceId": "RES-APP-BSO-UI",
+      "resourceType": "app",
+      "role": "primary-ui"
+    },
+    {
+      "resourceId": "RES-DATASET-BSO-PUBLICATIONS",
+      "resourceType": "dataset"
+    },
+    {
+      "resourceId": "RES-API-BSO",
+      "resourceType": "api"
+    },
+    {
+      "resourceId": "RES-DOC-BSO-OA",
+      "resourceType": "documentation"
+    }
+  ],
+  "upstreamDataSources": [
+    {
+      "dataSourceId": "EXT-DATASOURCE-UNPAYWALL"
+    },
+    {
+      "dataSourceId": "EXT-DATASOURCE-HAL"
+    },
+    {
+      "dataSourceId": "EXT-DATASOURCE-THESES"
+    }
+  ],
+
+  "upstreamDataProducts": [
+  ],
+
+  "downstreamConsumers": [
+  ]
+}
