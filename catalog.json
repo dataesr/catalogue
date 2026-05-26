@@ -99,111 +99,497 @@
       "title": "BSO — Baromètre de la Science Ouverte",
       "description": "Indicateurs nationaux sur l'ouverture des publications et des données scientifiques françaises.",
       "format": "application",
-      "topics": ["science-ouverte", "recherche"],
+      "topics": [
+        "science-ouverte",
+        "recherche"
+      ],
       "url": "https://barometredelascienceouverte.esr.gouv.fr",
       "requiresAuth": false,
       "internalPath": null,
-      "keywords": ["BSO", "science ouverte", "open access", "publications", "baromètre", "open science"]
+      "keywords": [
+        "BSO",
+        "science ouverte",
+        "open access",
+        "publications",
+        "baromètre",
+        "open science"
+      ]
     },
     {
       "id": "A02",
       "title": "scanR — Moteur de la recherche et de l'innovation",
       "description": "Moteur de recherche pour explorer le paysage français de la recherche et de l'innovation : laboratoires, publications, brevets, thèses et entreprises innovantes.",
       "format": "application",
-      "topics": ["recherche", "innovation-entreprises"],
+      "topics": [
+        "recherche",
+        "innovation-entreprises"
+      ],
       "url": "https://scanr.enseignementsup-recherche.gouv.fr",
       "requiresAuth": false,
       "internalPath": null,
-      "keywords": ["scanR", "recherche", "innovation", "laboratoires", "publications", "brevets", "thèses"]
+      "keywords": [
+        "scanR",
+        "recherche",
+        "innovation",
+        "laboratoires",
+        "publications",
+        "brevets",
+        "thèses"
+      ]
     },
     {
       "id": "A03",
       "title": "Paysage",
       "description": "Annuaire et cartographie des acteurs de l'enseignement supérieur, de la recherche et de l'innovation en France.",
       "format": "application",
-      "topics": ["etablissements-personnels"],
+      "topics": [
+        "etablissements-personnels"
+      ],
       "url": "https://paysage.enseignementsup-recherche.gouv.fr",
       "requiresAuth": true,
       "internalPath": null,
-      "keywords": ["paysage", "annuaire", "acteurs", "établissements", "structures"]
+      "keywords": [
+        "paysage",
+        "annuaire",
+        "acteurs",
+        "établissements",
+        "structures"
+      ]
     },
     {
       "id": "A04",
       "title": "dataFRESQ",
       "description": "Application de consultation et d'analyse des données des formations de l'enseignement supérieur : effectifs, parcours, insertion professionnelle.",
       "format": "application",
-      "topics": ["etudiants-formations", "insertion-professionnelle"],
+      "topics": [
+        "etudiants-formations",
+        "insertion-professionnelle"
+      ],
       "url": "https://datafresq.staging.dataesr.ovh",
       "requiresAuth": true,
       "internalPath": null,
-      "keywords": ["FRESQ", "formations", "analyse", "effectifs", "insertion", "parcours"]
+      "keywords": [
+        "FRESQ",
+        "formations",
+        "analyse",
+        "effectifs",
+        "insertion",
+        "parcours"
+      ]
     },
     {
       "id": "A05",
       "title": "CurieXplore",
       "description": "Plateforme d'exploration des systèmes d'enseignement supérieur, de recherche et d'innovation à l'international.",
       "format": "application",
-      "topics": ["etudiants-formations", "recherche", "territoires"],
+      "topics": [
+        "etudiants-formations",
+        "recherche",
+        "territoires"
+      ],
       "url": "https://curiexplore.enseignementsup-recherche.gouv.fr/",
       "requiresAuth": false,
       "internalPath": null,
-      "keywords": ["CurieXplore", "international", "systèmes", "enseignement supérieur", "comparaison", "pays"]
+      "keywords": [
+        "CurieXplore",
+        "international",
+        "systèmes",
+        "enseignement supérieur",
+        "comparaison",
+        "pays"
+      ]
     },
     {
       "id": "A06",
       "title": "Works-magnet",
       "description": "Outil de curation de métadonnées scientifiques. Interroge OpenAlex, BSO et Datacite pour faciliter l'exploration, la correction et l'amélioration des affiliations et métadonnées de la recherche.",
       "format": "application",
-      "topics": ["recherche", "science-ouverte"],
+      "topics": [
+        "recherche",
+        "science-ouverte"
+      ],
       "url": "https://works-magnet.esr.gouv.fr/",
       "requiresAuth": false,
       "internalPath": null,
-      "keywords": ["works-magnet", "curation", "métadonnées", "affiliations", "OpenAlex", "Datacite", "bibliométrie"]
+      "keywords": [
+        "works-magnet",
+        "curation",
+        "métadonnées",
+        "affiliations",
+        "OpenAlex",
+        "Datacite",
+        "bibliométrie"
+      ]
     },
     {
       "id": "T01",
       "title": "Affiliation matcher",
       "description": "API de matching d'affiliations : identifie et relie les affiliations des publications scientifiques aux structures de recherche référencées.",
       "format": "api",
-      "topics": ["recherche"],
+      "topics": [
+        "recherche"
+      ],
       "url": "https://affiliation-matcher.staging.dataesr.ovh",
       "requiresAuth": false,
       "internalPath": null,
-      "keywords": ["affiliation", "matching", "API", "structures", "RNSR", "RoR"]
+      "keywords": [
+        "affiliation",
+        "matching",
+        "API",
+        "structures",
+        "RNSR",
+        "RoR"
+      ]
     },
     {
       "id": "T02",
       "title": "pyderef",
       "description": "API de matching de personnes avec les référentiels IdRef et ORCID : aide à l'identification et à la désambiguïsation des auteurs scientifiques.",
       "format": "api",
-      "topics": ["recherche"],
+      "topics": [
+        "recherche"
+      ],
       "url": "https://pydref.staging.dataesr.ovh/identify?name=",
       "requiresAuth": false,
       "internalPath": null,
-      "keywords": ["pyderef", "IdRef", "ORCID", "auteurs", "désambiguïsation", "personnes", "identifiants"]
+      "keywords": [
+        "pyderef",
+        "IdRef",
+        "ORCID",
+        "auteurs",
+        "désambiguïsation",
+        "personnes",
+        "identifiants"
+      ]
     },
     {
       "id": "D04",
       "title": "Suivi des financements par appels à projets",
       "description": "Suivi et analyse de la participation des établissements français aux projets de recherche financés par appels à projets nationaux (ANR, PIA) et européens.",
       "format": "tableau-de-bord",
-      "topics": ["financements", "recherche"],
+      "topics": [
+        "financements",
+        "recherche"
+      ],
       "url": "https://tableaux.data.esr.gouv.fr/financements-par-aap",
       "requiresAuth": true,
       "internalPath": null,
-      "keywords": ["ANR", "PIA", "financements", "appels à projets", "établissements", "recherche"]
+      "keywords": [
+        "ANR",
+        "PIA",
+        "financements",
+        "appels à projets",
+        "établissements",
+        "recherche"
+      ]
     },
     {
       "id": "D06",
       "title": "Finances des établissements",
       "description": "Données financières des universités et établissements d'enseignement supérieur : budget, ressources propres, positionnement et comparaison.",
       "format": "tableau-de-bord",
-      "topics": ["etablissements-personnels"],
+      "topics": [
+        "etablissements-personnels"
+      ],
       "url": "https://tableaux.data.esr.gouv.fr/structures-finance",
       "requiresAuth": false,
       "internalPath": null,
-      "keywords": ["finances", "budget", "ressources propres", "universités", "établissements"]
+      "keywords": [
+        "finances",
+        "budget",
+        "ressources propres",
+        "universités",
+        "établissements"
+      ]
+    },
+    {
+      "id": "D07",
+      "title": "Tableau de bord de l'enseignement supérieur (avec doubles inscriptions CPGE)",
+      "description": "Le « Tableau de bord de l’enseignement supérieur » propose, sur le champ des principaux établissements d’enseignement supérieur en France, un ensemble de tableaux, graphiques et cartes qui permettent de caractériser, au travers de l’analyse de la population étudiante en formation, un établissement ou un ensemble d’établissements. Offre de formation, implantations géographiques, étudiants, parité, nouveaux bacheliers, attractivité internationale, DUT, Licence et Master sont abordés. Ce tableau prend en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/downloaddownload</a>",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-etudiants"
+      ],
+      "url": "https://dataesr.fr/tableaux/Tdb_ES_OD.twbx",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "étudiants",
+        "enseignement supérieur",
+        "formations",
+        "universités",
+        "établissements",
+        "territoires"
+      ]
+    },
+    {
+      "id": "D08",
+      "title": "Tableau de bord de l'enseignement supérieur : les étudiants par établissements (avec doubles inscriptions CPGE)",
+      "description": "Le « Tableau de bord de l'enseignement supérieur : les étudiants » présente les effectifs d'inscrits dans les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il est composé de 84 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Ce tableau prend en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/downloaddownload",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-etudiants"
+      ],
+      "url": "https://dataesr.fr/tableaux/TdB_etudiants_inscrits.twbx",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "étudiants",
+        "enseignement supérieur",
+        "formations",
+        "universités",
+        "établissements",
+        "territoires",
+        "sise"
+      ]
+    },
+    {
+      "id": "D09",
+      "title": "Tableau de bord de l'enseignement supérieur : les diplômes délivrés par établissements",
+      "description": "Le « Tableau de bord de l'enseignement supérieur : les diplômes délivrés par établissements » propose les diplômes délivrés par les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il comporte 85 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/downloaddownload",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-etudiants"
+      ],
+      "url": "https://dataesr.fr/tableaux/TdB_diplomes.twbx",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "étudiants",
+        "enseignement supérieur",
+        "formations",
+        "universités",
+        "établissements",
+        "territoires",
+        "diplômes",
+        "sise",
+        "écoles d'ingénieur",
+        "discipline"
+      ]
+    },
+    {
+      "id": "A08",
+      "title": "Référentiel des Emplois-types de la recherche et de l'Enseignement Supérieur",
+      "description": "Le « Référentiel des Emplois-types de la recherche et de l'Enseignement Supérieur » répertorie les métiers des ingénieurs et personnels techniques de recherche et de formation (ITRF) et des ingénieurs et personnels techniques de la recherche (ITA).",
+      "format": "application",
+      "topics": [
+        "etablissements-personnels"
+      ],
+      "url": "https://data.enseignementsup-recherche.gouv.fr/pages/referens/",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "enseignement supérieur",
+        "recherche",
+        "ressources humaines"
+      ]
+    },
+    {
+      "id": "A09",
+      "title": "Etat de l'enseignement supérieur, de la recherche et de l'innovation en France",
+      "description": "L'« état de l'enseignement supérieur, de la recherche et de l'innovation en France » constitue un état des lieux annuel et chiffré du système français, de ses évolutions, des moyens qu’il met en œuvre et de ses résultats, en le situant, chaque fois que les données le permettent, au niveau international. Chacune de la cinquantaine de fiches de chaque édition annuelle présente au moyen de graphiques, de tableaux et de commentaires, les dernières données de synthèse disponibles sur chaque sujet.",
+      "format": "application",
+      "topics": [
+        "etablissements-personnels",
+        "etudiants-formations",
+        "insertion-professionnelle",
+        "recherche",
+        "financements",
+        "innovation-entreprises",
+        "insertion-professionnelle"
+      ],
+      "url": "https://publication.enseignementsup-recherche.gouv.fr/eesr/",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "enseignement superieur",
+        "innovation",
+        "ressources humaines",
+        "recherche",
+        "brevets",
+        "budget",
+        "europe"
+      ]
+    },
+    {
+      "id": "A10",
+      "title": "Plate-forme de données ouvertes de l'enseignement supérieur, de la recherche et de l'innovation",
+      "description": "Toute l'offre de données ouvertes du ministère de l'Enseignement supérieur, de la Recherche et de l'Espace accessible en téléchargement ou via une API.",
+      "format": "application",
+      "topics": [
+        "etablissements-personnels",
+        "etudiants-formations",
+        "insertion-professionnelle",
+        "recherche",
+        "financements",
+        "innovation-entreprises",
+        "insertion-professionnelle"
+      ],
+      "url": "https://data.enseignementsup-recherche.gouv.fr/",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "open data",
+        "enseignement superieur",
+        "innovation",
+        "ressources humaines",
+        "recherche"
+      ]
+    },
+    {
+      "id": "A11",
+      "title": "Répertoire national des structures de recherche",
+      "description": "Le répertoire national des structures de recherche (RNSR) référence les structures de recherche publiques et privées au niveau national. Il est administré par le ministère chargé de la recherche.",
+      "format": "application",
+      "topics": [
+        "recherche"
+      ],
+      "url": "https://rnsr.adc.education.fr/",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "unité de recherche"
+      ]
+    },
+    {
+      "id": "D10",
+      "title": "Tableau des enseignants de l'enseignement supérieur public - niveau établissement",
+      "description": "Vues par établissements des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l’enseignement supérieur.",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-personnels"
+      ],
+      "url": "https://dataesr.fr/tableaux/Les enseignants de l'enseignement supérieur public - niveau établissement.twbx",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "ressources humaines",
+        "établissements",
+        "recherche"
+      ]
+    },
+    {
+      "id": "D11",
+      "title": "Tableau des enseignants de l'enseignement supérieur public - niveau national",
+      "description": "Vues nationales des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur.",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-personnels"
+      ],
+      "url": "https://dataesr.fr/tableaux/Les personnels enseignants de l'enseignement supérieur public - niveau national.twbx",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "ressources humaines",
+        "recherche"
+      ]
+    },
+    {
+      "id": "D12",
+      "title": "Tableau des enseignants-chercheurs de l'enseignement supérieur public - niveau national",
+      "description": "Vues nationales des enseignants-chercheurs en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-personnels"
+      ],
+      "url": "https://dataesr.fr/tableaux/Les enseignants-chercheurs de l'enseignement supérieur public - niveau national.twbx",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "ressources humaines",
+        "recherche"
+      ]
+    },
+    {
+      "id": "A12",
+      "title": "Explorez les données de parcoursup",
+      "description": "En complément du jeu de données sur les vœux de poursuite d’études et de réorientation dans l’enseignement supérieur et les réponses des établissements via la plateforme Parcoursup, cette application permet d'explorer l'information grâce à un moteur de recherche et à des filtres. Elle permet ainsi d’observer pour chaque formation présente dans Parcoursup et pour chaque établissement d’accueil la demande et la satisfaction de celle-ci ; le profil des candidats et celui des admis ainsi que d’autres résultats à la fin du processus d’affectation.",
+      "format": "application",
+      "topics": [
+        "etablissements-etudiants"
+      ],
+      "url": "https://data.enseignementsup-recherche.gouv.fr/pages/parcoursupdata/",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "étudiants",
+        "enseignement supérieur",
+        "formations",
+        "universités",
+        "établissements",
+        "territoires",
+        "écoles d'ingénieur"
+      ]
+    },
+    {
+      "id": "D13",
+      "title": "Tableau de bord de l'enseignement supérieur (hors doubles inscriptions CPGE)",
+      "description": "Le « Tableau de bord de l’enseignement supérieur » propose, sur le champ des principaux établissements d’enseignement supérieur en France, un ensemble de tableaux, graphiques et cartes qui permettent de caractériser, au travers de l’analyse de la population étudiante en formation, un établissement ou un ensemble d’établissements. Offre de formation, implantations géographiques, étudiants, parité, nouveaux bacheliers, attractivité internationale, DUT, Licence et Master sont abordés. Ce tableau ne prend pas en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/downloaddownload",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-etudiants"
+      ],
+      "url": "https://dataesr.fr/tableaux/Tdb_ES_OD_SDC.twbx",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "étudiants",
+        "enseignement supérieur",
+        "formations",
+        "universités",
+        "établissements",
+        "territoires"
+      ]
+    },
+    {
+      "id": "D14",
+      "title": "Tableau de bord de l'enseignement supérieur : les étudiants par établissements (hors doubles inscriptions CPGE)",
+      "description": "Le « Tableau de bord de l'enseignement supérieur : les étudiants » présente les effectifs d'inscrits dans les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il est composé de 84 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Ce tableau ne prend pas en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/downloaddownload",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-etudiants"
+      ],
+      "url": "https://dataesr.fr/tableaux/TdB_etudiants_inscrits_SDC.twbx",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "étudiants",
+        "enseignement supérieur",
+        "formations",
+        "universités",
+        "établissements",
+        "territoires",
+        "sise"
+      ]
+    },
+    {
+      "id": "D15",
+      "title": "Le tableau de bord des financements européens de la recherche",
+      "description": "Ce tableau de bord présente les principaux indicateurs de suivi du financement des projets de recherche soutenus par l'Union Européenne à travers son programme Horizon Europe. Il offre une vision synthétique de chaque indicateur comme les financements alloués, la répartition de ces financements par thématique, pays ou organisation portant les projets. Il propose une vision générale, une vision détaillée par thématique, un focus sur les actions Marie-Curie et ERC. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/downloaddownload",
+      "format": "tableau-de-bord",
+      "topics": [
+        "recherche",
+        "financement"
+      ],
+      "url": "https://dataesr.fr/tableaux/Horizon-Europe.twbx",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "recherche",
+        "innovation",
+        "europe",
+        "pcri",
+        "pcrdt"
+      ]
     }
   ],
-  "highlightedResourceIds": ["D04", "A01", "D06", "A02", "A05", "A06"]
+  "highlightedResourceIds": [
+    "D04",
+    "A01",
+    "D06",
+    "A02",
+    "A05",
+    "A06",
+    "A12"
+  ]
 }
