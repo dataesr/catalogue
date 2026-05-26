@@ -196,7 +196,7 @@
     {
       "id": "D06",
       "title": "Finances des établissements",
-      "description": "Données financières des universités et établissements d'enseignement supérieur : budget, SCSP, ressources propres, positionnement et comparaison.",
+      "description": "Données financières des universités et établissements d'enseignement supérieur : budget, ressources propres, positionnement et comparaison.",
       "format": "tableau-de-bord",
       "topics": ["etablissements-personnels"],
       "url": "https://tableaux.data.esr.gouv.fr/structures-finance",
