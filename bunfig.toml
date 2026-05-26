@@ -2,4 +2,4 @@
 env = "BUN_PUBLIC_*"
 
 [install.scopes]
-"@dataesr" = { url = "https://npm.pkg.github.com/", token = "$NODE_AUTH_TOKEN" }
+"@dataesr" = { registry = "https://npm.pkg.github.com/", token = "$NODE_AUTH_TOKEN" }
