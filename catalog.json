@@ -189,7 +189,7 @@
       "format": "tableau-de-bord",
       "topics": ["financements", "recherche"],
       "url": "https://tableaux.data.esr.gouv.fr/financements-par-aap",
-      "requiresAuth": false,
+      "requiresAuth": true,
       "internalPath": null,
       "keywords": ["ANR", "PIA", "financements", "appels à projets", "établissements", "recherche"]
     },
