@@ -1,5 +1,6 @@
 import { flow } from '@dataesr/declic-sdk';
-import { createIndexName, ES_ALIAS, elastic, swapAlias } from '~/database/elastic';
+// import { createIndexName, ES_ALIAS, elastic, swapAlias } from '~/database/elastic';
+import { createIndexName, elastic } from '~/database/elastic';
 import { CATALOG_MAPPING } from '~/database/mappings/catalog';
 import { syncCatalogResources } from './sync-catalog-resources';
 import { syncOdsDatasets } from './sync-ods-datasets';
@@ -7,7 +8,8 @@ import { syncZenodoPublications } from './sync-zenodo-publications';
 
 export const fullSync = flow({
   id: 'full-sync',
-  description: 'Full catalog sync: create fresh index → populate in parallel → atomic alias swap',
+  // description: 'Full catalog sync: create fresh index → populate in parallel → atomic alias swap',
+  description: 'Full catalog sync: create fresh index → populate in parallel',
   options: { maxAttempts: 1, maxConcurrency: 1, timeoutMs: 30 * 60 * 1000 },
   run: async ({ step }) => {
     const { index } = await step.run('create-index', async ({ logger }) => {
@@ -67,18 +69,19 @@ export const fullSync = flow({
         throw new Error('New index is empty — refusing to swap alias');
       }
 
-      const oldIndices = await swapAlias(ES_ALIAS, index);
-      logger.info(`Alias "${ES_ALIAS}" now points to "${index}"`);
+      // Fix by annelhote - The swap alias step should be manual
+      // const oldIndices = await swapAlias(ES_ALIAS, index);
+      // logger.info(`Alias "${ES_ALIAS}" now points to "${index}"`);
 
-      for (const oldIndex of oldIndices) {
-        logger.info(`Deleting old index "${oldIndex}"`);
-        await elastic.indices.delete({ index: oldIndex });
-      }
+      // for (const oldIndex of oldIndices) {
+      //   logger.info(`Deleting old index "${oldIndex}"`);
+      //   await elastic.indices.delete({ index: oldIndex });
+      // }
 
       return {
         totalDocuments: count.count,
         index,
-        deletedIndices: oldIndices,
+        // deletedIndices: oldIndices,
       };
     });
 
