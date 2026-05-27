@@ -5,6 +5,9 @@ import sunSvg from '@gouvfr/dsfr/dist/artwork/pictograms/environment/sun.svg' wi
 import moonSvg from '@gouvfr/dsfr/dist/artwork/pictograms/environment/moon.svg' with { type: 'file' };
 import systemSvg from '@gouvfr/dsfr/dist/artwork/pictograms/system/system.svg' with { type: 'file' };
 
+// Fix by annelhote
+import { version } from '../../../../package.json';
+
 export interface FooterProps {
   /** Smaller logo variant */
   sm?: boolean;
@@ -91,6 +94,16 @@ export function Footer({
             ))}
             <li className="fr-footer__bottom-item">
               <button aria-controls="footer-display" data-fr-opened="false" id="footer__bottom-link-13" className="fr-icon-theme-fill fr-btn--icon-left fr-footer__bottom-link">Paramètres d'affichage</button>
+            </li>
+            <li className="fr-footer__bottom-item">
+              <a
+                className="fr-footer__bottom-link"
+                href={`https://github.com/dataesr/datasupr/releases/tag/v${version}`}
+                rel="noreferer noopenner"
+                target="_blank"
+              >
+                Version de l'application {version}
+              </a>
             </li>
           </ul>
           <div className="fr-footer__bottom-copy">
