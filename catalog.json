@@ -165,7 +165,7 @@
         "etudiants-formations",
         "insertion-professionnelle"
       ],
-      "url": "https://datafresq.staging.dataesr.ovh",
+      "url": "https://datafresq.data.esr.gouv.fr/",
       "requiresAuth": true,
       "internalPath": null,
       "keywords": [
@@ -300,47 +300,6 @@
         "ressources propres",
         "universités",
         "établissements"
-      ]
-    },
-    {
-      "id": "D07",
-      "title": "Tableau de bord de l'enseignement supérieur (avec doubles inscriptions CPGE)",
-      "description": "Le « Tableau de bord de l’enseignement supérieur » propose, sur le champ des principaux établissements d’enseignement supérieur en France, un ensemble de tableaux, graphiques et cartes qui permettent de caractériser, au travers de l’analyse de la population étudiante en formation, un établissement ou un ensemble d’établissements. Offre de formation, implantations géographiques, étudiants, parité, nouveaux bacheliers, attractivité internationale, DUT, Licence et Master sont abordés. Ce tableau prend en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/downloaddownload</a>",
-      "format": "tableau-de-bord",
-      "topics": [
-        "etablissements-etudiants"
-      ],
-      "url": "https://dataesr.fr/tableaux/Tdb_ES_OD.twbx",
-      "requiresAuth": false,
-      "internalPath": null,
-      "keywords": [
-        "étudiants",
-        "enseignement supérieur",
-        "formations",
-        "universités",
-        "établissements",
-        "territoires"
-      ]
-    },
-    {
-      "id": "D08",
-      "title": "Tableau de bord de l'enseignement supérieur : les étudiants par établissements (avec doubles inscriptions CPGE)",
-      "description": "Le « Tableau de bord de l'enseignement supérieur : les étudiants » présente les effectifs d'inscrits dans les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il est composé de 84 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Ce tableau prend en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/downloaddownload",
-      "format": "tableau-de-bord",
-      "topics": [
-        "etablissements-etudiants"
-      ],
-      "url": "https://dataesr.fr/tableaux/TdB_etudiants_inscrits.twbx",
-      "requiresAuth": false,
-      "internalPath": null,
-      "keywords": [
-        "étudiants",
-        "enseignement supérieur",
-        "formations",
-        "universités",
-        "établissements",
-        "territoires",
-        "sise"
       ]
     },
     {
@@ -580,6 +539,23 @@
         "europe",
         "pcri",
         "pcrdt"
+      ]
+    },
+    {
+      "id": "D16",
+      "title": "Tableau de bord financier",
+      "description": "Le « Tableau de bord financier » permet d’appréhender les grands équilibres financiers des établissements d’enseignement supérieur et de recherche, opérateurs du programme 150. Il détaille les principaux ratios et agrégats, analyse les grands équilibres de la masse salariale et des emplois et détaille l’origine des ressources propres des établissements. Il permet de situer un établissement par rapport à ses homologues.",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-personnels"
+      ],
+      "url": "https://dataesr.fr/tableaux/TdB_Financier.twbx",
+      "requiresAuth": true,
+      "internalPath": null,
+      "keywords": [
+        "universités",
+        "établissements",
+        "finance"
       ]
     }
   ],
