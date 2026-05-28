@@ -413,7 +413,7 @@
     {
       "id": "D10",
       "title": "Tableau des enseignants de l'enseignement supérieur public - niveau établissement",
-      "description": "Vues par établissements des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l’enseignement supérieur.",
+      "description": "Vues par établissements des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l’enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https://www.tableau.com/en-gb/products/reader/download",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
@@ -430,7 +430,7 @@
     {
       "id": "D11",
       "title": "Tableau des enseignants de l'enseignement supérieur public - niveau national",
-      "description": "Vues nationales des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur.",
+      "description": "Vues nationales des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https://www.tableau.com/en-gb/products/reader/download",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
@@ -446,7 +446,7 @@
     {
       "id": "D12",
       "title": "Tableau des enseignants-chercheurs de l'enseignement supérieur public - niveau national",
-      "description": "Vues nationales des enseignants-chercheurs en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur",
+      "description": "Vues nationales des enseignants-chercheurs en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https://www.tableau.com/en-gb/products/reader/download",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
@@ -544,7 +544,7 @@
     {
       "id": "D16",
       "title": "Tableau de bord financier",
-      "description": "Le « Tableau de bord financier » permet d’appréhender les grands équilibres financiers des établissements d’enseignement supérieur et de recherche, opérateurs du programme 150. Il détaille les principaux ratios et agrégats, analyse les grands équilibres de la masse salariale et des emplois et détaille l’origine des ressources propres des établissements. Il permet de situer un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/download",
+      "description": "Le « Tableau de bord financier » permet d’appréhender les grands équilibres financiers des établissements d’enseignement supérieur et de recherche, opérateurs du programme 150. Il détaille les principaux ratios et agrégats, analyse les grands équilibres de la masse salariale et des emplois et détaille l’origine des ressources propres des établissements. Il permet de situer un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https://www.tableau.com/en-gb/products/reader/download",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
