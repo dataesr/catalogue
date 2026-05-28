@@ -39,5 +39,5 @@ git push origin staging --tags
 ## To update the data
 - Open Declic
 - Go to "Flows" on the left side menu
-- Find the "full-sync" flow and click on the "Trigger" button
+- Find the "full-sync" flow and click on the "Trigger" button (no need to add anything in the input(JSON), just press "Trigger" again)
 A new ES index will be created and used for the "catalog" ES alias
