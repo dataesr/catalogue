@@ -23,13 +23,7 @@ Any commit on the "staging" branch will deploy in staging.
 git switch main
 git pull origin main --rebase --tags
 git merge origin staging
-cd client
 npm version [patch|minor|major]
-cd ..
-git add .
-git tag -l (to get the tag list)
-git commit -m '<new tag>'
-git tag <new tag>
 git push origin main --tags
 git switch staging
 git merge origin main
