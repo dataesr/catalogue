@@ -34,4 +34,5 @@ git push origin staging --tags
 - Open Declic
 - Go to "Flows" on the left side menu
 - Find the "full-sync" flow and click on the "Trigger" button (no need to add anything in the input(JSON), just press "Trigger" again)
-A new ES index will be created and used for the "catalog" ES alias
+- Once the flow finished, a new ES index is created named "catalogue-YYYYMMDD"
+- Simply move the aliases "catalogue-staging" then "catalogue" to the newly created ES index

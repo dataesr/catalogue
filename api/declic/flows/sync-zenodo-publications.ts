@@ -223,7 +223,7 @@ function normalizeZenodoPublication(hit: ZenodoHit) {
 
 export const syncZenodoPublications = flow({
   id: 'sync-zenodo-publications',
-  description: 'Fetch all publications from Zenodo MESR community and index into Elasticsearch',
+  description: 'Fetch all publications from Zenodo MESRE community and index into Elasticsearch',
   options: { maxAttempts: 3, maxConcurrency: 1, timeoutMs: 15 * 60 * 1000 },
   input: t.Object({
     targetIndex: t.Optional(t.String()),
