@@ -25,7 +25,7 @@ export const ES_ALIAS = config.elastic.indexes.catalog;
 export function createIndexName(): string {
   // Fix by annelhote - The ES index name should be suffix by YYYYMMDD instead of timestamp
   const today = new Date()
-  return `${ES_ALIAS}-${today.toISOString().substring(0, 10).replace(/-/g, '')}`
+  return `catalog-${today.toISOString().substring(0, 10).replace(/-/g, '')}`
 }
 
 export async function swapAlias(alias: string, newIndex: string): Promise<string[]> {
