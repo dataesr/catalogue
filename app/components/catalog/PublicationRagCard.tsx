@@ -16,10 +16,10 @@ export default function PublicationRagCard({
 }) {
   const [extendSources, setExtendSources] = useState<number>(-1)
   const { data: item, isLoading, isFetching } = useCatalogItem(`zenodo-${data.id}`)
-  console.log("query", query)
+  // console.log("query", query)
   const { data: completion, isLoading: isCompleting, refetch } = useFlashRagCompletion(query, data.sources)
-  console.log("item", item)
-  console.log("completion", completion)
+  // console.log("item", item)
+  // console.log("completion", completion)
 
   if (isLoading || isFetching) return null
   if (!item) return <div>Erreur: publication introuvable (id: {data.id})</div>

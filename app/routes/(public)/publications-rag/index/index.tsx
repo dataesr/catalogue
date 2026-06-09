@@ -38,7 +38,7 @@ function ResultsSkeleton() {
   )
 }
 
-function ResultsByPublication(sources: RagSource[], sortByDate: boolean = false) {
+function ResultsByPublication(sources: RagSource[], sortByDistance: boolean = false) {
   if (!sources.length) return null
 
   const byPublication = sources.reduce(
@@ -55,12 +55,11 @@ function ResultsByPublication(sources: RagSource[], sortByDate: boolean = false)
   )
 
   const byPublicationArray = Object.values(byPublication)
+  byPublicationArray.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-  if (sortByDate) {
-    byPublicationArray.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  } else {
+  if (sortByDistance) {
     byPublicationArray.sort(
-      (a, b) => Math.max(...a.sources.map((s) => s.distance)) - Math.max(...b.sources.map((s) => s.distance)),
+      (a, b) => Math.min(...a.sources.map((s) => s.distance)) - Math.min(...b.sources.map((s) => s.distance)),
     )
   }
 
@@ -78,7 +77,7 @@ export default function PublicationsRag() {
   const debouncedQ = useDebounce(params.q, { delay: 1000 })
   const { data: data, isLoading, isFetching, isPlaceholderData } = useFlashRag(debouncedQ, 10)
   console.log("rag:", data)
-  const byPublication = ResultsByPublication(data?.sources || [], params.sort === "newest")
+  const byPublication = ResultsByPublication(data?.sources || [], params.sort === "relevance")
   console.log("byPublication", byPublication)
 
   const isStale = isFetching && isPlaceholderData
