@@ -80,8 +80,13 @@ function ResultsByPublication(sources: RagSource[], sortByDate: boolean = false)
   )
 
   const byPublicationArray = Object.values(byPublication)
+
   if (sortByDate) {
     byPublicationArray.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  } else {
+    byPublicationArray.sort(
+      (a, b) => Math.max(...a.sources.map((s) => s.distance)) - Math.max(...b.sources.map((s) => s.distance)),
+    )
   }
 
   return byPublicationArray
@@ -174,7 +179,7 @@ export default function PublicationsRag() {
     <div>
       <CatalogHero
         title="Publications statistiques - Retrieval Augmented Generation"
-        totalCount={0}
+        totalCount={byPublication ? byPublication.length : undefined}
         query={params.q}
         onQueryChange={(q) => setParams({ q, page: 1 })}
         breadcrumbItems={[

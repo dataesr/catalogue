@@ -379,6 +379,10 @@
 }
 
 /* Highlight */
+.catalog-card__highlight_box {
+  border-left:2px solid var(--border-active-blue-france);
+  padding-left:0.5rem
+}
 .catalog-card__highlight {
   font-size: 0.8125rem;
   line-height: 1.5;
@@ -389,6 +393,7 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  border-radius: 0.25rem;
 }
 .catalog-card__highlight--expanded {
   display: block;
