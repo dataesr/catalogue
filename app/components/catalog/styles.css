@@ -315,6 +315,10 @@
   background-color: var(--background-alt-grey);
 }
 
+.catalog-card--no-hover:hover {
+  background-color: inherit;
+}
+
 .catalog-card:focus-visible {
   outline: 2px solid var(--border-action-high-blue-france);
   outline-offset: -2px;
@@ -365,6 +369,26 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Highlight */
+.catalog-card__highlight {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-label-yellow-tournesol);
+  margin: 0;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.catalog-card__highlight--expanded {
+  display: block;
+}
+.catalog-card__highlight:hover {
+  background-color: var(--background-alt-grey);
+  cursor: pointer;
 }
 
 /* Metadata row */

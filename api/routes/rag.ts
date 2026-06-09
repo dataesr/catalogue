@@ -1,5 +1,6 @@
 import { Elysia, t } from "elysia"
 import { config } from "~/config"
+import { ragResponseSchema } from "~/schemas/rag"
 
 async function fetchFlashRag(query: string, top_k?: number) {
   console.log("url", config.flashRag.url)
@@ -36,7 +37,7 @@ export const ragRoutes = new Elysia({ prefix: "/rag" }).get(
       q: t.String(),
       top_k: t.Optional(t.Number()),
     }),
-    response: { 200: t.Any() },
+    response: { 200: ragResponseSchema },
     detail: {
       description: "Retrieval Augmented Generation (RAG) pour les publications statistiques",
       tags: ["RAG"],

@@ -5,15 +5,17 @@ import cn from "classnames"
 import { parseAsArrayOf, parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import { useCallback, useMemo } from "react"
 import { useCatalogSearch } from "@/api/catalog"
+import { useFlashRag } from "@/api/flash-rag"
 import ActiveFiltersBar from "@/components/catalog/ActiveFiltersBar"
 import CatalogEmpty from "@/components/catalog/CatalogEmpty"
 import CatalogHero from "@/components/catalog/CatalogHero"
 import CatalogPagination from "@/components/catalog/CatalogPagination"
 import FacetSection from "@/components/catalog/FacetSection"
 import ResultCard from "@/components/catalog/ResultCard"
+import PublicationRagCard from "@/components/catalog/PublicationRagCard"
 import { formatNumber } from "@/components/catalog/utils"
 import "@/components/catalog/styles.css"
-import { useFlashRag } from "@/api/flash-rag"
+import type { RagSource } from "~/schemas/rag"
 
 const PAGE_SIZE = 20
 
@@ -61,6 +63,30 @@ function ResultsSkeleton() {
   )
 }
 
+function ResultsByPublication(sources: RagSource[], sortByDate: boolean = false) {
+  if (!sources.length) return null
+
+  const byPublication = sources.reduce(
+    (acc, source) => {
+      const recordId = source.metadata.record_id
+      if (!acc[recordId]) {
+        acc[recordId] = { id: recordId, date: source.metadata.publication_date, sources: [] }
+      }
+      acc[recordId].sources.push(source)
+      acc[recordId].sources.sort((a, b) => a.metadata?.page_index || 0 - b.metadata?.page_index || 0)
+      return acc
+    },
+    {} as Record<string, { id: number; date: string; sources: RagSource[] }>,
+  )
+
+  const byPublicationArray = Object.values(byPublication)
+  if (sortByDate) {
+    byPublicationArray.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  }
+
+  return byPublicationArray
+}
+
 export default function PublicationsRag() {
   const [params, setParams] = useQueryStates(
     {
@@ -74,33 +100,27 @@ export default function PublicationsRag() {
     { history: "push", shallow: true },
   )
 
-  const debouncedQ = useDebounce(params.q, { delay: 300 })
+  const debouncedQ = useDebounce(params.q, { delay: 1000 })
 
-  const { data, isLoading, isFetching, isPlaceholderData } = useCatalogSearch({
-    q: debouncedQ || undefined,
-    type: "publication",
-    publicationType: params.publicationType.length > 0 ? params.publicationType : undefined,
-    topic: params.topic.length > 0 ? params.topic : undefined,
-    accessRight: params.accessRight.length > 0 ? params.accessRight : undefined,
-    sort: params.sort !== "relevance" ? params.sort : undefined,
-    page: params.page,
-    limit: PAGE_SIZE,
-  })
+  // const { data, isLoading, isFetching, isPlaceholderData } = useCatalogSearch({
+  //   q: debouncedQ || undefined,
+  //   type: "publication",
+  //   publicationType: params.publicationType.length > 0 ? params.publicationType : undefined,
+  //   topic: params.topic.length > 0 ? params.topic : undefined,
+  //   accessRight: params.accessRight.length > 0 ? params.accessRight : undefined,
+  //   sort: params.sort !== "relevance" ? params.sort : undefined,
+  //   page: params.page,
+  //   limit: PAGE_SIZE,
+  // })
 
-  const { data: dataRag } = useFlashRag(debouncedQ, 5)
-  console.log("rag:", dataRag)
+  const { data: data, isLoading, isFetching, isPlaceholderData } = useFlashRag(debouncedQ, 10)
+  // console.log("data", data)
+  console.log("rag:", data)
+  const byPublication = ResultsByPublication(data?.sources || [], params.sort === "newest")
+  console.log("byPublication", byPublication)
 
-  const totalPages = data ? Math.ceil(data.totalCount / PAGE_SIZE) : 0
+  // const totalPages = data ? Math.ceil(data.totalCount / PAGE_SIZE) : 0
   const isStale = isFetching && isPlaceholderData
-
-  const handleFacetChange = useCallback(
-    (key: FilterKey) => (value: string) => {
-      const current = params[key]
-      const next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value]
-      setParams({ [key]: next, page: 1 })
-    },
-    [params, setParams],
-  )
 
   const labelForValue = useCallback((key: FilterKey, value: string): string => {
     if (key === "accessRight") return ACCESS_LABELS[value] ?? value
@@ -154,7 +174,7 @@ export default function PublicationsRag() {
     <div>
       <CatalogHero
         title="Publications statistiques - Retrieval Augmented Generation"
-        totalCount={data?.totalCount}
+        totalCount={0}
         query={params.q}
         onQueryChange={(q) => setParams({ q, page: 1 })}
         breadcrumbItems={[
@@ -216,10 +236,10 @@ export default function PublicationsRag() {
           {/* Results */}
           <div className="fr-col-12 fr-col-md-8 fr-col-lg-9">
             <div className="catalog-row-header">
-              {data ? (
+              {byPublication ? (
                 <p className="fr-text--sm fr-mb-0">
-                  <strong>{formatNumber(data.totalCount)}</strong> résultat
-                  {data.totalCount > 1 ? "s" : ""}
+                  <strong>{formatNumber(byPublication.length)}</strong> résultat
+                  {byPublication.length > 1 ? "s" : ""}
                 </p>
               ) : (
                 <Skeleton width="sm" height="1rem" />
@@ -255,17 +275,17 @@ export default function PublicationsRag() {
 
             {isLoading ? (
               <ResultsSkeleton />
-            ) : data && data.results.length > 0 ? (
+            ) : byPublication && byPublication.length > 0 ? (
               <div className={cn("catalog-results", { "catalog-results--stale": isStale })} aria-busy={isStale}>
-                {data.results.map((item) => (
-                  <ResultCard key={item.id} item={item} />
+                {byPublication.map((publication) => (
+                  <PublicationRagCard key={publication.id} data={publication} />
                 ))}
               </div>
             ) : data ? (
               <CatalogEmpty onReset={clearAllFilters} />
             ) : null}
 
-            <CatalogPagination page={params.page} totalPages={totalPages} onPageChange={(p) => setParams({ page: p })} />
+            <CatalogPagination page={params.page} totalPages={0} onPageChange={(p) => setParams({ page: p })} />
           </div>
         </div>
       </div>
