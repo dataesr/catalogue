@@ -121,6 +121,12 @@ export default function PublicationRagCard({
           <span className="fr-icon-sparkling-2-line fr-icon--sm fr-mr-2v" aria-hidden="true" />
           Générer une réponse à partir de ce document
         </button>
+        {completion && (
+          <div className="catalog-card__meta">
+            <div className="catalog-card__meta-item">Réponse générée :</div>
+            <p>{completion}</p>
+          </div>
+        )}
       </div>
       <span className="catalog-card__arrow fr-icon-arrow-right-line" aria-hidden="true" />
     </div>
