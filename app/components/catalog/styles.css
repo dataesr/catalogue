@@ -352,6 +352,13 @@
   margin: 0;
   transition: color 0.12s ease;
 }
+.catalog-card__title--no-decoration {
+  text-decoration: none !important;
+  background-image: none !important;
+}
+.catalog-card__title--no-decoration[target="_blank"]::after {
+  display: none !important;
+}
 
 .catalog-card:hover .catalog-card__title {
   color: var(--text-action-high-blue-france);
