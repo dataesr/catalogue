@@ -7,11 +7,12 @@ import SearchLauncher from '@/components/SearchModal';
 import { SearchProvider } from '@/components/SearchProvider';
 
 const navItems = [
-  { label: 'Accueil', to: '/' },
-  { label: 'Outils & tableaux de bord', to: '/outils' },
-  { label: 'Données ouvertes', to: '/donnees-ouvertes' },
-  { label: 'Publications', to: '/publications' },
-];
+  { label: "Accueil", to: "/" },
+  { label: "Outils & tableaux de bord", to: "/outils" },
+  { label: "Données ouvertes", to: "/donnees-ouvertes" },
+  { label: "Publications", to: "/publications" },
+  { label: "Publications RAG", to: "/publications-rag" },
+]
 
 function PlatformNav() {
   const { pathname } = useLocation();

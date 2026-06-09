@@ -6,17 +6,18 @@ import { createErrorHandler } from '~/http/error-handler';
 import { createLogger } from '~/http/logger';
 import { searchGroupedRoutes } from '~/routes/search-grouped';
 import { searchRoutes } from '~/routes/search';
+import { ragRoutes } from "~/routes/rag"
 
-export const app = new Elysia({ prefix: '/api/plateform' })
+export const app = new Elysia({ prefix: "/api/plateform" })
   .use(cors({ credentials: true }))
   .use(createLogger({ isProduction: config.isProduction }))
   .use(
     openapi({
       documentation: {
         info: {
-          title: '#dataESR Platform',
-          version: '1.0.0',
-          description: 'Platform API',
+          title: "#dataESR Platform",
+          version: "1.0.0",
+          description: "Platform API",
         },
       },
     }),
@@ -24,9 +25,10 @@ export const app = new Elysia({ prefix: '/api/plateform' })
   .use(createErrorHandler({ isProduction: config.isProduction }))
   .use(searchRoutes)
   .use(searchGroupedRoutes)
-  .get('/health', () => ({ status: 'ok', app: 'plateform' }), {
+  .use(ragRoutes)
+  .get("/health", () => ({ status: "ok", app: "plateform" }), {
     detail: {
-      description: 'Health check',
-      tags: ['System'],
+      description: "Health check",
+      tags: ["System"],
     },
-  });
+  })

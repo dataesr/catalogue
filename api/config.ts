@@ -21,6 +21,10 @@ export const config = {
       catalog: process.env.ES_PLATEFORM_CATALOG_INDEX || 'catalog',
     },
   },
+  flashRag: {
+    url: process.env.FLASH_RAG_URL || 'http://localhost:8000/query',
+    key: process.env.FLASH_RAG_API_KEY || '',
+  },
   ods: {
     apiKey: process.env.ODS_API_KEY || '',
   },
@@ -44,6 +48,12 @@ export function validateConfig() {
   }
   if (config.isProduction && !process.env.DECLIC_URL) {
     throw new Error('DECLIC_URL is required in production');
+  }
+  if (config.isProduction && !process.env.FLASH_RAG_URL) {
+    throw new Error('FLASH_RAG_URL is required in production');
+  }
+  if (config.isProduction && !process.env.FLASH_RAG_API_KEY) {
+    throw new Error('FLASH_RAG_API_KEY is required in production');
   }
   if (config.isProduction && !process.env.ODS_API_KEY) {
     throw new Error('ODS_API_KEY is required in production');

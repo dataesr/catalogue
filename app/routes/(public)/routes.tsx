@@ -6,6 +6,7 @@ import Layout from './layout';
 const DonneesOuvertes = lazy(() => import('./donnees-ouvertes/index'));
 const DatasetDetail = lazy(() => import('./donnees-ouvertes/[id]/index'));
 const Publications = lazy(() => import('./publications/index/index'));
+const PublicationsRag = lazy(() => import('./publications-rag/index/index'))
 const PublicationDetail = lazy(() => import('./publications/[id]/index'));
 const Outils = lazy(() => import('./outils/index'));
 const OutilDetail = lazy(() => import('./outils/[id]/index'));
@@ -27,6 +28,7 @@ export const publicRoutes = (
     <Route path="donnees-ouvertes" element={<DonneesOuvertes />} />
     <Route path="donnees-ouvertes/:id" element={<DatasetDetail />} />
     <Route path="publications" element={<Publications />} />
+    <Route path="publications-rag" element={<PublicationsRag />} />
     <Route path="publications/:id" element={<PublicationDetail />} />
     <Route path="mentions-legales" element={<MentionsLegales />} />
     <Route path="accessibilite" element={<Accessibilite />} />
@@ -40,4 +42,4 @@ export const publicRoutes = (
 
     <Route path="*" element={<Navigate to="/" replace />} />
   </Route>
-);
+)
