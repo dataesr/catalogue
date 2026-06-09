@@ -23,7 +23,10 @@ export const config = {
   },
   flashRag: {
     url: process.env.FLASH_RAG_URL || 'http://localhost:8000/query',
-    key: process.env.FLASH_RAG_API_KEY || '',
+    apiKey: process.env.FLASH_RAG_API_KEY || '',
+  },
+  mistral: {
+    apiKey: process.env.MISTRAL_API_KEY || '',
   },
   ods: {
     apiKey: process.env.ODS_API_KEY || '',

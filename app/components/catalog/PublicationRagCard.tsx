@@ -4,11 +4,22 @@ import "./styles.css"
 import { useState } from "react"
 import { useCatalogItem } from "@/api/catalog"
 import type { RagSource } from "~/schemas/rag"
+import { useFlashRagCompletion } from "@/api/flash-rag"
 
-export default function PublicationRagCard({ data }: { data: { id: number; date: string; sources: RagSource[] } }) {
+
+export default function PublicationRagCard({
+  data,
+  query,
+}: {
+  data: { id: number; date: string; sources: RagSource[] }
+  query: string
+}) {
   const [extendSources, setExtendSources] = useState<number>(-1)
   const { data: item, isLoading, isFetching } = useCatalogItem(`zenodo-${data.id}`)
+  console.log("query", query)
+  const { data: completion, isLoading: isCompleting, refetch } = useFlashRagCompletion(query, data.sources)
   console.log("item", item)
+  console.log("completion", completion)
 
   if (isLoading || isFetching) return null
   if (!item) return <div>Erreur: publication introuvable (id: {data.id})</div>
@@ -106,7 +117,7 @@ export default function PublicationRagCard({ data }: { data: { id: number; date:
             </span>
           )}
         </div>
-        <button className="fr-btn fr-btn--sm fr-btn--secondary">
+        <button className="fr-btn fr-btn--sm fr-btn--secondary" onClick={() => refetch()} disabled={isCompleting}>
           <span className="fr-icon-sparkling-2-line fr-icon--sm fr-mr-2v" aria-hidden="true" />
           Générer une réponse à partir de ce document
         </button>
