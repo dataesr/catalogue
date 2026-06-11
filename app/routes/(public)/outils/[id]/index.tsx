@@ -1,7 +1,17 @@
-import { Breadcrumb } from '@/components/ui/Breadcrumb';
-import { IconBox } from '@/components/ui/IconBox';
-import { Navigate, useParams } from 'react-router';
-import { catalog, getFormatMeta, getTopicsForResource } from '@/data/catalog';
+import Markdown from 'react-markdown'
+import { Navigate, useParams } from 'react-router'
+
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { IconBox } from '@/components/ui/IconBox'
+import { catalog, getFormatMeta, getTopicsForResource } from '@/data/catalog'
+
+function LinkRenderer(props: any) {
+  return (
+    <a href={props.href} target="_blank" rel="noreferrer">
+      {props.children}
+    </a>
+  );
+}
 
 export default function OutilDetail() {
   const { id } = useParams<{ id: string }>();
@@ -57,8 +67,13 @@ export default function OutilDetail() {
       </div>
 
       {/* Description */}
+      {/* Fix by annelhote */}
       {resource.description && (
-        <p className="fr-text--lg fr-mb-4w fx-max-prose">{resource.description}</p>
+        <p className="fr-text--lg fr-mb-4w fx-max-prose">
+          <Markdown components={{ a: LinkRenderer }}>
+            {resource.description}
+          </Markdown>
+        </p>
       )}
 
       {/* Topics */}

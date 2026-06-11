@@ -305,7 +305,7 @@
     {
       "id": "D09",
       "title": "Tableau de bord de l'enseignement supérieur : les diplômes délivrés par établissements",
-      "description": "Le « Tableau de bord de l'enseignement supérieur : les diplômes délivrés par établissements » propose les diplômes délivrés par les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il comporte 85 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/download",
+      "description": "Le « Tableau de bord de l'enseignement supérieur : les diplômes délivrés par établissements » propose les diplômes délivrés par les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il comporte 85 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-etudiants"
@@ -413,7 +413,7 @@
     {
       "id": "D10",
       "title": "Tableau des enseignants de l'enseignement supérieur public - niveau établissement",
-      "description": "Vues par établissements des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l’enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https://www.tableau.com/en-gb/products/reader/download",
+      "description": "Vues par établissements des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l’enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
@@ -430,7 +430,7 @@
     {
       "id": "D11",
       "title": "Tableau des enseignants de l'enseignement supérieur public - niveau national",
-      "description": "Vues nationales des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https://www.tableau.com/en-gb/products/reader/download",
+      "description": "Vues nationales des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
@@ -446,7 +446,7 @@
     {
       "id": "D12",
       "title": "Tableau des enseignants-chercheurs de l'enseignement supérieur public - niveau national",
-      "description": "Vues nationales des enseignants-chercheurs en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https://www.tableau.com/en-gb/products/reader/download",
+      "description": "Vues nationales des enseignants-chercheurs en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
@@ -483,7 +483,7 @@
     {
       "id": "D13",
       "title": "Tableau de bord de l'enseignement supérieur (hors doubles inscriptions CPGE)",
-      "description": "Le « Tableau de bord de l’enseignement supérieur » propose, sur le champ des principaux établissements d’enseignement supérieur en France, un ensemble de tableaux, graphiques et cartes qui permettent de caractériser, au travers de l’analyse de la population étudiante en formation, un établissement ou un ensemble d’établissements. Offre de formation, implantations géographiques, étudiants, parité, nouveaux bacheliers, attractivité internationale, DUT, Licence et Master sont abordés. Ce tableau ne prend pas en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/download",
+      "description": "Le « Tableau de bord de l’enseignement supérieur » propose, sur le champ des principaux établissements d’enseignement supérieur en France, un ensemble de tableaux, graphiques et cartes qui permettent de caractériser, au travers de l’analyse de la population étudiante en formation, un établissement ou un ensemble d’établissements. Offre de formation, implantations géographiques, étudiants, parité, nouveaux bacheliers, attractivité internationale, DUT, Licence et Master sont abordés. Ce tableau ne prend pas en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-etudiants"
@@ -503,7 +503,7 @@
     {
       "id": "D14",
       "title": "Tableau de bord de l'enseignement supérieur : les étudiants par établissements (hors doubles inscriptions CPGE)",
-      "description": "Le « Tableau de bord de l'enseignement supérieur : les étudiants » présente les effectifs d'inscrits dans les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il est composé de 84 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Ce tableau ne prend pas en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/download",
+      "description": "Le « Tableau de bord de l'enseignement supérieur : les étudiants » présente les effectifs d'inscrits dans les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il est composé de 84 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Ce tableau ne prend pas en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-etudiants"
@@ -524,7 +524,7 @@
     {
       "id": "D15",
       "title": "Le tableau de bord des financements européens de la recherche",
-      "description": "Ce tableau de bord présente les principaux indicateurs de suivi du financement des projets de recherche soutenus par l'Union Européenne à travers son programme Horizon Europe. Il offre une vision synthétique de chaque indicateur comme les financements alloués, la répartition de ces financements par thématique, pays ou organisation portant les projets. Il propose une vision générale, une vision détaillée par thématique, un focus sur les actions Marie-Curie et ERC. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https: //www.tableau.com/en-gb/products/reader/download",
+      "description": "Ce tableau de bord présente les principaux indicateurs de suivi du financement des projets de recherche soutenus par l'Union Européenne à travers son programme Horizon Europe. Il offre une vision synthétique de chaque indicateur comme les financements alloués, la répartition de ces financements par thématique, pays ou organisation portant les projets. Il propose une vision générale, une vision détaillée par thématique, un focus sur les actions Marie-Curie et ERC. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "recherche",
@@ -544,7 +544,7 @@
     {
       "id": "D16",
       "title": "Tableau de bord financier",
-      "description": "Le « Tableau de bord financier » permet d’appréhender les grands équilibres financiers des établissements d’enseignement supérieur et de recherche, opérateurs du programme 150. Il détaille les principaux ratios et agrégats, analyse les grands équilibres de la masse salariale et des emplois et détaille l’origine des ressources propres des établissements. Il permet de situer un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger à l'adresse suivante : https://www.tableau.com/en-gb/products/reader/download",
+      "description": "Le « Tableau de bord financier » permet d’appréhender les grands équilibres financiers des établissements d’enseignement supérieur et de recherche, opérateurs du programme 150. Il détaille les principaux ratios et agrégats, analyse les grands équilibres de la masse salariale et des emplois et détaille l’origine des ressources propres des établissements. Il permet de situer un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
