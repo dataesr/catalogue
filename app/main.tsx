@@ -1,13 +1,15 @@
-import { Toaster } from '@/components/ui/Toast';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { NuqsAdapter } from 'nuqs/adapters/react-router/v7';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
+
 import { queryClient } from '@/api/query-client';
+import MatomoTracker from "@/components/MatomoTracker";
+import '@/components/ui/styles';
+import { Toaster } from '@/components/ui/Toast';
 import AppRouter from '@/routes';
 
-import '@/components/ui/styles';
 import './styles/index.css';
 
 const elem = document.getElementById('root');
@@ -18,6 +20,8 @@ const app = (
     <BrowserRouter>
       <NuqsAdapter>
         <QueryClientProvider client={queryClient}>
+          {/* Fix by annelhote */}
+          <MatomoTracker />
           <AppRouter />
           <Toaster />
         </QueryClientProvider>
