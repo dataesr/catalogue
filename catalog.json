@@ -557,15 +557,30 @@
         "établissements",
         "finance"
       ]
+    },
+    {
+      "id": "D17",
+      "title": "Trajectoires des étudiants entrant en licence",
+      "description": "Ce tableau de bord permet d'observer les flux d'étudiants, leurs répartitions dans les différentes filières et leurs plus hauts diplômes selon leurs caractéristiques (sexe, type de bac, et la mention, le groupe disciplinaire de la licence d'inscription en 2019).",
+      "format": "tableau-de-bord",
+      "topics": [
+        "etablissements-etudiants"
+      ],
+      "url": "https://tableaux.dataesr.ovh/devenir-etudiants",
+      "requiresAuth": false,
+      "internalPath": null,
+      "keywords": [
+        "formations"
+      ]
     }
   ],
   "highlightedResourceIds": [
-    "D04",
     "A01",
-    "D06",
     "A02",
     "A05",
     "A06",
-    "A12"
+    "A12",
+    "D04",
+    "D06"
   ]
 }
