@@ -15,7 +15,7 @@ const LIMIT = 8;
 function getHref(item: CatalogItem): string {
   if (item.type === 'dataset') return `/donnees-ouvertes/${item.id}`;
   if (item.type === 'publication') return `/publications/${item.id}`;
-  if (item.type === 'resource') return `/outils/${item.id}`;
+  if (item.type === 'resource') return `/outils/${item.sourceId}`;
   return '/outils';
 }
 
