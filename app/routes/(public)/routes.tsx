@@ -14,6 +14,7 @@ const MentionsLegales = lazy(() => import('./mentions-legales/index'));
 const Accessibilite = lazy(() => import('./accessibilite/index'));
 const Contact = lazy(() => import('./contact/index'));
 const Recherche = lazy(() => import('./recherche/index'));
+const DataProductDetail = lazy(() => import('./data-product/[id]/index'));
 
 function RedirectTheme() {
   const { slug } = useParams<{ slug: string }>();
@@ -28,18 +29,16 @@ export const publicRoutes = (
     <Route path="donnees-ouvertes" element={<DonneesOuvertes />} />
     <Route path="donnees-ouvertes/:id" element={<DatasetDetail />} />
     <Route path="publications" element={<Publications />} />
-    <Route path="publications-rag" element={<PublicationsRag />} />
     <Route path="publications/:id" element={<PublicationDetail />} />
+    <Route path="publications-rag" element={<PublicationsRag />} />
     <Route path="mentions-legales" element={<MentionsLegales />} />
     <Route path="accessibilite" element={<Accessibilite />} />
     <Route path="contact" element={<Contact />} />
-
     <Route path="recherche" element={<Recherche />} />
-
+    <Route path="data-product/:id" element={<DataProductDetail />} />
     {/* Redirects for old URLs */}
     <Route path="themes" element={<Navigate to="/" replace />} />
     <Route path="themes/:slug" element={<RedirectTheme />} />
-
     <Route path="*" element={<Navigate to="/" replace />} />
   </Route>
 )
