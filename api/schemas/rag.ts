@@ -25,7 +25,6 @@ const ragSourceSchema = t.Object({
 })
 
 export const ragResponseSchema = t.Object({
-  query: t.String(),
   answer: t.String(),
   sources: t.Array(ragSourceSchema),
 })

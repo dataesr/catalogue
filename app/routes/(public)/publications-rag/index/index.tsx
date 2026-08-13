@@ -75,7 +75,7 @@ export default function PublicationsRag() {
     { history: "push", shallow: true },
   )
   const debouncedQ = useDebounce(params.q, { delay: 1000 })
-  const { data: data, isLoading, isFetching, isPlaceholderData } = useFlashRag(debouncedQ, 10)
+  const { data: data, isLoading, isFetching, isPlaceholderData } = useFlashRag(debouncedQ, "ssmesr", 10)
   console.log("rag:", data)
   const byPublication = ResultsByPublication(data?.sources || [], params.sort === "relevance")
   console.log("byPublication", byPublication)

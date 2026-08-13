@@ -5,7 +5,7 @@ import { Mistral } from "@mistralai/mistralai"
 
 const mistral = new Mistral({ apiKey: config.mistral.apiKey })
 
-async function fetchFlashRag(query: string, top_k?: number) {
+async function fetchFlashRag(query: string, source?: string, top_k?: number) {
   try {
     const response = await fetch(config.flashRag.url, {
       method: "POST",
@@ -13,7 +13,7 @@ async function fetchFlashRag(query: string, top_k?: number) {
         Authorization: config.flashRag.apiKey,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query, top_k }),
+      body: JSON.stringify({ query, source, top_k }),
     })
 
     if (!response.ok) {
@@ -67,13 +67,14 @@ export const ragRoutes = new Elysia({ prefix: "/rag" })
   .get(
     "/",
     async ({ query }) => {
-      const { q, top_k } = query
-      const results = await fetchFlashRag(q, top_k)
+      const { q, source, top_k } = query
+      const results = await fetchFlashRag(q, source, top_k)
       return results
     },
     {
       query: t.Object({
         q: t.String(),
+        source: t.Optional(t.String()),
         top_k: t.Optional(t.Number()),
       }),
       response: { 200: ragResponseSchema },
