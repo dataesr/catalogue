@@ -1,4 +1,5 @@
 import cn from "classnames"
+import ReactMarkdown from "react-markdown"
 import { formatDate, formatFileSize, formatNumber } from "./utils"
 import "./styles.css"
 import { useState } from "react"
@@ -124,7 +125,7 @@ export default function PublicationRagCard({
         {completion && (
           <div className="catalog-card__meta">
             <div className="catalog-card__meta-item">Réponse générée :</div>
-            <p>{completion}</p>
+            <ReactMarkdown>{completion}</ReactMarkdown>
           </div>
         )}
       </div>
