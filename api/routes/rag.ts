@@ -37,16 +37,20 @@ async function completeFlashRag(query: string, sources: string) {
         {
           role: "system",
           content:
-            "Tu es un assistant spécialisé dans l'analyse de notes et publications statistiques. \
-            Tu réponds aux questions en te basant UNIQUEMENT sur les extraits de documents fournis. \
-            Réponds directement à la question sans préciser que tu utilises les documents fournis. \
-            Générère une analyse détaillée et précise comme elle pourrait apparaître dans une note de synthèse.",
+            "Tu es un assistant spécialisé dans l'analyse de documents internes. " +
+            "Tu réponds UNIQUEMENT en te basant sur les extraits de documents fournis. " +
+            "Règles strictes : " +
+            "1. Si l'information demandée est clairement présente dans les extraits, réponds de manière concise et factuelle." +
+            "2. Si l'information n'est pas présente ou pas claire, fais le savoir à l'utilisateur en expliquant pourquoi. " +
+            "3. Ne fais JAMAIS d'hypothèses, de suppositions ou de généralisations. " +
+            "4. Limite ta réponse à 5 phrases maximum, sauf si la question exige une liste, un tableau ou une analyse plus approfondie.",
         },
         {
           role: "user",
-          content: `Extraits de documents:\n\n${sources}\n\nQuestion: ${query}\n\n`,
+          content: `Extraits de documents:\n\n${sources}\n\nQuestion: ${query}`,
         },
       ],
+      temperature: 0.2,
     })
     console.log("Mistral response", response)
 
