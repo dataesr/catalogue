@@ -1,27 +1,13 @@
 import { t } from "elysia"
 
-const ragSourceMetadataSchema = t.Object({
-  record_id: t.Number(),
-  title: t.String(),
-  doc_type: t.String(),
-  file_format: t.String(),
-  file_id: t.String(),
-  file_name: t.String(),
-  keywords: t.String(),
-  created: t.String(),
-  modified: t.String(),
-  chunk_type: t.String(),
-  page_index: t.Number(),
-  publication_date: t.String(),
-  publication_epoch: t.Number(),
-  section_level: t.Number(),
-  section_title: t.String(),
-})
-
 const ragSourceSchema = t.Object({
-  distance: t.Number(),
+  id: t.String(),
   document: t.String(),
-  metadata: ragSourceMetadataSchema,
+  metadata: t.Record(t.String(), t.Any()),
+  distance: t.Number(),
+  rerank_score: t.Number(),
+  bm25_score: t.Optional(t.Nullable(t.Number())),
+  rrf_score: t.Optional(t.Nullable(t.Number())),
 })
 
 export const ragResponseSchema = t.Object({

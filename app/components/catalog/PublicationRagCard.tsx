@@ -125,7 +125,9 @@ export default function PublicationRagCard({
         {completion && (
           <div className="catalog-card__meta">
             <div className="catalog-card__meta-item">Réponse générée :</div>
-            <ReactMarkdown>{completion}</ReactMarkdown>
+            <div>
+              <ReactMarkdown>{completion}</ReactMarkdown>
+            </div>
           </div>
         )}
       </div>

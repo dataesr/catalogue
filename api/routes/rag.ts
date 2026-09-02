@@ -13,7 +13,7 @@ async function fetchFlashRag(query: string, source?: string, top_k?: number) {
         Authorization: config.flashRag.apiKey,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query, source, top_k }),
+      body: JSON.stringify({ query, source, top_k, use_reranker: true }),
     })
 
     if (!response.ok) {

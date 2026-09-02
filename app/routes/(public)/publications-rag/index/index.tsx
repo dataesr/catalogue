@@ -58,8 +58,11 @@ function ResultsByPublication(sources: RagSource[], sortByDistance: boolean = fa
   byPublicationArray.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   if (sortByDistance) {
+    // byPublicationArray.sort(
+    //   (a, b) => Math.min(...a.sources.map((s) => s.distance)) - Math.min(...b.sources.map((s) => s.distance)),
+    // )
     byPublicationArray.sort(
-      (a, b) => Math.min(...a.sources.map((s) => s.distance)) - Math.min(...b.sources.map((s) => s.distance)),
+      (a, b) => Math.max(...b.sources.map((s) => s.rerank_score)) - Math.min(...a.sources.map((s) => s.rerank_score)),
     )
   }
 
