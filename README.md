@@ -3,8 +3,10 @@ Tools, applications, datasets and publications of our department at the French M
 
 ## To run in local
 Please create an `.env` file before running it locally
-You need to have in your `.env` file a "NODE_AUTH_TOKEN" with a Github Personal Access Token (PAT) Classsic with the read:packages rights.
+You need to have in your `.env` file a "NODE_AUTH_TOKEN" with a Github Personal Access Token (PAT) Classsic with the read:packages rights, see https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry.
+See here : https://bun.com/guides/install/registry-scope.
 /!\ The really last version of bun is needed
+`bun upgrade`
 `bun install --frozen-lockfile`
 `bun run dev`
 
