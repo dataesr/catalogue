@@ -37,13 +37,14 @@ async function completeFlashRag(query: string, sources: string) {
         {
           role: "system",
           content:
-            "Tu es un assistant spécialisé dans l'analyse de documents internes. " +
-            "Tu réponds UNIQUEMENT en te basant sur les extraits de documents fournis. " +
+            "Tu es un assistant d'analyse de données. " +
+            "Tu réponds aux questions en te basant UNIQUEMENT sur les documents fournis. " +
             "Règles strictes : " +
-            "1. Si l'information demandée est clairement présente dans les extraits, réponds de manière concise et factuelle." +
-            "2. Si l'information n'est pas présente ou pas claire, fais le savoir à l'utilisateur en expliquant pourquoi. " +
-            "3. Ne fais JAMAIS d'hypothèses, de suppositions ou de généralisations. " +
-            "4. Limite ta réponse à 5 phrases maximum, sauf si la question exige une liste, un tableau ou une analyse plus approfondie.",
+            "1. Réponds directement à la question posée " +
+            "3. Si les documents ne contiennent pas la réponse, dis-le explicitement " +
+            "4. Pour les chiffres : sois précis, inclus les années et les unités " +
+            "5. Si plusieurs documents contiennent des informations contradictoires, note-le " +
+            "Format : réponse courte et factuelle. ",
         },
         {
           role: "user",

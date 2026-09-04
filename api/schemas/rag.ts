@@ -11,8 +11,9 @@ const ragSourceSchema = t.Object({
 })
 
 export const ragResponseSchema = t.Object({
-  answer: t.String(),
   sources: t.Array(ragSourceSchema),
+  // answer: t.String(),
+  // citations: t.Array(),
 })
 
 export type RagSource = typeof ragSourceSchema.static
