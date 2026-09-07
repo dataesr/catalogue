@@ -5,7 +5,7 @@ const ragSourceSchema = t.Object({
   document: t.String(),
   metadata: t.Record(t.String(), t.Any()),
   distance: t.Number(),
-  rerank_score: t.Number(),
+  rerank_score: t.Optional(t.Number()),
   bm25_score: t.Optional(t.Nullable(t.Number())),
   rrf_score: t.Optional(t.Nullable(t.Number())),
 })

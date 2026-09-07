@@ -13,7 +13,7 @@ async function fetchFlashRag(query: string, source?: string, top_k?: number) {
         Authorization: config.flashRag.apiKey,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query, source, top_k, use_reranker: true }),
+      body: JSON.stringify({ query, source, top_k }),
     })
 
     if (!response.ok) {
@@ -41,9 +41,9 @@ async function completeFlashRag(query: string, sources: string) {
             "Tu réponds aux questions en te basant UNIQUEMENT sur les documents fournis. " +
             "Règles strictes : " +
             "1. Réponds directement à la question posée " +
-            "3. Si les documents ne contiennent pas la réponse, dis-le explicitement " +
-            "4. Pour les chiffres : sois précis, inclus les années et les unités " +
-            "5. Si plusieurs documents contiennent des informations contradictoires, note-le " +
+            "2. Si les documents ne contiennent pas la réponse, dis-le explicitement " +
+            "3. Pour les chiffres : sois précis, inclus les années et les unités " +
+            "4. Si plusieurs documents contiennent des informations contradictoires, note-le " +
             "Format : réponse courte et factuelle. ",
         },
         {
