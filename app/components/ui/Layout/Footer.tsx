@@ -1,11 +1,9 @@
 import cn from 'classnames';
-import { SiesLogo } from '../SiesLogo';
 
 import sunSvg from '@gouvfr/dsfr/dist/artwork/pictograms/environment/sun.svg' with { type: 'file' };
 import moonSvg from '@gouvfr/dsfr/dist/artwork/pictograms/environment/moon.svg' with { type: 'file' };
 import systemSvg from '@gouvfr/dsfr/dist/artwork/pictograms/system/system.svg' with { type: 'file' };
 
-// Fix by annelhote
 import { version } from '../../../../package.json';
 
 export interface FooterProps {
@@ -39,7 +37,7 @@ export function Footer({
   sm = false,
   fluid = true,
   homeUrl = '/',
-  description = "Cette application est gérée par la Sous-direction des systèmes d'information et des études statistiques (SIES)",
+  description = "Cette application est gérée par la Délégation au numérique et aux données (DENUM)",
   bottomLinks,
 }: FooterProps) {
   const allBottomLinks = bottomLinks ?? DEFAULT_BOTTOM_LINKS;
@@ -53,15 +51,14 @@ export function Footer({
               <p className={cn('fr-logo', { 'fr-logo--sm': sm })}>
                 Ministère
                 <br />
-                de l'enseignement
+                de l'Enseignement
                 <br />
-                supérieur,
+                Supérieur,
                 <br />
-                de la recherche
+                de la Recherche
                 <br />
-                et de l'espace
+                et de l'Espace
               </p>
-              <SiesLogo width={sm ? 200 : 300} />
             </a>
           </div>
           <div className="fr-footer__content">

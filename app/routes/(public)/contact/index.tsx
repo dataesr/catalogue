@@ -33,9 +33,9 @@ export function Component() {
 
         <h2 className="fr-h5 fr-mt-6w">Adresse</h2>
         <p>
-          Ministère de l'Enseignement supérieur, de la Recherche et de l'Espace
+          Ministère de l'Enseignement Supérieur, de la Recherche et de l'Espace
           <br />
-          Sous-direction des systèmes d'information et des études statistiques (SIES)
+          Délégation au numérique et aux données (DENUM)
           <br />
           1, rue Descartes
           <br />

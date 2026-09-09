@@ -39,13 +39,13 @@ export function Header({
                   <p className="fr-logo">
                     Ministère
                     <br />
-                    de l'enseignement
+                    de l'Enseignement
                     <br />
-                    supérieur,
+                    Supérieur,
                     <br />
-                    de la recherche
+                    de la Recherche
                     <br />
-                    et de l'espace
+                    et de l'Espace
                   </p>
                 </div>
                 <div className="fr-header__navbar">

@@ -14,8 +14,8 @@ export function Component() {
       <div className="fx-max-prose">
         <h2 className="fr-h5">Éditeur</h2>
         <p>
-          Sous-direction des systèmes d'information et des études statistiques (SIES) du ministère
-          de l'Enseignement supérieur, de la Recherche et de l'Espace.
+          Délégation au numérique et aux données (DENUM) du Ministère
+          de l'Enseignement Supérieur, de la Recherche et de l'Espace.
         </p>
         <p>
           1, rue Descartes

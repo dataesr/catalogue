@@ -13,7 +13,7 @@ export function Component() {
       <h1 className="fr-h3 fr-mb-4w">Déclaration d'accessibilité</h1>
       <div className="fx-max-prose">
         <p>
-          Le ministère de l'Enseignement supérieur, de la Recherche et de l'Espace s'engage à rendre
+          Le Ministère de l'Enseignement supérieur, de la Recherche et de l'Espace s'engage à rendre
           ses sites internet accessibles conformément à l'article 47 de la loi n°2005-102 du 11
           février 2005.
         </p>

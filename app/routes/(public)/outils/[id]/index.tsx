@@ -67,7 +67,6 @@ export default function OutilDetail() {
       </div>
 
       {/* Description */}
-      {/* Fix by annelhote */}
       {resource.description && (
         <p className="fr-text--lg fr-mb-4w fx-max-prose">
           <Markdown components={{ a: LinkRenderer }}>

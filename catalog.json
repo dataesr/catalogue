@@ -305,7 +305,7 @@
     {
       "id": "D09",
       "title": "Tableau de bord de l'enseignement supérieur : les diplômes délivrés par établissements",
-      "description": "Le « Tableau de bord de l'enseignement supérieur : les diplômes délivrés par établissements » propose les diplômes délivrés par les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il comporte 85 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
+      "description": "Le « Tableau de bord de l'enseignement supérieur : les diplômes délivrés par établissements » propose les diplômes délivrés par les opérateurs publics d'enseignement supérieur sous tutelle du Ministère de l'Enseignement Supérieur, de la Recherche et de l'Espace. Il comporte 85 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-etudiants"
@@ -372,8 +372,8 @@
     },
     {
       "id": "A10",
-      "title": "Plate-forme de données ouvertes de l'enseignement supérieur, de la recherche et de l'innovation",
-      "description": "Toute l'offre de données ouvertes du ministère de l'Enseignement supérieur, de la Recherche et de l'Espace accessible en téléchargement ou via une API.",
+      "title": "Plate-forme de données ouvertes de l'enseignement supérieur, de la recherche et de l'espace",
+      "description": "Toute l'offre de données ouvertes du Ministère de l'Enseignement Supérieur, de la Recherche et de l'Espace accessible en téléchargement ou via une API.",
       "format": "application",
       "topics": [
         "etablissements-personnels",
@@ -398,7 +398,7 @@
     {
       "id": "A11",
       "title": "Répertoire national des structures de recherche",
-      "description": "Le répertoire national des structures de recherche (RNSR) référence les structures de recherche publiques et privées au niveau national. Il est administré par le ministère chargé de la recherche.",
+      "description": "Le répertoire national des structures de recherche (RNSR) référence les structures de recherche publiques et privées au niveau national. Il est administré par le Ministère de l'Enseignement Supérieur, de la Recherche et de l'Espace.",
       "format": "application",
       "topics": [
         "recherche"
@@ -413,7 +413,7 @@
     {
       "id": "D10",
       "title": "Tableau des enseignants de l'enseignement supérieur public - niveau établissement",
-      "description": "Vues par établissements des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l’enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
+      "description": "Vues par établissements des enseignants en activité dans les établissements publics sous tutelle du Ministère de l'Enseignement Supérieur, de le Recherche et de l'Espace. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
@@ -430,7 +430,7 @@
     {
       "id": "D11",
       "title": "Tableau des enseignants de l'enseignement supérieur public - niveau national",
-      "description": "Vues nationales des enseignants en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
+      "description": "Vues nationales des enseignants en activité dans les établissements publics sous tutelle du Ministère de l'Enseignement Supérieur, de le Recherche et de l'Espace. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
@@ -446,7 +446,7 @@
     {
       "id": "D12",
       "title": "Tableau des enseignants-chercheurs de l'enseignement supérieur public - niveau national",
-      "description": "Vues nationales des enseignants-chercheurs en activité dans les établissements publics sous tutelle du ministère en charge de l'enseignement supérieur. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
+      "description": "Vues nationales des enseignants-chercheurs en activité dans les établissements publics sous tutelle du Ministère de l'Enseignement Supérieur, de la Recherche et de l'Espace. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-personnels"
@@ -503,7 +503,7 @@
     {
       "id": "D14",
       "title": "Tableau de bord de l'enseignement supérieur : les étudiants par établissements (hors doubles inscriptions CPGE)",
-      "description": "Le « Tableau de bord de l'enseignement supérieur : les étudiants » présente les effectifs d'inscrits dans les opérateurs publics d'enseignement supérieur sous tutelle du ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation. Il est composé de 84 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Ce tableau ne prend pas en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
+      "description": "Le « Tableau de bord de l'enseignement supérieur : les étudiants » présente les effectifs d'inscrits dans les opérateurs publics d'enseignement supérieur sous tutelle du Ministère de l'Enseignement Supérieur, de la Recherche et de l'Espace. Il est composé de 84 indicateurs présentés de manière à positionner un établissement par rapport à ses homologues. Ce tableau ne prend pas en compte les étudiants inscrits en parallèle dans une classe préparatoire aux grandes écoles et une prépa intégrées dans un autre établissement, ainsi que ceux inscrits dans une autres informations d’un autre établissement. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
       "format": "tableau-de-bord",
       "topics": [
         "etablissements-etudiants"

@@ -20,7 +20,6 @@ const app = (
     <BrowserRouter>
       <NuqsAdapter>
         <QueryClientProvider client={queryClient}>
-          {/* Fix by annelhote */}
           <MatomoTracker />
           <AppRouter />
           <Toaster />

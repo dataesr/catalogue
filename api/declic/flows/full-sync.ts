@@ -69,19 +69,9 @@ export const fullSync = flow({
         throw new Error('New index is empty — refusing to swap alias');
       }
 
-      // Fix by annelhote - The swap alias step should be manual
-      // const oldIndices = await swapAlias(ES_ALIAS, index);
-      // logger.info(`Alias "${ES_ALIAS}" now points to "${index}"`);
-
-      // for (const oldIndex of oldIndices) {
-      //   logger.info(`Deleting old index "${oldIndex}"`);
-      //   await elastic.indices.delete({ index: oldIndex });
-      // }
-
       return {
         totalDocuments: count.count,
         index,
-        // deletedIndices: oldIndices,
       };
     });
 
