@@ -28,7 +28,7 @@ const EXTERNAL_LINKS = [
 
 const DEFAULT_BOTTOM_LINKS = [
   { label: 'Plan du site', href: '/plan-du-site' },
-  { label: 'Accessibilité : partiellement conforme', href: '/accessibilite' },
+  { label: 'Accessibilité : en cours', href: '/accessibilite' },
   { label: 'Mentions légales', href: '/mentions-legales' },
   { label: 'Données personnelles', href: '/donnees-personnelles' },
 ] as const;

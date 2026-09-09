@@ -151,15 +151,15 @@ export default function Publications() {
   return (
     <div>
       <CatalogHero
-        title="Publications statistiques"
-        totalCount={data?.totalCount}
-        query={params.q}
-        onQueryChange={(q) => setParams({ q, page: 1 })}
         breadcrumbItems={[
           { label: 'Accueil', href: '/' },
           { label: 'Publications', current: true },
         ]}
         isLoading={isLoading}
+        onQueryChange={(q) => setParams({ q, page: 1 })}
+        query={params.q}
+        title="Publications statistiques"
+        totalCount={data?.totalCount}
       />
 
       {hasAnyFilter && (
