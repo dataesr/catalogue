@@ -43,7 +43,7 @@ function ResultsByPublication(sources: RagSource[], sortByDistance: boolean = fa
 
   const byPublication = sources.reduce(
     (acc, source) => {
-      const recordId = source.metadata.record_id
+      const recordId = source.metadata.record_id || (source.metadata.file_name?.includes("EESR19") ? "19450708" : undefined) //TODO: do not hardcode EESR19
       if (!acc[recordId]) {
         acc[recordId] = { id: recordId, date: source.metadata.publication_date, sources: [] }
       }
@@ -78,7 +78,7 @@ export default function PublicationsRag() {
     { history: "push", shallow: true },
   )
   const debouncedQ = useDebounce(params.q, { delay: 1000 })
-  const { data: data, isLoading, isFetching, isPlaceholderData } = useFlashRag(debouncedQ, "ssmesr", 10)
+  const { data: data, isLoading, isFetching, isPlaceholderData } = useFlashRag(debouncedQ, "all", 10)
   console.log("rag:", data)
   const byPublication = ResultsByPublication(data?.sources || [], params.sort === "relevance")
   console.log("byPublication", byPublication)
