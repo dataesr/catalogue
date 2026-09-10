@@ -1,11 +1,21 @@
 import { Elysia, t } from "elysia"
 import { config } from "~/config"
-import { ragResponseSchema } from "~/schemas/rag"
+import {
+  ragSearchParamsSchema,
+  ragSearchResponseSchema,
+  ragCompletionParamsSchema,
+  type RagSearchParams,
+  type RagCompletionParams,
+  type RagResponse,
+} from "~/schemas/rag"
 import { Mistral } from "@mistralai/mistralai"
+import { elastic, ES_ALIAS } from "~/database/elastic"
+import type { CatalogItem } from "~/schemas/catalog"
 
 const mistral = new Mistral({ apiKey: config.mistral.apiKey })
 
-async function fetchFlashRag(query: string, source?: string, top_k?: number) {
+async function flashRagSearch(params: RagSearchParams): Promise<RagResponse> {
+  const { q: query, ..._params } = params
   try {
     const response = await fetch(config.flashRag.url, {
       method: "POST",
@@ -13,7 +23,7 @@ async function fetchFlashRag(query: string, source?: string, top_k?: number) {
         Authorization: config.flashRag.apiKey,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query, source, top_k, use_reranker: true }),
+      body: JSON.stringify({ query, ..._params }),
     })
 
     if (!response.ok) {
@@ -28,27 +38,27 @@ async function fetchFlashRag(query: string, source?: string, top_k?: number) {
 }
 
 
-async function completeFlashRag(query: string, sources: string) {
-  console.log("completeFlashRag", { query, sources })
+async function mistralRagCompletion(query: RagCompletionParams) {
   try {
     const response = await mistral.chat.complete({
-      model: "open-mistral-nemo-2407",
+      model: "ministral-8b-2512",
       messages: [
         {
           role: "system",
           content:
             "Tu es un assistant d'analyse de données. " +
-            "Tu réponds aux questions en te basant UNIQUEMENT sur les documents fournis. " +
+            "Tu réponds aux questions en te basant UNIQUEMENT sur les paragraphes fournis. " +
             "Règles strictes : " +
             "1. Réponds directement à la question posée " +
             "2. Si les documents ne contiennent pas la réponse, dis-le explicitement " +
             "3. Pour les chiffres : sois précis, inclus les années et les unités " +
             "4. Si plusieurs documents contiennent des informations contradictoires, note-le " +
+            "5. Ne cite pas le document source - Tu peux citer l'ID ou la PAGE du paragraph si besoin." +
             "Format : réponse courte et factuelle. ",
         },
         {
           role: "user",
-          content: `Extraits de documents:\n\n${sources}\n\nQuestion: ${query}`,
+          content: `Extraits de documents:\n\n${JSON.stringify(query.sources)}\n\nQuestion: ${query.q}`,
         },
       ],
       temperature: 0.2,
@@ -72,17 +82,51 @@ export const ragRoutes = new Elysia({ prefix: "/rag" })
   .get(
     "/",
     async ({ query }) => {
-      const { q, source, top_k } = query
-      const results = await fetchFlashRag(q, source, top_k)
-      return results
+      const results = await flashRagSearch(query)
+
+      const recordIds = results.sources.reduce((acc, source) => {
+        const recordId = source.metadata?.record_id
+        if (!recordId) {
+          console.error(`record_id not found: ${source.metadata.file_name}`)
+          return acc
+        }
+        const normalizedId = String(recordId)
+        if (!acc.includes(normalizedId)) {
+          acc.push(normalizedId)
+        }
+        return acc
+      }, [] as string[])
+
+      const items = Object.fromEntries(
+        (
+          await Promise.all(
+            recordIds.map(async (recordId) => {
+              const documentId = recordId.startsWith("zenodo-")
+                ? recordId
+                : recordId.toLowerCase().includes("eesr19")
+                  ? `zenodo-19450708`
+                  : `zenodo-${recordId}`
+              try {
+                const response = await elastic.get<CatalogItem>({ index: ES_ALIAS, id: documentId })
+                if (!response._source) {
+                  console.error(`document not found: ${documentId}`)
+                  return undefined
+                }
+                return [recordId, response._source] as const
+              } catch (error) {
+                console.error(`failed to fetch catalog document ${documentId}`, error)
+                return undefined
+              }
+            }),
+          )
+        ).filter((entry): entry is readonly [string, CatalogItem] => entry !== undefined),
+      ) as Record<string, CatalogItem>
+
+      return { ...results, items }
     },
     {
-      query: t.Object({
-        q: t.String(),
-        source: t.Optional(t.String()),
-        top_k: t.Optional(t.Number()),
-      }),
-      response: { 200: ragResponseSchema },
+      query: ragSearchParamsSchema,
+      response: { 200: ragSearchResponseSchema },
       detail: {
         description: "Retrieval Augmented Generation (RAG) pour les publications statistiques",
         tags: ["RAG"],
@@ -92,16 +136,11 @@ export const ragRoutes = new Elysia({ prefix: "/rag" })
   .post(
     "/mistral",
     async ({ body }) => {
-      const { q, sources } = body
-      const sourcesStr = typeof sources === "string" ? sources : JSON.stringify(sources)
-      const result = await completeFlashRag(q, sourcesStr)
+      const result = await mistralRagCompletion(body)
       return result
     },
     {
-      body: t.Object({
-        q: t.String(),
-        sources: t.Union([t.Record(t.String(), t.Any()), t.String()]),
-      }),
+      body: ragCompletionParamsSchema,
       response: { 200: t.String() },
       detail: {
         description: "Utilise Mistral pour compléter une réponse basée sur les sources fournies",

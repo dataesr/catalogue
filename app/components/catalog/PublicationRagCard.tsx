@@ -3,24 +3,18 @@ import ReactMarkdown from "react-markdown"
 import { formatDate, formatFileSize, formatNumber } from "./utils"
 import "./styles.css"
 import { useState } from "react"
-import { useCatalogItem } from "@/api/catalog"
 import type { RagSource } from "~/schemas/rag"
-import { useFlashRagCompletion } from "@/api/flash-rag"
+import type { CatalogItem } from "~/schemas/catalog"
+import { useRagCompletion } from "@/api/rag"
 
-
-export default function PublicationRagCard({
-  data,
-  query,
-}: {
-  data: { id: number; date: string; sources: RagSource[] }
+interface PublicationRagCardArgs {
+  chunks: RagSource[]
+  item: CatalogItem
   query: string
-}) {
+}
+export default function PublicationRagCard({ chunks, item, query }: PublicationRagCardArgs) {
   const [extendSources, setExtendSources] = useState<number>(-1)
-  const { data: item, isLoading, isFetching } = useCatalogItem(`zenodo-${data.id}`)
-  const { data: completion, isLoading: isCompleting, refetch } = useFlashRagCompletion(query, data.sources)
-
-  if (isLoading || isFetching) return null
-  if (!item) return <div>Erreur: publication introuvable (id: {data.id})</div>
+  const { data: completion, isLoading: isCompleting, refetch } = useRagCompletion({ q: query, sources: chunks })
 
   const pdfFile = item.files.find((f) => f.key.endsWith(".pdf"))
 
@@ -28,6 +22,13 @@ export default function PublicationRagCard({
     <div className="catalog-card catalog-card--no-hover">
       {item.thumbnailUrl && <img className="catalog-card__thumbnail" src={item.thumbnailUrl} alt="" loading="lazy" />}
       <div className="catalog-card__body">
+        <a
+          className="catalog-card__title catalog-card__title--no-decoration"
+          href={`/publications/${item.id}`}
+          target="_blank"
+        >
+          {item.title}
+        </a>
         <div className="fx-flex fx-flex-wrap fx-items-center fx-gap-2w fr-mb-1v">
           {item.journal && (
             <span
@@ -45,13 +46,6 @@ export default function PublicationRagCard({
           )}
           {item.published && <span className="fr-text--xs fr-text-mention--grey fr-mb-0">{formatDate(item.published)}</span>}
         </div>
-        <a
-          className="catalog-card__title catalog-card__title--no-decoration"
-          href={`/publications/${item.id}`}
-          target="_blank"
-        >
-          {item.title}
-        </a>
 
         {item.authors.length > 0 && (
           <p className="fr-text--xs fr-text-mention--grey fr-mb-0 fx-clamp-1">
@@ -69,28 +63,27 @@ export default function PublicationRagCard({
             </p>
           ))} */}
 
-        {data &&
-          data.sources &&
-          data.sources.map((source, index) => (
+        {chunks &&
+          chunks.map((chunk, index) => (
             <div
               key={index}
               onClick={() => setExtendSources(extendSources === index ? -1 : index)}
               className="catalog-card__highlight_box"
             >
               <div className="catalog-card__meta">
-                {source.metadata.page_index !== undefined && (
-                  <span className="catalog-card__meta-item">Page {source.metadata.page_index + 1}</span>
+                {chunk.metadata.page_index !== undefined && (
+                  <span className="catalog-card__meta-item">Page {chunk.metadata.page_index + 1}</span>
                 )}
-                {source.metadata.page_index !== undefined && <span className="catalog-card__meta-item">-</span>}
-                <span className="catalog-card__meta-item">Score: {(1 - source.distance).toFixed(2)}</span>
+                {chunk.metadata.page_index !== undefined && <span className="catalog-card__meta-item">-</span>}
+                <span className="catalog-card__meta-item">Score: {(1 - chunk.distance).toFixed(2)}</span>
               </div>
-              {source.metadata.section_title && (
+              {chunk.metadata.section_title && (
                 <div className="catalog-card__meta">
-                  <span className="catalog-card__meta-item">{source.metadata.section_title}</span>
+                  <span className="catalog-card__meta-item">{chunk.metadata.section_title}</span>
                 </div>
               )}
               <p className={cn("catalog-card__highlight", { "catalog-card__highlight--expanded": extendSources === index })}>
-                {source.document}
+                {chunk.document}
               </p>
             </div>
           ))}
