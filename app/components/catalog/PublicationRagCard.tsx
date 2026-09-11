@@ -55,14 +55,6 @@ export default function PublicationRagCard({ chunks, item, query }: PublicationR
 
         {/* {item.description && <p className="catalog-card__desc">{item.description}</p>} */}
 
-        {/* {data &&
-          data.chunks &&
-          data.chunks.map((chunk: any, index: number) => (
-            <p key={index} className="catalog-card__rag-chunk">
-              {chunk.document}
-            </p>
-          ))} */}
-
         {chunks &&
           chunks.map((chunk, index) => (
             <div
@@ -72,7 +64,7 @@ export default function PublicationRagCard({ chunks, item, query }: PublicationR
             >
               <div className="catalog-card__meta">
                 {chunk.metadata.page_index !== undefined && (
-                  <span className="catalog-card__meta-item">Page {chunk.metadata.page_index + 1}</span>
+                  <span className="catalog-card__meta-item">Page {chunk.metadata.page_index}</span>
                 )}
                 {chunk.metadata.page_index !== undefined && <span className="catalog-card__meta-item">-</span>}
                 <span className="catalog-card__meta-item">Score: {(1 - chunk.distance).toFixed(2)}</span>

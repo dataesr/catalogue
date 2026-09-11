@@ -18,10 +18,10 @@ export type RagSource = typeof ragSourceSchema.static
 
 export const ragSearchParamsSchema = t.Object({
   q: t.String(),
-  source: t.Optional(t.String()),
-  top_k: t.Optional(t.Number()),
-  use_reranker: t.Optional(t.Boolean()),
-  filters: t.Optional(t.Record(t.String(), t.String())),
+  topK: t.Optional(t.Number()),
+  topic: t.Optional(t.Array(t.String())),
+  publicationType: t.Optional(t.String()),
+  accessRight: t.Optional(t.String()),
 })
 export type RagSearchParams = typeof ragSearchParamsSchema.static
 

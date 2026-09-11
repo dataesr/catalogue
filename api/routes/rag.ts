@@ -15,7 +15,17 @@ import type { CatalogItem } from "~/schemas/catalog"
 const mistral = new Mistral({ apiKey: config.mistral.apiKey })
 
 async function flashRagSearch(params: RagSearchParams): Promise<RagResponse> {
-  const { q: query, ..._params } = params
+  const body = {
+    query: params.q,
+    top_k: params.topK,
+    use_reranker: true,
+  }
+
+  const filters = {} as Record<string, string | Array<string>>
+  if (params.accessRight) filters["file_access"] = params.accessRight
+  if (params.publicationType) filters["publication_type"] = params.publicationType
+  if (params.topic) filters["keywords"] = params.topic.map((t) => t.toLowerCase())
+
   try {
     const response = await fetch(config.flashRag.url, {
       method: "POST",
@@ -23,7 +33,7 @@ async function flashRagSearch(params: RagSearchParams): Promise<RagResponse> {
         Authorization: config.flashRag.apiKey,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query, ..._params }),
+      body: JSON.stringify({ ...body, filters }),
     })
 
     if (!response.ok) {
@@ -61,7 +71,7 @@ async function mistralRagCompletion(query: RagCompletionParams) {
           content: `Extraits de documents:\n\n${JSON.stringify(query.sources)}\n\nQuestion: ${query.q}`,
         },
       ],
-      temperature: 0.2,
+      temperature: 0.0,
     })
     console.log("Mistral response", response)
 
