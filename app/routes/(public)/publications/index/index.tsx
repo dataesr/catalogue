@@ -65,7 +65,27 @@ function ResultsSkeleton() {
   )
 }
 
-function ragResultsByPublications(sources: RagSource[], items: Record<string, CatalogItem>, sortByDistance: boolean) {
+type RagPublication = { item: CatalogItem; chunks: RagSource[] }
+
+const ragSort = (sort: string) => (a: RagPublication, b: RagPublication) => {
+  if (sort === "newest" || sort === "oldest") {
+    const aDate = a.item.published ? new Date(a.item.published).getTime() : null
+    const bDate = b.item.published ? new Date(b.item.published).getTime() : null
+
+    if (aDate === null || Number.isNaN(aDate)) return bDate === null || Number.isNaN(bDate) ? 0 : 1
+    if (bDate === null || Number.isNaN(bDate)) return -1
+
+    return sort === "newest" ? bDate - aDate : aDate - bDate
+  }
+
+  if (sort === "popularity") return b.item.popularityScore - a.item.popularityScore
+  if (sort === "downloads") return b.item.downloads - a.item.downloads
+
+  // default to relevance
+  return Math.min(...a.chunks.map((chunk) => chunk.distance)) - Math.min(...b.chunks.map((chunk) => chunk.distance))
+}
+
+function ragResultsByPublications(sources: RagSource[], items: Record<string, CatalogItem>, sort: string) {
   const byPublication = sources.reduce(
     (acc, source) => {
       const recordId = source.metadata.record_id
@@ -79,24 +99,16 @@ function ragResultsByPublications(sources: RagSource[], items: Record<string, Ca
         return acc
       }
       if (!acc[recordId]) {
-        acc[recordId] = { item, sources: [] }
+        acc[recordId] = { item, chunks: [] }
       }
-      acc[recordId].sources.push(source)
-      acc[recordId].sources.sort((a, b) => (a.metadata.page_index || 0) - (b.metadata.page_index || 0))
+      acc[recordId].chunks.push(source)
+      acc[recordId].chunks.sort((a, b) => (a.metadata.page_index || 0) - (b.metadata.page_index || 0))
       return acc
     },
-    {} as Record<string, { item: CatalogItem; sources: RagSource[] }>,
+    {} as Record<string, RagPublication>,
   )
-
   const publications = Object.values(byPublication)
-  publications.sort((a, b) => new Date(b.item.published ?? 0).getTime() - new Date(a.item.published ?? 0).getTime())
-
-  if (sortByDistance) {
-    publications.sort(
-      (a, b) =>
-        Math.min(...a.sources.map((source) => source.distance)) - Math.min(...b.sources.map((source) => source.distance)),
-    )
-  }
+  publications.sort(ragSort(sort))
 
   return publications
 }
@@ -142,7 +154,7 @@ export default function Publications() {
     top_k: 10,
   })
   const ragResults = useMemo(
-    () => ragResultsByPublications(ragData?.sources ?? [], ragData?.items ?? {}, params.sort === "relevance"), //TODO: manage all sort
+    () => ragResultsByPublications(ragData?.sources ?? [], ragData?.items ?? {}, params.sort),
     [ragData, params.sort],
   )
 
@@ -179,6 +191,7 @@ export default function Publications() {
     }
     return filters
   }, [params, labelForValue])
+  console.log("activeFilters", activeFilters)
 
   const activeFilterCount = activeFilters.length
 
@@ -341,7 +354,7 @@ export default function Publications() {
                   <PublicationRagCard
                     key={publication.item.id}
                     item={publication.item}
-                    chunks={publication.sources}
+                    chunks={publication.chunks}
                     query={params.q}
                   />
                 ))}
