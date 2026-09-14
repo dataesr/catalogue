@@ -49,6 +49,11 @@ async function flashRagSearch(params: RagSearchParams): Promise<RagResponse> {
 
 
 async function mistralRagCompletion(query: RagCompletionParams) {
+  const chunksAsString = query.chunks.reduce(
+    (acc, chunk) => acc.concat("\n\n", `- ${chunk.metadata.section_title}:\n${chunk.document}`),
+    `[${query.chunks[0]?.metadata.title} (${query.chunks[0]?.metadata.publication_date})]`,
+  )
+  console.debug("chunksAsString", chunksAsString)
   try {
     const response = await mistral.chat.complete({
       model: "ministral-8b-2512",
@@ -68,12 +73,12 @@ async function mistralRagCompletion(query: RagCompletionParams) {
         },
         {
           role: "user",
-          content: `Extraits de documents:\n\n${JSON.stringify(query.sources)}\n\nQuestion: ${query.q}`,
+          content: `Extraits de documents:\n\n${chunksAsString}\n\nQuestion: ${query.q}`,
         },
       ],
+      maxTokens: 512,
       temperature: 0.0,
     })
-    console.log("Mistral response", response)
 
     if (!response.choices || response.choices.length === 0) {
       throw new Error("No choices returned")
@@ -94,10 +99,10 @@ export const ragRoutes = new Elysia({ prefix: "/rag" })
     async ({ query }) => {
       const results = await flashRagSearch(query)
 
-      const recordIds = results.sources.reduce((acc, source) => {
-        const recordId = source.metadata?.record_id
+      const recordIds = results.sources.reduce((acc, chunk) => {
+        const recordId = chunk.metadata?.record_id
         if (!recordId) {
-          console.error(`record_id not found: ${source.metadata.file_name}`)
+          console.error(`record_id not found: ${chunk.metadata.file_name}`)
           return acc
         }
         const normalizedId = String(recordId)

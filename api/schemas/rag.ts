@@ -1,9 +1,9 @@
 import { t } from "elysia"
 import { catalogItemSchema } from "./catalog"
 
-// ─── RAG source ────────────────────────────────────────────
+// ─── RAG chunks ────────────────────────────────────────────
 
-const ragSourceSchema = t.Object({
+const ragChunkSchema = t.Object({
   id: t.String(),
   document: t.String(),
   metadata: t.Record(t.String(), t.Any()),
@@ -12,7 +12,7 @@ const ragSourceSchema = t.Object({
   bm25_score: t.Optional(t.Nullable(t.Number())),
   rrf_score: t.Optional(t.Nullable(t.Number())),
 })
-export type RagSource = typeof ragSourceSchema.static
+export type RagChunk = typeof ragChunkSchema.static
 
 // ─── RAG search params ──────────────────────────────────────
 
@@ -28,7 +28,7 @@ export type RagSearchParams = typeof ragSearchParamsSchema.static
 // ─── RAG completion response ────────────────────────────────
 
 export const ragResponseSchema = t.Object({
-  sources: t.Array(ragSourceSchema),
+  sources: t.Array(ragChunkSchema),
   // answer: t.String(),
   // citations: t.Array(),
 })
@@ -45,7 +45,7 @@ export type RagSearchResponse = typeof ragSearchResponseSchema.static
 
 export const ragCompletionParamsSchema = t.Object({
   q: t.String(),
-  sources: t.Array(ragSourceSchema),
+  chunks: t.Array(ragChunkSchema),
 })
 export type RagCompletionParams = typeof ragCompletionParamsSchema.static
 

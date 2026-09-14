@@ -3,18 +3,18 @@ import ReactMarkdown from "react-markdown"
 import { formatDate, formatFileSize, formatNumber } from "./utils"
 import "./styles.css"
 import { useState } from "react"
-import type { RagSource } from "~/schemas/rag"
+import type { RagChunk } from "~/schemas/rag"
 import type { CatalogItem } from "~/schemas/catalog"
 import { useRagCompletion } from "@/api/rag"
 
 interface PublicationRagCardArgs {
-  chunks: RagSource[]
+  chunks: RagChunk[]
   item: CatalogItem
   query: string
 }
 export default function PublicationRagCard({ chunks, item, query }: PublicationRagCardArgs) {
   const [extendSources, setExtendSources] = useState<number>(-1)
-  const { data: completion, isLoading: isCompleting, refetch } = useRagCompletion({ q: query, sources: chunks })
+  const { data: completion, isLoading: isCompleting, refetch } = useRagCompletion({ q: query, chunks })
 
   const pdfFile = item.files.find((f) => f.key.endsWith(".pdf"))
 

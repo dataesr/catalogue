@@ -1,7 +1,7 @@
 import type { CatalogItem } from "~/schemas/catalog"
-import type { RagSource } from "~/schemas/rag"
+import type { RagChunk } from "~/schemas/rag"
 
-type RagPublication = { item: CatalogItem; chunks: RagSource[] }
+type RagPublication = { item: CatalogItem; chunks: RagChunk[] }
 
 const ragSort = (sort: string) => (a: RagPublication, b: RagPublication) => {
   if (sort === "newest" || sort === "oldest") {
@@ -21,12 +21,12 @@ const ragSort = (sort: string) => (a: RagPublication, b: RagPublication) => {
   return Math.min(...a.chunks.map((chunk) => chunk.distance)) - Math.min(...b.chunks.map((chunk) => chunk.distance))
 }
 
-export function ragResultsByPublications(sources: RagSource[], items: Record<string, CatalogItem>, sort: string) {
-  const byPublication = sources.reduce(
-    (acc, source) => {
-      const recordId = source.metadata.record_id
+export function ragResultsByPublications(chunks: RagChunk[], items: Record<string, CatalogItem>, sort: string) {
+  const byPublication = chunks.reduce(
+    (acc, chunk) => {
+      const recordId = chunk.metadata.record_id
       if (!recordId) {
-        console.warn(`recordId not found: ${source.metadata.file_name}`)
+        console.warn(`recordId not found: ${chunk.metadata.file_name}`)
         return acc
       }
       const item = items[String(recordId)]
@@ -37,7 +37,7 @@ export function ragResultsByPublications(sources: RagSource[], items: Record<str
       if (!acc[recordId]) {
         acc[recordId] = { item, chunks: [] }
       }
-      acc[recordId].chunks.push(source)
+      acc[recordId].chunks.push(chunk)
       acc[recordId].chunks.sort((a, b) => (a.metadata.page_index || 0) - (b.metadata.page_index || 0))
       return acc
     },
