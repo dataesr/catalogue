@@ -2,10 +2,16 @@ import cn from "classnames"
 import ReactMarkdown from "react-markdown"
 import { formatDate, formatFileSize, formatNumber } from "./utils"
 import "./styles.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { RagChunk } from "~/schemas/rag"
 import type { CatalogItem } from "~/schemas/catalog"
 import { useRagCompletion } from "@/api/rag"
+
+function getChunkConfidence(distance: number) {
+  if (distance < 0.15) return { label: "Élevée", className: "fr-badge--success" }
+  if (distance < 0.22) return { label: "Moyenne", className: "fr-badge--warning" }
+  return { label: "Faible", className: "fr-badge--error" }
+}
 
 interface PublicationRagCardArgs {
   chunks: RagChunk[]
@@ -14,7 +20,13 @@ interface PublicationRagCardArgs {
 }
 export default function PublicationRagCard({ chunks, item, query }: PublicationRagCardArgs) {
   const [extendSources, setExtendSources] = useState<number>(-1)
-  const { data: completion, isLoading: isCompleting, refetch } = useRagCompletion({ q: query, chunks })
+  const [completion, setCompletion] = useState<{ text: string; open: boolean }>({ text: "", open: false })
+
+  const { data, isLoading: isCompleting, refetch } = useRagCompletion({ q: query, chunks })
+
+  useEffect(() => {
+    if (!!data) setCompletion({ text: data, open: true })
+  }, [data])
 
   const pdfFile = item.files.find((f) => f.key.endsWith(".pdf"))
 
@@ -60,25 +72,66 @@ export default function PublicationRagCard({ chunks, item, query }: PublicationR
             <div
               key={index}
               onClick={() => setExtendSources(extendSources === index ? -1 : index)}
-              className="catalog-card__highlight_box"
+              className={cn("catalog-card__highlight_box", `catalog-card__highlight_box--${index % 3}`)}
             >
-              <div className="catalog-card__meta">
-                {chunk.metadata.page_index !== undefined && (
-                  <span className="catalog-card__meta-item">Page {chunk.metadata.page_index}</span>
-                )}
-                {chunk.metadata.page_index !== undefined && <span className="catalog-card__meta-item">-</span>}
-                <span className="catalog-card__meta-item">Score: {(1 - chunk.distance).toFixed(2)}</span>
-              </div>
-              {chunk.metadata.section_title && (
+              <div className="catalog-card__highlight_header">
                 <div className="catalog-card__meta">
-                  <span className="catalog-card__meta-item">{chunk.metadata.section_title}</span>
+                  {chunk.metadata.page_index !== undefined && (
+                    <span className="catalog-card__meta-item">Page {chunk.metadata.page_index}</span>
+                  )}
+                  {chunk.metadata.page_index !== undefined && <span className="catalog-card__meta-item">-</span>}
+                  {chunk.metadata.section_title && (
+                    <span className="catalog-card__meta-item" style={{ whiteSpace: "wrap" }}>
+                      {chunk.metadata.section_title}
+                    </span>
+                  )}
                 </div>
-              )}
+                {(() => {
+                  const confidence = getChunkConfidence(chunk.distance)
+                  return (
+                    <span className={cn("fr-badge fr-badge--sm fr-badge--no-icon", confidence.className)}>
+                      Pertinence {confidence.label}
+                    </span>
+                  )
+                })()}
+              </div>
               <p className={cn("catalog-card__highlight", { "catalog-card__highlight--expanded": extendSources === index })}>
                 {chunk.document}
               </p>
             </div>
           ))}
+        <div className="chat-box">
+          <button
+            className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline chat-button"
+            onClick={() => {
+              if (!completion.text) refetch()
+              else setCompletion({ ...completion, open: true })
+            }}
+            style={{ display: completion.open ? "none" : "block", width: "100%" }}
+            disabled={isCompleting || completion.open}
+          >
+            <span className="fr-icon-sparkling-2-line fr-icon--sm fr-mr-2v" aria-hidden="true" />
+            Générer une réponse à partir de ce document
+          </button>
+
+          {completion.open && (
+            <div>
+              <div className="chat-header">
+                <div>
+                  <span className="fr-icon-sparkling-2-line fr-icon--sm fr-mr-2v" aria-hidder="true" />
+                  Réponse générée
+                </div>
+                <button
+                  className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line fr-icon--sm chat-button"
+                  onClick={() => setCompletion({ ...completion, open: false })}
+                />
+              </div>
+              <div className="chat-text fr-mb-1w">
+                <ReactMarkdown>{completion.text}</ReactMarkdown>
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="catalog-card__meta">
           {item.downloads > 0 && (
@@ -100,18 +153,6 @@ export default function PublicationRagCard({ chunks, item, query }: PublicationR
             </span>
           )}
         </div>
-        <button className="fr-btn fr-btn--sm fr-btn--secondary" onClick={() => refetch()} disabled={isCompleting}>
-          <span className="fr-icon-sparkling-2-line fr-icon--sm fr-mr-2v" aria-hidden="true" />
-          Générer une réponse à partir de ce document
-        </button>
-        {completion && (
-          <div className="catalog-card__meta">
-            <div className="catalog-card__meta-item">Réponse générée :</div>
-            <div>
-              <ReactMarkdown>{completion}</ReactMarkdown>
-            </div>
-          </div>
-        )}
       </div>
       <span className="catalog-card__arrow fr-icon-arrow-right-line" aria-hidden="true" />
     </div>

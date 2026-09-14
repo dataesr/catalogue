@@ -8,15 +8,16 @@ import { useCatalogSearch } from "@/api/catalog"
 import { useRagSearch } from "@/api/rag"
 import ActiveFiltersBar from "@/components/catalog/ActiveFiltersBar"
 import CatalogEmpty from "@/components/catalog/CatalogEmpty"
+import CatalogRagEmpty from "@/components/catalog/CatalogRagEmpty"
 import CatalogHero from "@/components/catalog/CatalogHero"
 import CatalogPagination from "@/components/catalog/CatalogPagination"
 import FacetSection from "@/components/catalog/FacetSection"
 import PublicationRagCard from "@/components/catalog/PublicationRagCard"
 import ResultCard from "@/components/catalog/ResultCard"
+import { ragResultsByPublications } from "./rag-helpers"
 import { formatNumber } from "@/components/catalog/utils"
 import "@/components/catalog/styles.css"
 import { isProduction } from "@/utils/helpers"
-import { ragResultsByPublications } from "./rag-helpers"
 
 const PAGE_SIZE = 20
 
@@ -267,13 +268,15 @@ export default function Publications() {
                   <div className="fr-toggle fr-toggle--label-left">
                     <input
                       className="fr-toggle__input"
+                      color=""
                       type="checkbox"
-                      id="publications-semantic-search"
+                      id="toggle-semantic-search"
                       checked={isSemanticSearch}
                       onChange={(event) => handleSearchModeChange(event.target.checked)}
                     />
-                    <label className="fr-toggle__label" htmlFor="publications-semantic-search">
+                    <label className="fr-toggle__label" htmlFor="toggle-semantic-search">
                       Recherche sémantique
+                      <span className="fr-ml-1w fr-badge fr-badge--sm fr-badge--no-icon fr-badge--warning">Bêta</span>
                     </label>
                   </div>
                 )}
@@ -298,7 +301,9 @@ export default function Publications() {
               </div>
             </div>
 
-            {currentIsLoading ? (
+            {isSemanticSearch && !params.q ? (
+              <CatalogRagEmpty />
+            ) : currentIsLoading ? (
               <ResultsSkeleton />
             ) : isSemanticSearch && ragResults.length > 0 ? (
               <div className={cn("catalog-results", { "catalog-results--stale": isStale })} aria-busy={isStale}>
@@ -317,8 +322,10 @@ export default function Publications() {
                   <ResultCard key={item.id} item={item} />
                 ))}
               </div>
-            ) : (!isSemanticSearch && data) || (isSemanticSearch && ragData) ? (
+            ) : !isSemanticSearch && data ? (
               <CatalogEmpty onReset={clearAllFilters} />
+            ) : isSemanticSearch && ragData ? (
+              <CatalogRagEmpty hasQuery onReset={clearAllFilters} />
             ) : null}
             <CatalogPagination
               page={params.page}
