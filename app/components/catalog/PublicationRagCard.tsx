@@ -80,7 +80,16 @@ export default function PublicationRagCard({ chunks, item, query }: PublicationR
                     <span className="catalog-card__meta-item">Page {chunk.metadata.page_index}</span>
                   )}
                   {chunk.metadata.page_index !== undefined && <span className="catalog-card__meta-item">-</span>}
-                  {chunk.metadata.section_title && (
+                  {chunk.metadata.section_title && chunk.metadata.file_url ? (
+                    <a
+                      className="catalog-card__meta-item no-link"
+                      href={chunk.metadata.file_url}
+                      target="_blank"
+                      style={{ whiteSpace: "wrap" }}
+                    >
+                      {chunk.metadata.section_title}
+                    </a>
+                  ) : (
                     <span className="catalog-card__meta-item" style={{ whiteSpace: "wrap" }}>
                       {chunk.metadata.section_title}
                     </span>
