@@ -522,26 +522,6 @@
       ]
     },
     {
-      "id": "D15",
-      "title": "Le tableau de bord des financements européens de la recherche",
-      "description": "Ce tableau de bord présente les principaux indicateurs de suivi du financement des projets de recherche soutenus par l'Union Européenne à travers son programme Horizon Europe. Il offre une vision synthétique de chaque indicateur comme les financements alloués, la répartition de ces financements par thématique, pays ou organisation portant les projets. Il propose une vision générale, une vision détaillée par thématique, un focus sur les actions Marie-Curie et ERC. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
-      "format": "tableau-de-bord",
-      "topics": [
-        "recherche",
-        "financement"
-      ],
-      "url": "https://dataesr.fr/tableaux/Horizon-Europe.twbx",
-      "requiresAuth": false,
-      "internalPath": null,
-      "keywords": [
-        "recherche",
-        "innovation",
-        "europe",
-        "pcri",
-        "pcrdt"
-      ]
-    },
-    {
       "id": "D16",
       "title": "Tableau de bord financier",
       "description": "Le « Tableau de bord financier » permet d’appréhender les grands équilibres financiers des établissements d’enseignement supérieur et de recherche, opérateurs du programme 150. Il détaille les principaux ratios et agrégats, analyse les grands équilibres de la masse salariale et des emplois et détaille l’origine des ressources propres des établissements. Il permet de situer un établissement par rapport à ses homologues. Pour consulter ce tableau de bord, il est nécessaire d'utiliser le reader de Tableau. S'il n'est pas déjà installé sur votre poste vous pouvez le télécharger sur le site [https://www.tableau.com](https://www.tableau.com/fr-fr/products/reader/download \"Lien de téléchargement de Tableau Product\").",
