@@ -6,3 +6,8 @@ a.fx-card:visited {
   background-image: none !important;
   color: inherit;
 }
+/* Remove external link icon */
+a.no-link[target="_blank"]::after {
+  content: none !important;
+  display: none !important;
+}

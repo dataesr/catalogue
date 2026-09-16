@@ -5,7 +5,6 @@ import { Suspense } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
 import SearchLauncher from '@/components/SearchModal';
 import { SearchProvider } from '@/components/SearchProvider';
-import { isProduction } from "@/utils/helpers"
 
 const navItems = [
   { label: "Accueil", to: "/" },
@@ -13,8 +12,6 @@ const navItems = [
   { label: "Données ouvertes", to: "/donnees-ouvertes" },
   { label: "Publications", to: "/publications" },
 ]
-
-!isProduction && navItems.push({ label: "Publications RAG", to: "/publications-rag" })
 
 function PlatformNav() {
   const { pathname } = useLocation();

@@ -1,37 +1,38 @@
 const port = parseInt(process.env.PORT || '3000', 10);
 
 export const config = {
-  nodeEnv: process.env.NODE_ENV || 'development',
-  isDevelopment: (process.env.NODE_ENV || 'development') === 'development',
-  isStaging: process.env.ENV === 'staging',
-  isProduction: process.env.NODE_ENV === 'production',
-  env: process.env.ENV || process.env.NODE_ENV || 'development',
-  appName: 'catalogue',
-  zenodoCommunityId: process.env.ZENODO_COMMUNITY_ID || '',
+  nodeEnv: process.env.NODE_ENV || "development",
+  isDevelopment: (process.env.NODE_ENV || "development") === "development",
+  isStaging: process.env.ENV === "staging",
+  isProduction: process.env.NODE_ENV === "production",
+  env: process.env.ENV || process.env.NODE_ENV || "development",
+  appName: "catalogue",
+  zenodoCommunityId: process.env.ZENODO_COMMUNITY_ID || "",
   port,
   declic: {
-    url: process.env.DECLIC_URL || 'ws://localhost:4100/api/connect',
-    key: process.env.DECLIC_KEY || '',
+    url: process.env.DECLIC_URL || "ws://localhost:4100/api/connect",
+    key: process.env.DECLIC_KEY || "",
   },
   elastic: {
-    node: process.env.ELASTIC_NODE || 'http://localhost:9200',
-    username: process.env.ELASTIC_USERNAME || '',
-    password: process.env.ELASTIC_PASSWORD || '',
+    node: process.env.ELASTIC_NODE || "http://localhost:9200",
+    username: process.env.ELASTIC_USERNAME || "",
+    password: process.env.ELASTIC_PASSWORD || "",
     indexes: {
-      catalog: process.env.ES_PLATEFORM_CATALOG_INDEX || 'catalog',
+      catalog: process.env.ES_PLATEFORM_CATALOG_INDEX || "catalog",
     },
+    apiKey: process.env.ES_API_KEY || "",
   },
   flashRag: {
-    url: process.env.FLASH_RAG_URL || 'http://localhost:8000/query',
-    apiKey: process.env.FLASH_RAG_API_KEY || '',
+    url: process.env.FLASH_RAG_URL || "http://localhost:8000/query",
+    apiKey: process.env.FLASH_RAG_API_KEY || "",
   },
   mistral: {
-    apiKey: process.env.MISTRAL_API_KEY || '',
+    apiKey: process.env.MISTRAL_API_KEY || "",
   },
   ods: {
-    apiKey: process.env.ODS_API_KEY || '',
+    apiKey: process.env.ODS_API_KEY || "",
   },
-} as const;
+} as const
 
 export function validateConfig() {
   if (config.isProduction && !process.env.ELASTIC_NODE) {

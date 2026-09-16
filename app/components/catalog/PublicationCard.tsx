@@ -20,7 +20,7 @@ export default function PublicationCard({ item }: { item: CatalogItem }) {
       <div className="catalog-card__body">
         <p className="catalog-card__title">{item.title}</p>
 
-        <div className="fx-flex fx-flex-wrap fx-items-center fx-gap-1w fr-mb-1v">
+        <div className="fx-flex fx-flex-wrap fx-items-center fx-gap-2w fr-mb-1v">
           {item.journal && (
             <span
               className={cn('fr-badge fr-badge--sm fr-badge--no-icon', {
@@ -38,7 +38,7 @@ export default function PublicationCard({ item }: { item: CatalogItem }) {
             </span>
           )}
           {item.published && (
-            <span className="fr-text--xs fr-text-mention--grey">
+            <span className="fr-text--xs fr-text-mention--grey fr-mb-0">
               {formatDate(item.published)}
             </span>
           )}
