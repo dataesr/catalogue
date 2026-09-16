@@ -119,7 +119,7 @@ export const ragRoutes = new Elysia({ prefix: "/rag" })
               const documentId = recordId.startsWith("zenodo-")
                 ? recordId
                 : recordId.toLowerCase().includes("eesr19")
-                  ? `zenodo-19450708`
+                  ? `zenodo-22691829` // trouver un moyen de lier le dernier id de l'etat du sup..
                   : `zenodo-${recordId}`
               try {
                 const response = await elastic.get<CatalogItem>({ index: ES_ALIAS, id: documentId })
