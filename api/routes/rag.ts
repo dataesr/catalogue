@@ -19,6 +19,8 @@ async function flashRagSearch(params: RagSearchParams): Promise<RagResponse> {
     query: params.q,
     top_k: params.topK,
     use_reranker: true,
+    use_cross_encoder: true,
+    use_hybrid_search: true,
   }
 
   const filters = {} as Record<string, string | Array<string>>
