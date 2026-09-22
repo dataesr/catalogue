@@ -457,8 +457,7 @@
   transform: translateY(-50%);
 }
 .chat-text {
-  > p,
-  > ul {
+  > p, ol, ul {
     font-size: 0.875rem;
     padding-left: 0.75rem;
     padding-right: 0.75rem;
