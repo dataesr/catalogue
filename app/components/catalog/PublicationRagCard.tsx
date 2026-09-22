@@ -128,16 +128,17 @@ export default function PublicationRagCard({ chunks, item, query }: PublicationR
               <div className="chat-header">
                 <div>
                   <span className="fr-icon-sparkling-2-line fr-icon--sm fr-mr-2v" aria-hidder="true" />
-                  Réponse générée
+                  {query}
                 </div>
                 <button
                   className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line fr-icon--sm chat-button"
                   onClick={() => setCompletion({ ...completion, open: false })}
                 />
               </div>
-              <div className="chat-text fr-mb-1w">
+              <div className="chat-text">
                 <ReactMarkdown>{completion.text}</ReactMarkdown>
               </div>
+              <div className="chat-footer">Contenu généré par IA, vérifiez les sources</div>
             </div>
           )}
         </div>
