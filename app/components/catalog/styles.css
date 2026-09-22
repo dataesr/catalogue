@@ -466,7 +466,17 @@
     list-style-position: inside;
   }
 }
-
+.chat-footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 1rem;
+  font-size: 0.7rem;
+  /* line-height: 0.8rem; */
+  color: var(--text-mention-grey)
+}
 /* Metadata row */
 
 .catalog-card__meta {
