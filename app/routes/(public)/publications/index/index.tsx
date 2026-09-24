@@ -189,6 +189,7 @@ export default function Publications() {
           { label: "Publications", current: true },
         ]}
         isLoading={isLoading}
+        isSies={true}
         onQueryChange={(q) => setParams({ q, page: 1 })}
         query={params.q}
         title="Publications statistiques"

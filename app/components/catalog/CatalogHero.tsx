@@ -12,6 +12,7 @@ interface CatalogHeroProps {
   onQueryChange: (q: string) => void;
   breadcrumbItems: Array<{ label: string; href?: string; current?: boolean }>;
   isLoading?: boolean;
+  isSies?: boolean,
 }
 
 export default function CatalogHero({
@@ -21,6 +22,7 @@ export default function CatalogHero({
   onQueryChange,
   breadcrumbItems,
   isLoading = false,
+  isSies = false,
 }: CatalogHeroProps) {
   const searchId = `catalog-hero-search-${title.replace(/\s+/g, '-').toLowerCase()}`;
 
@@ -61,9 +63,11 @@ export default function CatalogHero({
               </search>
             </div>
           </div>
-          <div className="fr-col">
-            <SiesLogo width={300} />
-          </div>
+          {isSies && (
+            <div className="fr-col">
+              <SiesLogo width={300} />
+            </div>
+          )}
         </div>
       </div>
     </div>

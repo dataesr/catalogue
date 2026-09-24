@@ -160,15 +160,15 @@ export default function DonneesOuvertes() {
   return (
     <div>
       <CatalogHero
-        title="Données ouvertes"
-        totalCount={data?.totalCount}
-        query={params.q}
-        onQueryChange={(q) => setParams({ q, page: 1 })}
         breadcrumbItems={[
           { label: 'Accueil', href: '/' },
           { label: 'Données ouvertes', current: true },
         ]}
         isLoading={isLoading}
+        onQueryChange={(q) => setParams({ q, page: 1 })}
+        query={params.q}
+        title="Données ouvertes"
+        totalCount={data?.totalCount}
       />
 
       {hasAnyFilter && (
