@@ -4,8 +4,9 @@ import { fullSync } from './flows/full-sync';
 import { syncCatalogResources } from './flows/sync-catalog-resources';
 import { syncOdsDatasets } from './flows/sync-ods-datasets';
 import { syncZenodoPublications } from './flows/sync-zenodo-publications';
+import { updateFlashRag } from "./flows/update-flash-rag"
 
-export const platformFlows = [fullSync, syncOdsDatasets, syncZenodoPublications, syncCatalogResources];
+export const platformFlows = [fullSync, syncOdsDatasets, syncZenodoPublications, syncCatalogResources, updateFlashRag]
 
 export function createDeclicWorker() {
   return new Declic({
