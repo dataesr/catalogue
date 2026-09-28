@@ -11,7 +11,7 @@ export const updateFlashRag = flow({
   }),
   run: async ({ input, step, logger }) => {
     const { status } = await step.run("update", async ({ logger }) => {
-      const response = await fetch(config.flashRag.url, {
+      const response = await fetch(config.flashRag.url + "/update", {
         method: "POST",
         headers: {
           Authorization: config.flashRag.apiKey,

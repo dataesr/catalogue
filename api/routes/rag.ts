@@ -29,7 +29,7 @@ async function flashRagSearch(params: RagSearchParams): Promise<RagResponse> {
   if (params.topic) filters["keywords"] = params.topic.map((t) => t.toLowerCase())
 
   try {
-    const response = await fetch(config.flashRag.url, {
+    const response = await fetch(config.flashRag.url + "/query", {
       method: "POST",
       headers: {
         Authorization: config.flashRag.apiKey,
