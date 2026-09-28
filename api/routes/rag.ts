@@ -78,7 +78,7 @@ async function mistralRagCompletion(query: RagCompletionParams) {
           content: `Extraits de documents:\n\n${chunksAsString}\n\nQuestion: ${query.q}`,
         },
       ],
-      maxTokens: 512,
+      maxTokens: 1024,
       temperature: 0.0,
     })
 
