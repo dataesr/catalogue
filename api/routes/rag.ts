@@ -118,11 +118,7 @@ export const ragRoutes = new Elysia({ prefix: "/rag" })
         (
           await Promise.all(
             recordIds.map(async (recordId) => {
-              const documentId = recordId.startsWith("zenodo-")
-                ? recordId
-                : recordId.toLowerCase().includes("eesr19")
-                  ? `zenodo-22691829` // trouver un moyen de lier le dernier id de l'etat du sup..
-                  : `zenodo-${recordId}`
+              const documentId = recordId.startsWith("zenodo-") ? recordId : `zenodo-${recordId}`
               try {
                 const response = await elastic.get<CatalogItem>({ index: ES_ALIAS, id: documentId })
                 if (!response._source) {
