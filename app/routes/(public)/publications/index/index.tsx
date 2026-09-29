@@ -65,6 +65,17 @@ function ResultsSkeleton() {
   )
 }
 
+function RagResultsLoading() {
+  return (
+    <div className="fr-grid-row fr-grid-row--center fr-py-8w" aria-busy="true">
+      <div className="fx-flex fx-flex-col fx-items-center fx-gap-1w" role="status" aria-live="polite">
+        <span className="fr-icon-refresh-line fr-icon--lg fr-icon--spin" aria-hidden="true" />
+        <span className="fr-text--sm">Recherche sémantique en cours…</span>
+      </div>
+    </div>
+  )
+}
+
 export default function Publications() {
   const [params, setParams] = useQueryStates(
     {
@@ -305,7 +316,11 @@ export default function Publications() {
             {isSemanticSearch && !params.q ? (
               <CatalogRagEmpty />
             ) : currentIsLoading ? (
-              <ResultsSkeleton />
+              isSemanticSearch ? (
+                <RagResultsLoading />
+              ) : (
+                <ResultsSkeleton />
+              )
             ) : isSemanticSearch && ragResults.length > 0 ? (
               <div className={cn("catalog-results", { "catalog-results--stale": isStale })} aria-busy={isStale}>
                 {ragResults.map((publication) => (
