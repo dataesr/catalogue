@@ -8,7 +8,14 @@ const EMBEDDING_MODEL = "mistral-embed-2312"
 export const OCR_MODEL = "mistral-ocr-4-1"
 export const EMBEDDING_BATCH_SIZE = 8
 
-const mistral = new Mistral({ apiKey: config.mistral.apiKey })
+const mistral = new Mistral({
+  apiKey: config.mistral.apiKey,
+  retryConfig: {
+    strategy: "backoff",
+    backoff: { initialInterval: 1000, maxInterval: 30_000, exponent: 2, maxElapsedTime: 180_000 },
+    retryConnectionErrors: true,
+  },
+})
 
 export function validateEmbeddings(
   data: readonly { index?: number; embedding?: number[] }[],
