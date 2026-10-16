@@ -1,5 +1,6 @@
 import { Client, type ClientOptions, type estypes, HttpConnection } from '@elastic/elasticsearch';
 import { config } from '~/config';
+import { RAG_MAPPING } from '~/database/mappings/rag';
 
 const esConfig: ClientOptions = {
   Connection: HttpConnection,
@@ -17,6 +18,7 @@ const esConfig: ClientOptions = {
 export const elastic = new Client(esConfig);
 
 export const ES_ALIAS = config.elastic.indexes.catalog;
+export const RAG_ALIAS = `rag-${config.env}`;
 
 // ---------------------------------------------------------------------------
 // Index / alias management helpers
@@ -26,6 +28,21 @@ export function createIndexName(): string {
   // The ES index name should be suffix by YYYYMMDD instead of timestamp
   const today = new Date()
   return `catalog-${today.toISOString().substring(0, 10).replace(/-/g, '')}`
+}
+
+export function createRagIndexName(date = new Date()): string {
+  const dateSuffix = date.toISOString().substring(0, 10).replace(/-/g, '');
+  return `${RAG_ALIAS}-${dateSuffix}`;
+}
+
+export async function createRagIndex(index = createRagIndexName()): Promise<string> {
+  await elastic.indices.create({
+    index,
+    settings: RAG_MAPPING.settings,
+    mappings: RAG_MAPPING.mappings,
+  });
+
+  return index;
 }
 
 export async function swapAlias(alias: string, newIndex: string): Promise<string[]> {
