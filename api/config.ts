@@ -62,4 +62,7 @@ export function validateConfig() {
   if (config.isProduction && !process.env.ODS_API_KEY) {
     throw new Error('ODS_API_KEY is required in production');
   }
+  if (config.isProduction && !process.env.MISTRAL_API_KEY) {
+    throw new Error('MISTRAL_API_KEY is required in production');
+  }
 }

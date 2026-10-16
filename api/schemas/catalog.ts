@@ -14,7 +14,7 @@ const fileSchema = t.Object({
   url: t.String(),
   type: t.Nullable(t.String()),
   checksum: t.Nullable(t.String()),
-});
+})
 
 const exportSchema = t.Object({
   format: t.String(),

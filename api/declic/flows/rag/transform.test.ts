@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { transformPublication } from "./publication-transformer"
+import transformZenodoPublication from "./transform"
 
 const record = {
   id: 12345,
@@ -13,11 +13,16 @@ const record = {
   },
 }
 
-const file = { id: "file-uuid", key: "rapport.pdf" }
+const file = {
+  id: "file-uuid",
+  key: "rapport.pdf",
+  url: "https://zenodo.org/rapport.pdf",
+  size: 1245,
+}
 
 describe("transformZenodoPublication", () => {
   test("converts OCR pages into publication chunks with normalized metadata", () => {
-    const [chunk] = transformPublication(record, file, {
+    const [chunk] = transformZenodoPublication(record, file, {
       pages: [
         {
           index: 0,
@@ -51,7 +56,7 @@ describe("transformZenodoPublication", () => {
   })
 
   test("expands OCR tables, removes image references, and splits long chunks", () => {
-    const chunks = transformPublication(record, file, {
+    const chunks = transformZenodoPublication(record, file, {
       pages: [
         {
           markdown: "![graphique.jpeg](image.jpeg)\n\n[tbl-1.md](tbl-1.md)",
@@ -69,8 +74,8 @@ describe("transformZenodoPublication", () => {
     expect(chunks[0]?.document).toContain("| colonne |")
   })
 
-  test("handles multiline OCR headings, image links of any type, and letter superscripts", () => {
-    const [chunk] = transformPublication(record, file, {
+  test("handles multiline OCR headings, image links, and letter superscripts", () => {
+    const [chunk] = transformZenodoPublication(record, file, {
       pages: [
         {
           index: 0,
@@ -95,7 +100,7 @@ describe("transformZenodoPublication", () => {
   })
 
   test("does not carry undersized content across section boundaries", () => {
-    const chunks = transformPublication(record, file, {
+    const chunks = transformZenodoPublication(record, file, {
       pages: [
         {
           markdown: [
@@ -117,13 +122,13 @@ describe("transformZenodoPublication", () => {
   })
 
   test("skips short sections and returns no chunks when OCR has no pages", () => {
-    expect(transformPublication(record, file, { pages: [{ markdown: "# Court\n\nTrop court." }] })).toEqual([])
-    expect(transformPublication(record, file, {})).toEqual([])
+    expect(transformZenodoPublication(record, file, { pages: [{ markdown: "# Court\n\nTrop court." }] })).toEqual([])
+    expect(transformZenodoPublication(record, file, {})).toEqual([])
   })
 
   test("rejects invalid publication dates", () => {
     expect(() =>
-      transformPublication({ ...record, metadata: { ...record.metadata, publication_date: "not-a-date" } }, file, {
+      transformZenodoPublication({ ...record, metadata: { ...record.metadata, publication_date: "not-a-date" } }, file, {
         pages: [{ markdown: "Une section assez longue pour atteindre la taille minimale du chunk utile." }],
       }),
     ).toThrow("Invalid publication date: not-a-date")

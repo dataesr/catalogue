@@ -1,69 +1,15 @@
-import { splitText, toUnixEpoch } from "./utils"
+import type {
+  DocumentFileMetadata,
+  DocumentChunk,
+  MistralOcrPage,
+  MistralOcrTable,
+  MistralOcrDocument,
+  ZenodoRecord,
+  ZenodoFile,
+} from "./types"
 
 export const MIN_CHUNK_LENGTH = 50
 export const MAX_CHUNK_LENGTH = 3_000
-
-export interface PublicationRecord {
-  id: string | number
-  doi_url?: string | null
-  metadata: {
-    title?: string | null
-    publication_date?: string | null
-    access_right?: string | null
-    keywords?: string[] | null
-    resource_type?: { subtype?: string | null } | null
-  }
-}
-
-export interface PublicationFile {
-  id: string
-  key: string
-}
-
-export interface PublicationOcrTable {
-  id: string
-  content?: string | null
-}
-
-export interface PublicationOcrPage {
-  index?: number
-  markdown?: string | null
-  tables?: PublicationOcrTable[]
-}
-
-export interface PublicationOcr {
-  pages?: PublicationOcrPage[]
-}
-
-export interface PublicationFileMetadata {
-  title: string
-  reference: "zenodo"
-  record_id: string
-  publication_type: string
-  publication_date: string
-  publication_epoch: number
-  file_id: string
-  file_name: string
-  file_format: string
-  file_url: string
-  file_access: string
-  keywords?: string[]
-}
-
-export interface PublicationChunkMetadata extends PublicationFileMetadata {
-  page_index: number
-  section_index: number
-  section_title: string
-  section_level: number
-  chunk_len: number
-  chunk_type: "paragraph" | "table"
-}
-
-export interface PublicationChunk {
-  id: string
-  document: string
-  metadata: PublicationChunkMetadata
-}
 
 const OCR_TABLE_REF = /\[(tbl-[^\]]+\.md)\]\([^)]+\.md\)/
 const OCR_TABLE_REFS = /\[(tbl-[^\]]+\.md)\]\([^)]+\.md\)/g
@@ -71,7 +17,43 @@ const OCR_IMAGE_REF = /!\[[^\]]*\]\([^)]+\)/g
 const OCR_SUPERSCRIPT = /\$\^\{([^}]+)\}\$/g
 const MARKDOWN_HEADING = /^(#{1,6})\s+(.*)/
 
-function buildFileMetadata(record: PublicationRecord, file: PublicationFile): PublicationFileMetadata {
+function toUnixEpoch(date: string): number {
+  const normalizedDate = /^\d{4}-\d{2}$/.test(date) ? `${date}-01` : date
+  const milliseconds = Date.parse(normalizedDate)
+  if (!Number.isFinite(milliseconds)) {
+    throw new Error(`Invalid publication date: ${date}`)
+  }
+  return Math.floor(milliseconds / 1000)
+}
+
+function splitText(text: string, maxLength: number): string[] {
+  const remainingText = text.trim()
+  if (remainingText.length <= maxLength) return remainingText ? [remainingText] : []
+
+  const chunks: string[] = []
+  let remaining = remainingText
+  while (remaining.length > maxLength) {
+    let splitAt = remaining.lastIndexOf("\n", maxLength)
+    if (splitAt < maxLength / 2) splitAt = remaining.lastIndexOf(" ", maxLength)
+    if (splitAt <= 0) splitAt = maxLength
+
+    chunks.push(remaining.slice(0, splitAt).trim())
+    remaining = remaining.slice(splitAt).trim()
+  }
+  if (remaining) chunks.push(remaining)
+  return chunks
+}
+
+function cleanOcrMarkup(markdown: string, tables: Map<string, MistralOcrTable>): string {
+  return markdown
+    .replace(OCR_TABLE_REFS, (_match, id: string) => tables.get(id)?.content ?? "")
+    .replace(OCR_IMAGE_REF, "")
+    .replace(OCR_SUPERSCRIPT, (_match, value: string) => (/^\d+$/.test(value) ? "" : value))
+    .replace(/\n{2,}/g, "\n\n")
+    .trim()
+}
+
+function buildFileMetadata(record: ZenodoRecord, file: ZenodoFile): DocumentFileMetadata {
   const metadata = record.metadata
   const publicationDate = metadata.publication_date ?? ""
   const keywords = (metadata.keywords ?? []).filter(Boolean).map((keyword) => keyword.toLowerCase())
@@ -84,31 +66,23 @@ function buildFileMetadata(record: PublicationRecord, file: PublicationFile): Pu
     publication_type: metadata.resource_type?.subtype ?? "",
     publication_date: publicationDate,
     publication_epoch: publicationDate ? toUnixEpoch(publicationDate) : 0,
-    file_id: file.id,
+    file_key: file.key,
     file_name: fileName,
     file_format: fileName.includes(".") ? (fileName.split(".").pop() ?? "") : "",
     file_url: record.doi_url ?? "",
     file_access: metadata.access_right ?? "",
+    ...(file.checksum ? { file_checksum: file.checksum } : {}),
     ...(keywords.length > 0 ? { keywords } : {}),
   }
 }
 
-function cleanOcrMarkup(markdown: string, tables: Map<string, PublicationOcrTable>): string {
-  return markdown
-    .replace(OCR_TABLE_REFS, (_match, id: string) => tables.get(id)?.content ?? "")
-    .replace(OCR_IMAGE_REF, "")
-    .replace(OCR_SUPERSCRIPT, (_match, value: string) => (/^\d+$/.test(value) ? "" : value))
-    .replace(/\n{2,}/g, "\n\n")
-    .trim()
-}
-
-function transformPage(page: PublicationOcrPage, fileMetadata: PublicationFileMetadata): PublicationChunk[] {
+function transformOcrPage(page: MistralOcrPage, fileMetadata: DocumentFileMetadata): DocumentChunk[] {
   const fileNameWithoutExtension = fileMetadata.file_name.split(".")[0] ?? fileMetadata.file_name
   const pageIndex = (page.index ?? 0) + 1
   if (!page.markdown) return []
 
   const tables = new Map((page.tables ?? []).map((table) => [table.id, table]))
-  const chunks: PublicationChunk[] = []
+  const chunks: DocumentChunk[] = []
   let currentDocument = ""
   let currentChunkContainsTable = false
   let sectionTitle = ""
@@ -186,14 +160,14 @@ function transformPage(page: PublicationOcrPage, fileMetadata: PublicationFileMe
   return chunks
 }
 
-export function transformPublication(
-  record: PublicationRecord,
-  file: PublicationFile,
-  ocr: PublicationOcr,
-): PublicationChunk[] {
+export default function transformZenodoPublication(
+  record: ZenodoRecord,
+  file: ZenodoFile,
+  ocr: MistralOcrDocument,
+): DocumentChunk[] {
   const pages = ocr.pages ?? []
   if (pages.length === 0) return []
 
   const fileMetadata = buildFileMetadata(record, file)
-  return pages.flatMap((page) => transformPage(page, fileMetadata))
+  return pages.flatMap((page) => transformOcrPage(page, fileMetadata))
 }

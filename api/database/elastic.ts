@@ -31,18 +31,8 @@ export function createIndexName(): string {
 }
 
 export function createRagIndexName(date = new Date()): string {
-  const dateSuffix = date.toISOString().substring(0, 10).replace(/-/g, '');
+  const dateSuffix = date.toISOString().replace(/\D/g, "").slice(0, 17)
   return `${RAG_ALIAS}-${dateSuffix}`;
-}
-
-export async function createRagIndex(index = createRagIndexName()): Promise<string> {
-  await elastic.indices.create({
-    index,
-    settings: RAG_MAPPING.settings,
-    mappings: RAG_MAPPING.mappings,
-  });
-
-  return index;
 }
 
 export async function swapAlias(alias: string, newIndex: string): Promise<string[]> {
