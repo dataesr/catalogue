@@ -48,39 +48,33 @@ export const ragRoutes = new Elysia({ prefix: "/rag" })
     async ({ query }) => {
       const results = await searchRag(query)
 
-      const recordIds = results.sources.reduce((acc, chunk) => {
-        const recordId = chunk.metadata?.record_id
+      const catalogItemIds = new Map<string, string>()
+      for (const chunk of results.sources) {
+        const recordId = chunk.metadata.record_id
         if (!recordId) {
-          console.error(`record_id not found: ${chunk.metadata.file_name}`)
-          return acc
+          console.error(`record_id not found for RAG chunk ${chunk.id}`)
+          continue
         }
-        const normalizedId = String(recordId)
-        if (!acc.includes(normalizedId)) {
-          acc.push(normalizedId)
-        }
-        return acc
-      }, [] as string[])
+        catalogItemIds.set(chunk.catalog_item_id ?? `zenodo-${recordId}`, String(recordId))
+      }
 
+      const catalogItems = catalogItemIds.size
+        ? await elastic.mget<CatalogItem>({ index: ES_ALIAS, ids: [...catalogItemIds.keys()] })
+        : undefined
       const items = Object.fromEntries(
-        (
-          await Promise.all(
-            recordIds.map(async (recordId) => {
-              const documentId = recordId.startsWith("zenodo-") ? recordId : `zenodo-${recordId}`
-              try {
-                const response = await elastic.get<CatalogItem>({ index: ES_ALIAS, id: documentId })
-                if (!response._source) {
-                  console.error(`document not found: ${documentId}`)
-                  return undefined
-                }
-                return [recordId, response._source] as const
-              } catch (error) {
-                console.error(`failed to fetch catalog document ${documentId}`, error)
-                return undefined
-              }
-            }),
-          )
-        ).filter((entry): entry is readonly [string, CatalogItem] => entry !== undefined),
-      ) as Record<string, CatalogItem>
+        (catalogItems?.docs ?? []).flatMap((document) => {
+          const recordId = catalogItemIds.get(document._id)
+          if (!recordId) return []
+          if ("error" in document) {
+            throw new Error(`failed to fetch catalog document ${document._id}: ${JSON.stringify(document.error)}`)
+          }
+          if (!document.found || !document._source) {
+            console.error(`document not found: ${document._id}`)
+            return []
+          }
+          return [[recordId, document._source]]
+        }),
+      )
 
       return { ...results, items }
     },

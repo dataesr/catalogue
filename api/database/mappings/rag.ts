@@ -27,6 +27,7 @@ export const RAG_MAPPING: { settings: estypes.IndicesIndexSettings; mappings: es
   mappings: {
     properties: {
       id: { type: "keyword" },
+      catalog_item_id: { type: "keyword" },
       document: { type: "text", analyzer: "french_text" },
       embedding: {
         type: "dense_vector",

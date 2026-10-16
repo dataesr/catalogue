@@ -1,22 +1,31 @@
 import type { estypes } from "@elastic/elasticsearch"
 import { elastic, RAG_ALIAS, createRagIndexName } from "~/database/elastic"
-import type { ZenodoRecord, DocumentChunk, ZenodoFile } from "./types"
-import type { CatalogItem } from "~/schemas/catalog"
+import type { IndexedChunk } from "./types"
+import type { CatalogItemFile } from "~/schemas/catalog"
+import type { RagCatalogItem } from "./types"
 import { RAG_MAPPING } from "~/database/mappings/rag"
 
 const PUBLICATION_SCAN_SIZE = 500
 
-export async function fetchZenodoRecords(catalogIndex: string): Promise<ZenodoRecord[]> {
-  const records: ZenodoRecord[] = []
+export async function fetchCatalogItems(catalogIndex: string): Promise<RagCatalogItem[]> {
+  const records: RagCatalogItem[] = []
   let scrollId: string | undefined
 
   try {
-    let response = await elastic.search<CatalogItem>({
+    let response = await elastic.search<RagCatalogItem>({
       index: catalogIndex,
       scroll: "2m",
       size: PUBLICATION_SCAN_SIZE,
-      query: { term: { source: "zenodo" } },
-      _source: ["sourceId", "doiUrl", "title", "published", "accessRight", "publicationType", "keywords", "files"],
+      query: {
+        bool: {
+          filter: [
+            { term: { source: "zenodo" } },
+            { term: { type: "publication" } },
+            { term: { publicationType: "article" } },
+          ],
+        },
+      },
+      _source: ["id", "source", "sourceId", "title", "published", "accessRight", "publicationType", "keywords", "files"],
     })
 
     while (response.hits.hits.length > 0) {
@@ -24,32 +33,11 @@ export async function fetchZenodoRecords(catalogIndex: string): Promise<ZenodoRe
       for (const hit of response.hits.hits) {
         const source = hit._source
         if (!source) throw new Error(`Zenodo publication ${hit._id ?? "unknown"} is missing its Elasticsearch source`)
-        const recordId = source.sourceId || hit._id?.replace(/^zenodo-/, "")
-        if (!recordId) throw new Error(`Zenodo publication ${hit._id ?? "unknown"} is missing its record ID`)
-
-        const files = source.files ?? []
-        for (const file of files) {
-          if (typeof file.key !== "string" || !file.key) {
-            throw new Error(`Zenodo publication ${recordId} contains a file without an ID or key`)
-          }
-        }
-
-        records.push({
-          id: recordId,
-          doi_url: source.doiUrl ?? "",
-          metadata: {
-            title: source.title,
-            publication_date: source.published ?? "",
-            access_right: source.accessRight ?? "",
-            keywords: source.keywords ?? [],
-            resource_type: { subtype: source.publicationType ?? "" },
-          },
-          files: files.map((file) => ({ ...file, checksum: file.checksum!, type: file.type! })),
-        })
+        records.push(source)
       }
 
       if (!response._scroll_id) break
-      response = await elastic.scroll<CatalogItem>({ scroll_id: response._scroll_id, scroll: "2m" })
+      response = await elastic.scroll<RagCatalogItem>({ scroll_id: response._scroll_id, scroll: "2m" })
     }
   } finally {
     if (scrollId) await elastic.clearScroll({ scroll_id: scrollId })
@@ -81,7 +69,7 @@ export async function refreshRagIndex(index = RAG_ALIAS): Promise<void> {
   await elastic.indices.refresh({ index })
 }
 
-export async function indexRagChunks(chunks: Array<DocumentChunk & { embedding: number[] }>): Promise<void> {
+export async function indexRagChunks(chunks: IndexedChunk[]): Promise<void> {
   if (!chunks.length) return
 
   const operations = chunks.flatMap((chunk) => [{ index: { _index: RAG_ALIAS, _id: chunk.id } }, chunk])
@@ -92,7 +80,7 @@ export async function indexRagChunks(chunks: Array<DocumentChunk & { embedding: 
   }
 }
 
-export async function removeStaleFileVersions(file: ZenodoFile, recordId: string, index = RAG_ALIAS): Promise<void> {
+export async function removeStaleFileVersions(file: CatalogItemFile, recordId: string, index = RAG_ALIAS): Promise<void> {
   const result = await elastic.deleteByQuery({
     index,
     query: {

@@ -1,10 +1,10 @@
 import { flow } from "@dataesr/declic-sdk"
 import { t } from "elysia"
-import { ingestZenodoPublications } from "../../rag/ingest"
+import { ingestCatalogItems } from "../../rag/ingest"
 
 export const syncRag = flow({
   id: "sync-rag",
-  description: "Ingest Zenodo publication PDFs into the Catalogue RAG index",
+  description: "Ingest Catalog publication PDFs into the Catalog RAG index",
   options: { maxAttempts: 3, maxConcurrency: 1, timeoutMs: 2 * 60 * 60 * 1000 },
   input: t.Object({
     catalog_index: t.Optional(t.String()),
@@ -12,9 +12,9 @@ export const syncRag = flow({
   }),
   run: async ({ input, step }) => {
     const result = await step.run("ingest-publications", async ({ logger }) => {
-      logger.info("Starting RAG ingestion of Zenodo publications")
+      logger.info("Starting RAG ingestion of Catalogue publications")
 
-      const ingestion = await ingestZenodoPublications({
+      const ingestion = await ingestCatalogItems({
         catalogIndex: input.catalog_index,
         forceReindex: input.force_reindex,
         onProgress: (message) => logger.info(message),

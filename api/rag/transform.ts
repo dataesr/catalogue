@@ -1,11 +1,11 @@
+import type { CatalogItemFile } from "~/schemas/catalog"
 import type {
   DocumentFileMetadata,
   DocumentChunk,
   MistralOcrPage,
   MistralOcrTable,
   MistralOcrDocument,
-  ZenodoRecord,
-  ZenodoFile,
+  RagCatalogItem,
 } from "./types"
 
 export const MIN_CHUNK_LENGTH = 50
@@ -53,31 +53,29 @@ function cleanOcrMarkup(markdown: string, tables: Map<string, MistralOcrTable>):
     .trim()
 }
 
-function buildFileMetadata(record: ZenodoRecord, file: ZenodoFile): DocumentFileMetadata {
-  const metadata = record.metadata
-  const publicationDate = metadata.publication_date ?? ""
-  const keywords = (metadata.keywords ?? []).filter(Boolean).map((keyword) => keyword.toLowerCase())
-  const fileName = file.key
-
+function buildFileMetadata(item: RagCatalogItem, file: CatalogItemFile): DocumentFileMetadata {
   return {
-    title: metadata.title ?? "",
-    reference: "zenodo",
-    record_id: String(record.id),
-    publication_type: metadata.resource_type?.subtype ?? "",
-    publication_date: publicationDate,
-    publication_epoch: publicationDate ? toUnixEpoch(publicationDate) : 0,
+    record_id: String(item.sourceId),
+    source: item.source,
+    title: item.title ?? "",
+    publication_type: item.publicationType ?? "unknown",
+    publication_date: item.published ?? "",
+    publication_epoch: item.published ? toUnixEpoch(item.published) : 0,
     file_key: file.key,
-    file_name: fileName,
-    file_format: fileName.includes(".") ? (fileName.split(".").pop() ?? "") : "",
-    file_url: record.doi_url ?? "",
-    file_access: metadata.access_right ?? "",
+    file_type: file.type ?? "unknown",
+    file_url: file.url,
+    file_access: item.accessRight ?? "closed",
     ...(file.checksum ? { file_checksum: file.checksum } : {}),
-    ...(keywords.length > 0 ? { keywords } : {}),
+    ...(item.keywords.length > 0 ? { keywords: item.keywords } : {}),
   }
 }
 
-function transformOcrPage(page: MistralOcrPage, fileMetadata: DocumentFileMetadata): DocumentChunk[] {
-  const fileNameWithoutExtension = fileMetadata.file_name.split(".")[0] ?? fileMetadata.file_name
+function transformOcrPage(
+  page: MistralOcrPage,
+  catalogItemId: RagCatalogItem["id"],
+  fileMetadata: DocumentFileMetadata,
+): DocumentChunk[] {
+  const fileNameWithoutExtension = fileMetadata.file_key.split(".")[0] ?? fileMetadata.file_key
   const pageIndex = (page.index ?? 0) + 1
   if (!page.markdown) return []
 
@@ -102,7 +100,8 @@ function transformOcrPage(page: MistralOcrPage, fileMetadata: DocumentFileMetada
     for (const nextDocument of splitText(document, MAX_CHUNK_LENGTH)) {
       chunkIndex += 1
       chunks.push({
-        id: `zenodo_${fileMetadata.record_id}_${fileNameWithoutExtension}_p${pageIndex}_s${sectionIndex}_c${chunkIndex}`,
+        id: `${fileMetadata.record_id}_${fileNameWithoutExtension}_p${pageIndex}_s${sectionIndex}_c${chunkIndex}`,
+        catalog_item_id: catalogItemId,
         document: nextDocument,
         metadata: {
           ...fileMetadata,
@@ -160,14 +159,14 @@ function transformOcrPage(page: MistralOcrPage, fileMetadata: DocumentFileMetada
   return chunks
 }
 
-export default function transformZenodoPublication(
-  record: ZenodoRecord,
-  file: ZenodoFile,
+export default function transformFile(
+  item: RagCatalogItem,
+  file: CatalogItemFile,
   ocr: MistralOcrDocument,
 ): DocumentChunk[] {
   const pages = ocr.pages ?? []
   if (pages.length === 0) return []
 
-  const fileMetadata = buildFileMetadata(record, file)
-  return pages.flatMap((page) => transformOcrPage(page, fileMetadata))
+  const fileMetadata = buildFileMetadata(item, file)
+  return pages.flatMap((page) => transformOcrPage(page, item.id, fileMetadata))
 }

@@ -10,7 +10,7 @@ const MAX_RESULTS = 50
 const RETRIEVAL_MULTIPLIER = 5
 const RRF_K = 60
 const DENSE_WEIGHT = 0.7
-const LEXICAL_WEIGHT = 0.3
+const SPARSE_WEIGHT = 0.3
 const MIN_CHUNK_LENGTH = 50
 
 function clampTopK(topK: number | undefined): number {
@@ -36,30 +36,32 @@ export function cosineDistanceFromElasticScore(score: number): number {
   return Math.max(0, Math.min(2, 2 - 2 * score))
 }
 
-export function reciprocalRankFusion(
-  denseResults: RetrievedChunk[],
-  lexicalResults: Array<{ id: string; score: number }>,
-): RetrievedChunk[] {
-  if (!lexicalResults.length) return denseResults
+export function reciprocalRankFusion(denseResults: RetrievedChunk[], sparseResults: RetrievedChunk[]): RetrievedChunk[] {
+  if (!sparseResults.length) return denseResults
 
   const fused = new Map<string, RetrievedChunk>()
   denseResults.forEach((result, index) => {
     const rank = index + 1
+    const contribution = DENSE_WEIGHT / (RRF_K + rank)
     fused.set(result.id, {
       ...result,
-      bm25_score: null,
-      rrf_score: DENSE_WEIGHT / (RRF_K + rank),
+      sparseScore: null,
+      rrfScore: contribution,
     })
   })
 
-  lexicalResults.forEach((result, index) => {
+  sparseResults.forEach((result, index) => {
+    const contribution = SPARSE_WEIGHT / (RRF_K + index + 1)
     const existing = fused.get(result.id)
-    if (!existing) return
-    existing.bm25_score = result.score
-    existing.rrf_score = (existing.rrf_score ?? 0) + LEXICAL_WEIGHT / (RRF_K + index + 1)
+    if (existing) {
+      existing.sparseScore = result.sparseScore
+      existing.rrfScore = (existing.rrfScore ?? 0) + contribution
+    } else {
+      fused.set(result.id, { ...result, distance: 0, sparseScore: result.sparseScore, rrfScore: contribution })
+    }
   })
 
-  return [...fused.values()].sort((left, right) => (right.rrf_score ?? 0) - (left.rrf_score ?? 0))
+  return [...fused.values()].sort((a, b) => (b.rrfScore ?? 0) - (a.rrfScore ?? 0))
 }
 
 export async function searchRag(params: RagSearchParams): Promise<RagResponse> {
@@ -73,7 +75,8 @@ export async function searchRag(params: RagSearchParams): Promise<RagResponse> {
   const [queryVector] = await runMistralEmbeddings([query])
   const filters = buildRagFilters(params)
 
-  const [denseResponse, lexicalResponse] = await Promise.all([
+  // Compute both dense and sparse search
+  const [denseResponse, sparseResponse] = await Promise.all([
     elastic.search<IndexedChunk>({
       index: RAG_ALIAS,
       size: retrievalK,
@@ -84,7 +87,7 @@ export async function searchRag(params: RagSearchParams): Promise<RagResponse> {
         num_candidates: numCandidates,
         filter: filters,
       },
-      _source: ["id", "document", "metadata"],
+      _source: ["id", "catalog_item_id", "document", "metadata"],
     }),
     elastic.search<IndexedChunk>({
       index: RAG_ALIAS,
@@ -113,7 +116,7 @@ export async function searchRag(params: RagSearchParams): Promise<RagResponse> {
           ],
         },
       },
-      _source: ["id", "document", "metadata"],
+      _source: ["id", "catalog_item_id", "document", "metadata"],
     }),
   ])
 
@@ -122,19 +125,31 @@ export async function searchRag(params: RagSearchParams): Promise<RagResponse> {
     return [
       {
         id: hit._source.id,
+        catalog_item_id: hit._source.catalog_item_id ?? `zenodo-${hit._source.metadata.record_id}`,
         document: hit._source.document,
         metadata: hit._source.metadata,
         distance: cosineDistanceFromElasticScore(hit._score),
       },
     ]
   })
-  const lexicalResults = lexicalResponse.hits.hits.flatMap((hit) => {
+  const sparseResults = sparseResponse.hits.hits.flatMap((hit) => {
     if (!hit._source || typeof hit._score !== "number") return []
-    return [{ id: hit._source.id, score: hit._score }]
+    return [
+      {
+        id: hit._source.id,
+        catalog_item_id: hit._source.catalog_item_id ?? `zenodo-${hit._source.metadata.record_id}`,
+        document: hit._source.document,
+        metadata: hit._source.metadata,
+        bm25_score: hit._score,
+      },
+    ]
   })
 
-  const fused = reciprocalRankFusion(denseResults, lexicalResults)
-  const reranked = await runCrossEncoder(query, fused)
+  // Merge dense and sparse results
+  const fused = params.useHybrid ? reciprocalRankFusion(denseResults, sparseResults) : denseResults
+
+  // Rerank results
+  const reranked = params.useRerank ? await runCrossEncoder(query, fused) : fused
 
   return { sources: reranked.slice(0, topK) }
 }

@@ -14,10 +14,10 @@ export function runLightReranker(query: string, sources: RetrievedChunk[]): Retr
     const publicationEpoch = source.metadata.publication_epoch
     const temporalScore =
       yearEpoch !== undefined && typeof publicationEpoch === "number" && publicationEpoch >= yearEpoch ? 1 : 0
-    source.rerank_score = 0.85 * (1 - source.distance) + 0.05 * titleScore + 0.1 * temporalScore
+    source.rerankScore = 0.85 * (1 - (source.distance ?? 0)) + 0.05 * titleScore + 0.1 * temporalScore
   }
 
-  return [...sources].sort((left, right) => (right.rerank_score ?? 0) - (left.rerank_score ?? 0))
+  return [...sources].sort((a, b) => (b.rerankScore ?? 0) - (a.rerankScore ?? 0))
 }
 
 export async function runCrossEncoder(query: string, sources: RetrievedChunk[]): Promise<RetrievedChunk[]> {
@@ -50,8 +50,8 @@ export async function runCrossEncoder(query: string, sources: RetrievedChunk[]):
     }
 
     return sources
-      .map((source, index) => ({ ...source, rerank_score: numericScores[index] }))
-      .sort((left, right) => (right.rerank_score ?? 0) - (left.rerank_score ?? 0))
+      .map((source, index) => ({ ...source, rerankScore: numericScores[index] }))
+      .sort((a, b) => (b.rerankScore ?? 0) - (a.rerankScore ?? 0))
   } catch (error) {
     console.warn(
       `[RAG] ML Hub cross-encoder failed; using lightweight reranking: ${error instanceof Error ? error.message : String(error)}`,

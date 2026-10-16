@@ -1,24 +1,17 @@
-// ZenodoFile after Catalog indexation
-export interface ZenodoFile {
-  key: string
-  url: string
-  checksum?: string
-  size?: number
-  type?: string
-}
+import type { CatalogItem } from "~/schemas/catalog"
 
-export interface ZenodoRecord {
-  id: string | number
-  doi_url?: string | null
-  metadata: {
-    title?: string | null
-    publication_date?: string | null
-    access_right?: string | null
-    keywords?: string[] | null
-    resource_type?: { subtype?: string | null } | null
-  }
-  files?: ZenodoFile[]
-}
+export type RagCatalogItem = Pick<
+  CatalogItem,
+  | "id"
+  | "source"
+  | "sourceId"
+  | "title"
+  | "published"
+  | "accessRight"
+  | "publicationType"
+  | "keywords"
+  | "files"
+>
 
 export interface MistralOcrTable {
   id: string
@@ -37,14 +30,13 @@ export interface MistralOcrDocument {
 
 export interface DocumentFileMetadata {
   title: string
-  reference: "zenodo"
+  source: string
   record_id: string
   publication_type: string
   publication_date: string
   publication_epoch: number
   file_key: string
-  file_name: string
-  file_format: string
+  file_type: string
   file_url: string
   file_access: string
   file_checksum?: string
@@ -62,6 +54,7 @@ export interface DocumentChunkMetadata extends DocumentFileMetadata {
 
 export interface DocumentChunk {
   id: string
+  catalog_item_id: CatalogItem["id"]
   document: string
   metadata: DocumentChunkMetadata
 }
@@ -71,8 +64,8 @@ export interface IndexedChunk extends DocumentChunk {
 }
 
 export interface RetrievedChunk extends DocumentChunk {
-  distance: number
-  rerank_score?: number
-  bm25_score?: number | null
-  rrf_score?: number | null
+  distance?: number | null
+  rerankScore?: number | null
+  sparseScore?: number | null
+  rrfScore?: number | null
 }

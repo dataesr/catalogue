@@ -1,10 +1,10 @@
 import { config } from "~/config"
-import transformZenodoPublication from "./transform"
-import type { DocumentChunk, ZenodoFile, ZenodoRecord } from "./types"
+import transformFile from "./transform"
+import type { DocumentChunk } from "./types"
 import { runMistralOcr, runMistralEmbeddings, EMBEDDING_BATCH_SIZE } from "./mistral"
 import {
   ensureRagIndex,
-  fetchZenodoRecords,
+  fetchCatalogItems,
   getIndexedChecksums,
   getFileIdentity,
   indexRagChunks,
@@ -12,6 +12,8 @@ import {
   removeStaleFileVersions,
   removeStaleFiles,
 } from "./elastic"
+import type { CatalogItemFile } from "~/schemas/catalog"
+import type { RagCatalogItem } from "./types"
 
 export interface IngestionResult {
   records: number
@@ -21,20 +23,9 @@ export interface IngestionResult {
   indexedChunks: number
 }
 
-export interface IngestionServices {
-  ensureIndex: () => Promise<void>
-  refreshIndex: () => Promise<void>
-  fetchRecords: (catalogIndex: string) => Promise<ZenodoRecord[]>
-  getIndexedChecksums: () => Promise<Map<string, Set<string>>>
-  processFile: (record: ZenodoRecord, file: ZenodoFile) => Promise<DocumentChunk[]>
-  indexChunks: (chunks: DocumentChunk[]) => Promise<void>
-  removeStaleFileVersions: (file: ZenodoFile, recordId: string) => Promise<void>
-  removeStaleFiles: (recordId: string, currentFileIds: string[]) => Promise<void>
-}
-
-async function processFile(record: ZenodoRecord, file: ZenodoFile): Promise<DocumentChunk[]> {
+async function processFile(item: RagCatalogItem, file: CatalogItemFile): Promise<DocumentChunk[]> {
   const ocr = await runMistralOcr(file.key, file.url)
-  return transformZenodoPublication(record, file, ocr)
+  return transformFile(item, file, ocr)
 }
 
 async function indexChunks(chunks: DocumentChunk[]): Promise<void> {
@@ -52,44 +43,32 @@ async function indexChunks(chunks: DocumentChunk[]): Promise<void> {
   }
 }
 
-const ingestionServices: IngestionServices = {
-  ensureIndex: ensureRagIndex,
-  refreshIndex: refreshRagIndex,
-  fetchRecords: fetchZenodoRecords,
-  getIndexedChecksums,
-  processFile,
-  indexChunks,
-  removeStaleFileVersions,
-  removeStaleFiles,
-}
-
-export async function ingestZenodoPublications(
+export async function ingestCatalogItems(
   options: {
     catalogIndex?: string
     forceReindex?: boolean
     onProgress?: (message: string) => void
-    services?: IngestionServices
   } = {},
 ): Promise<IngestionResult> {
-  const services = options.services ?? ingestionServices
-  await services.ensureIndex()
+  // create rag index
+  await ensureRagIndex()
 
   // fetch zenodo records from catalog index
-  const records = await services.fetchRecords(options.catalogIndex ?? config.elastic.indexes.catalog)
+  const items = await fetchCatalogItems(options.catalogIndex ?? config.elastic.indexes.catalog)
 
   // fetch files checksums from rag index
-  const indexedChecksums = options.forceReindex ? new Map<string, Set<string>>() : await services.getIndexedChecksums()
+  const indexedChecksums = options.forceReindex ? new Map<string, Set<string>>() : await getIndexedChecksums()
 
   let pdfFiles = 0
   let indexedFiles = 0
   let skippedFiles = 0
   let indexedChunks = 0
 
-  for (const record of records) {
-    const recordId = String(record.id)
+  for (const item of items) {
+    const recordId = String(item.sourceId)
 
     console.warn("Only PDF files will be ingested to RAG index")
-    const files = (record.files ?? []).filter((file) => file.key.toLowerCase().endsWith(".pdf"))
+    const files = (item.files ?? []).filter((file) => file.key.toLowerCase().endsWith(".pdf"))
     const currentFileKeys = files.map((file) => file.key)
 
     for (const file of files) {
@@ -98,15 +77,18 @@ export async function ingestZenodoPublications(
       const fileIdentity = getFileIdentity(recordId, file.key)
       if (checksum && indexedChecksums.get(fileIdentity)?.has(checksum)) {
         // remove other versions of this file
-        await services.removeStaleFileVersions(file, recordId)
+        await removeStaleFileVersions(file, recordId)
         skippedFiles += 1
         continue
       }
 
       options.onProgress?.(`OCR and indexing publication ${recordId}, file ${file.key}`)
-      const chunks = await services.processFile(record, file)
-      await services.indexChunks(chunks)
-      await services.removeStaleFileVersions(file, recordId)
+      // chunk document
+      const chunks = await processFile(item, file)
+      // index chunks
+      await indexChunks(chunks)
+      // remove old documents chunks
+      await removeStaleFileVersions(file, recordId)
       if (checksum) {
         // add newly indexed file to cheksum mapping
         const checksums = indexedChecksums.get(fileIdentity) ?? new Set<string>()
@@ -118,9 +100,9 @@ export async function ingestZenodoPublications(
     }
 
     // remove other files version of this record
-    await services.removeStaleFiles(recordId, currentFileKeys)
+    await removeStaleFiles(recordId, currentFileKeys)
   }
 
-  await services.refreshIndex()
-  return { records: records.length, pdfFiles, indexedFiles, skippedFiles, indexedChunks }
+  await refreshRagIndex()
+  return { records: items.length, pdfFiles, indexedFiles, skippedFiles, indexedChunks }
 }

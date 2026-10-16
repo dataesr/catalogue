@@ -95,14 +95,15 @@ export default function PublicationRagCard({ chunks, item, query }: PublicationR
                     </span>
                   )}
                 </div>
-                {(() => {
-                  const confidence = getChunkConfidence(chunk.distance)
-                  return (
-                    <span className={cn("fr-badge fr-badge--sm fr-badge--no-icon", confidence.className)}>
-                      Pertinence {confidence.label}
-                    </span>
-                  )
-                })()}
+                {chunk.distance != null &&
+                  (() => {
+                    const confidence = getChunkConfidence(chunk.distance)
+                    return (
+                      <span className={cn("fr-badge fr-badge--sm fr-badge--no-icon", confidence.className)}>
+                        Pertinence {confidence.label}
+                      </span>
+                    )
+                  })()}
               </div>
               <p className={cn("catalog-card__highlight", { "catalog-card__highlight--expanded": extendSources === index })}>
                 {chunk.document}

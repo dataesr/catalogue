@@ -108,6 +108,7 @@ export const catalogItemSchema = t.Object({
 });
 
 export type CatalogItem = typeof catalogItemSchema.static;
+export type CatalogItemFile = typeof fileSchema.static;
 
 // ─── Facets ──────────────────────────────────────────────────
 

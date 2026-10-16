@@ -18,7 +18,9 @@ const ragSort = (sort: string) => (a: RagPublication, b: RagPublication) => {
   if (sort === "downloads") return b.item.downloads - a.item.downloads
 
   // default to relevance
-  return Math.min(...a.chunks.map((chunk) => chunk.distance)) - Math.min(...b.chunks.map((chunk) => chunk.distance))
+  return (
+    Math.min(...a.chunks.map((chunk) => chunk.distance ?? 0)) - Math.min(...b.chunks.map((chunk) => chunk.distance ?? 0))
+  )
 }
 
 export function ragResultsByPublications(chunks: RagChunk[], items: Record<string, CatalogItem>, sort: string) {

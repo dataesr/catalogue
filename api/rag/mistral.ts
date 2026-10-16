@@ -1,7 +1,7 @@
 import { Mistral } from "@mistralai/mistralai"
 import { config } from "~/config"
 import { RAG_EMBEDDING_DIMENSIONS } from "~/database/mappings/rag"
-import type { DocumentChunk, MistralOcrDocument, ZenodoFile } from "./types"
+import type { DocumentChunk, MistralOcrDocument } from "./types"
 import type { ChatCompletionRequest } from "@mistralai/mistralai/models/components"
 
 const OCR_MODEL = "mistral-ocr-4-1"
@@ -53,7 +53,6 @@ export async function runMistralEmbeddings(batch: string[]): Promise<number[][]>
   const embeddings = await mistral.embeddings.create({
     model: EMBEDDING_MODEL,
     inputs: batch,
-    outputDimension: RAG_EMBEDDING_DIMENSIONS,
   })
 
   return validateEmbeddings(embeddings.data, batch.length)
