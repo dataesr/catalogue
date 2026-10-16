@@ -17,7 +17,7 @@ const esConfig: ClientOptions = {
 export const elastic = new Client(esConfig);
 
 export const ES_ALIAS = config.elastic.indexes.catalog;
-export const RAG_ALIAS = `rag-${config.env}`;
+export const RAG_ALIAS = `catalog-rag-${config.env}`
 
 // ---------------------------------------------------------------------------
 // Index / alias management helpers
