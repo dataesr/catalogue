@@ -36,8 +36,11 @@ git push origin staging --tags
 - Open Declic
 - Go to "Flows" on the left side menu
 - Find the "full-sync" flow and click on the "Trigger" button (no need to add anything in the input(JSON), just press "Trigger" again)
-- The "full-sync" flow triggers RAG ingestion after the Zenodo publication sync succeeds. To run ingestion separately, trigger the "update-flash-rag" flow; it reads publication records from the current catalogue index and indexes new or changed PDF files. OCR, embeddings, and chunks are processed in Catalogue and stored under the `rag-${ENV}` Elasticsearch alias.
-- To reprocess every PDF, pass `{"force_reprocess": true}` to the flow. This invokes OCR again for all eligible files.
+- The "full-sync" flow triggers incremental RAG ingestion after all catalogue sources finish and the Zenodo sync reports no per-record errors. To run it separately, trigger the "sync-rag" flow; it reads publication records from the catalogue index and indexes only new or changed PDFs.
+- The first RAG sync, or a full rebuild, creates and fills a new versioned Elasticsearch index, verifies the document count and sample chunks, and atomically moves the `rag-${ENV}` alias. The previous index is retained for rollback.
+- To backfill/rebuild the corpus, pass `{"force_reindex": true}` to "sync-rag". This reprocesses every eligible PDF with OCR and embeddings before promoting the new index.
+- To roll back, trigger "sync-rag" with `{"rollback_to": "rag-${ENV}-<version>"}` using the retained index name.
+- Retrieval, vector/lexical search, fusion, and lightweight reranking run in Catalogue. Configure `ML_HUB_API_URL` and `ML_HUB_API_KEY` together to enable optional cross-encoder reranking; if the adapter is unavailable or fails, search falls back to lightweight reranking.
 - Once the flow finished, a new ES index is created named "catalogue-YYYYMMDD"
 - Simply move the aliases "catalogue-staging" then "catalogue" to the newly created ES index
 - If everything works well, delete the n-2 ES index for catalogue

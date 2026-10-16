@@ -1,6 +1,5 @@
 import { Client, type ClientOptions, type estypes, HttpConnection } from '@elastic/elasticsearch';
-import { config } from '~/config';
-import { RAG_MAPPING } from '~/database/mappings/rag';
+import { config } from "~/config"
 
 const esConfig: ClientOptions = {
   Connection: HttpConnection,
@@ -31,8 +30,8 @@ export function createIndexName(): string {
 }
 
 export function createRagIndexName(date = new Date()): string {
-  const dateSuffix = date.toISOString().replace(/\D/g, "").slice(0, 17)
-  return `${RAG_ALIAS}-${dateSuffix}`;
+  const dateSuffix = date.toISOString().substring(0, 10).replace(/-/g, "")
+  return `${RAG_ALIAS}-${dateSuffix}`
 }
 
 export async function swapAlias(alias: string, newIndex: string): Promise<string[]> {

@@ -1,12 +1,12 @@
 import { describe, expect, test } from "bun:test"
 import { RAG_EMBEDDING_DIMENSIONS } from "~/database/mappings/rag"
-import { orderAndValidateMistralEmbeddings, runMistralBatchEmbeddings } from "./mistral"
+import { validateEmbeddings, runMistralBatchEmbeddings } from "./mistral"
 
 const embedding = Array.from({ length: RAG_EMBEDDING_DIMENSIONS }, (_, index) => index)
 
-describe("orderAndValidateMistralEmbeddings", () => {
+describe("validateEmbeddings", () => {
   test("restores input order from Mistral response indexes", () => {
-    const result = orderAndValidateMistralEmbeddings(
+    const result = validateEmbeddings(
       [
         { index: 1, embedding: [2, 2] },
         { index: 0, embedding: [1, 1] },
@@ -20,7 +20,7 @@ describe("orderAndValidateMistralEmbeddings", () => {
 
   test("rejects duplicate response indexes", () => {
     expect(() =>
-      orderAndValidateMistralEmbeddings(
+      validateEmbeddings(
         [
           { index: 0, embedding },
           { index: 0, embedding },
@@ -31,17 +31,17 @@ describe("orderAndValidateMistralEmbeddings", () => {
   })
 
   test("rejects missing, wrong-sized, and non-finite embeddings", () => {
-    expect(() => orderAndValidateMistralEmbeddings([{ embedding }], 1)).toThrow("invalid embedding")
-    expect(() => orderAndValidateMistralEmbeddings([{ index: 0, embedding: [1] }], 1)).toThrow(
+    expect(() => validateEmbeddings([{ embedding }], 1)).toThrow("invalid embedding")
+    expect(() => validateEmbeddings([{ index: 0, embedding: [1] }], 1)).toThrow(
       "invalid embedding",
     )
     expect(() =>
-      orderAndValidateMistralEmbeddings([{ index: 0, embedding: [Number.NaN, ...embedding.slice(1)] }], 1),
+      validateEmbeddings([{ index: 0, embedding: [Number.NaN, ...embedding.slice(1)] }], 1),
     ).toThrow("invalid embedding")
   })
 
   test("rejects a response with a different number of embeddings", () => {
-    expect(() => orderAndValidateMistralEmbeddings([], 1)).toThrow("0 embeddings for 1 chunks")
+    expect(() => validateEmbeddings([], 1)).toThrow("0 embeddings for 1 chunks")
   })
 
   test("rejects an empty embedding batch without calling Mistral", async () => {

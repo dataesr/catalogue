@@ -22,9 +22,9 @@ export const config = {
     },
     apiKey: process.env.ES_API_KEY || "",
   },
-  flashRag: {
-    url: process.env.FLASH_RAG_URL || "http://localhost:8000",
-    apiKey: process.env.FLASH_RAG_API_KEY || "",
+  mlHub: {
+    url: process.env.ML_HUB_API_URL || "",
+    apiKey: process.env.ML_HUB_API_KEY || "",
   },
   mistral: {
     apiKey: process.env.MISTRAL_API_KEY || "",
@@ -53,11 +53,8 @@ export function validateConfig() {
   if (config.isProduction && !process.env.DECLIC_URL) {
     throw new Error('DECLIC_URL is required in production');
   }
-  if (config.isProduction && !process.env.FLASH_RAG_URL) {
-    throw new Error('FLASH_RAG_URL is required in production');
-  }
-  if (config.isProduction && !process.env.FLASH_RAG_API_KEY) {
-    throw new Error('FLASH_RAG_API_KEY is required in production');
+  if (Boolean(config.mlHub.url) !== Boolean(config.mlHub.apiKey)) {
+    throw new Error('ML_HUB_API_URL and ML_HUB_API_KEY must be configured together');
   }
   if (config.isProduction && !process.env.ODS_API_KEY) {
     throw new Error('ODS_API_KEY is required in production');

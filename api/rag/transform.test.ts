@@ -41,7 +41,7 @@ describe("transformZenodoPublication", () => {
       publication_type: "article",
       publication_date: "2024-06",
       publication_epoch: Date.parse("2024-06-01T00:00:00Z") / 1000,
-      file_id: "file-uuid",
+      file_key: "rapport.pdf",
       file_name: "rapport.pdf",
       file_format: "pdf",
       file_url: "https://doi.org/10.5281/zenodo.12345",

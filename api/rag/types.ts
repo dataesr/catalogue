@@ -65,3 +65,14 @@ export interface DocumentChunk {
   document: string
   metadata: DocumentChunkMetadata
 }
+
+export interface IndexedChunk extends DocumentChunk {
+  embedding?: number[]
+}
+
+export interface RetrievedChunk extends DocumentChunk {
+  distance: number
+  rerank_score?: number
+  bm25_score?: number | null
+  rrf_score?: number | null
+}

@@ -1,11 +1,12 @@
 import { config } from "~/config"
 import transformZenodoPublication from "./transform"
 import type { DocumentChunk, ZenodoFile, ZenodoRecord } from "./types"
-import { runMistralOcr, runMistralBatchEmbeddings, EMBEDDING_BATCH_SIZE } from "./mistral"
+import { runMistralOcr, runMistralEmbeddings, EMBEDDING_BATCH_SIZE } from "./mistral"
 import {
   ensureRagIndex,
   fetchZenodoRecords,
   getIndexedChecksums,
+  getFileIdentity,
   indexRagChunks,
   refreshRagIndex,
   removeStaleFileVersions,
@@ -26,22 +27,22 @@ export interface IngestionServices {
   fetchRecords: (catalogIndex: string) => Promise<ZenodoRecord[]>
   getIndexedChecksums: () => Promise<Map<string, Set<string>>>
   processFile: (record: ZenodoRecord, file: ZenodoFile) => Promise<DocumentChunk[]>
-  indexFile: (file: ZenodoFile, chunks: DocumentChunk[]) => Promise<void>
-  removeStaleFileVersions: (file: ZenodoFile) => Promise<void>
+  indexChunks: (chunks: DocumentChunk[]) => Promise<void>
+  removeStaleFileVersions: (file: ZenodoFile, recordId: string) => Promise<void>
   removeStaleFiles: (recordId: string, currentFileIds: string[]) => Promise<void>
 }
 
 async function processFile(record: ZenodoRecord, file: ZenodoFile): Promise<DocumentChunk[]> {
-  const ocr = await runMistralOcr(file)
+  const ocr = await runMistralOcr(file.key, file.url)
   return transformZenodoPublication(record, file, ocr)
 }
 
-async function indexFile(file: ZenodoFile, chunks: DocumentChunk[]): Promise<void> {
+async function indexChunks(chunks: DocumentChunk[]): Promise<void> {
   for (let offset = 0; offset < chunks.length; offset += EMBEDDING_BATCH_SIZE) {
     const batch = chunks.slice(offset, offset + EMBEDDING_BATCH_SIZE)
-    const orderedEmbeddings = await runMistralBatchEmbeddings(batch)
+    const embeddings = await runMistralEmbeddings(batch.map((chunk) => chunk.document))
     const embeddedChunks = batch.map((chunk, index) => {
-      const result = orderedEmbeddings[index]
+      const result = embeddings[index]
       if (!result) {
         throw new Error(`Mistral returned an invalid embedding for chunk ${chunk.id}`)
       }
@@ -49,8 +50,6 @@ async function indexFile(file: ZenodoFile, chunks: DocumentChunk[]): Promise<voi
     })
     await indexRagChunks(embeddedChunks)
   }
-
-  await removeStaleFileVersions(file)
 }
 
 const ingestionServices: IngestionServices = {
@@ -59,7 +58,7 @@ const ingestionServices: IngestionServices = {
   fetchRecords: fetchZenodoRecords,
   getIndexedChecksums,
   processFile,
-  indexFile,
+  indexChunks,
   removeStaleFileVersions,
   removeStaleFiles,
 }
@@ -96,21 +95,23 @@ export async function ingestZenodoPublications(
     for (const file of files) {
       pdfFiles += 1
       const checksum = file.checksum ?? undefined
-      if (checksum && indexedChecksums.get(file.key)?.has(checksum)) {
+      const fileIdentity = getFileIdentity(recordId, file.key)
+      if (checksum && indexedChecksums.get(fileIdentity)?.has(checksum)) {
         // remove other versions of this file
-        await services.removeStaleFileVersions(file)
+        await services.removeStaleFileVersions(file, recordId)
         skippedFiles += 1
         continue
       }
 
       options.onProgress?.(`OCR and indexing publication ${recordId}, file ${file.key}`)
       const chunks = await services.processFile(record, file)
-      await services.indexFile(file, chunks)
+      await services.indexChunks(chunks)
+      await services.removeStaleFileVersions(file, recordId)
       if (checksum) {
         // add newly indexed file to cheksum mapping
-        const checksums = indexedChecksums.get(file.key) ?? new Set<string>()
+        const checksums = indexedChecksums.get(fileIdentity) ?? new Set<string>()
         checksums.add(checksum)
-        indexedChecksums.set(file.key, checksums)
+        indexedChecksums.set(fileIdentity, checksums)
       }
       indexedFiles += 1
       indexedChunks += chunks.length

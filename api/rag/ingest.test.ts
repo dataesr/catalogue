@@ -25,7 +25,7 @@ function createServices(overrides: Partial<IngestionServices> = {}) {
       calls.catalogIndexes.push(catalogIndex)
       return [record]
     },
-    getIndexedChecksums: async () => new Map([["unchanged", new Set(["md5:old"])]]),
+    getIndexedChecksums: async () => new Map([["123\u0000unchanged.pdf", new Set(["md5:old"])]]),
     refreshIndex: async () => {},
     processFile: async (_record, file) => {
       calls.processedFiles.push(file.key)
@@ -59,10 +59,10 @@ describe("ingestZenodoPublications", () => {
       indexedChunks: 0,
     })
     expect(calls.catalogIndexes).toEqual(["catalog-test"])
-    expect(calls.processedFiles).toEqual(["changed"])
-    expect(calls.indexedFiles).toEqual(["changed"])
-    expect(calls.cleanedFileVersions).toEqual(["unchanged"])
-    expect(calls.cleanedRecords).toEqual([{ recordId: "123", fileIds: ["unchanged", "changed"] }])
+    expect(calls.processedFiles).toEqual(["changed.pdf"])
+    expect(calls.indexedFiles).toEqual(["changed.pdf"])
+    expect(calls.cleanedFileVersions).toEqual(["unchanged.pdf", "changed.pdf"])
+    expect(calls.cleanedRecords).toEqual([{ recordId: "123", fileIds: ["unchanged.pdf", "changed.pdf"] }])
   })
 
   test("force reprocesses files without reading their indexed checksums", async () => {
@@ -70,7 +70,7 @@ describe("ingestZenodoPublications", () => {
     const { calls, services } = createServices({
       getIndexedChecksums: async () => {
         checksumReads += 1
-        return new Map([["unchanged", new Set(["md5:old"])]])
+        return new Map([["123\u0000unchanged.pdf", new Set(["md5:old"]) ]])
       },
     })
 
@@ -79,6 +79,6 @@ describe("ingestZenodoPublications", () => {
     expect(result.indexedFiles).toBe(2)
     expect(result.skippedFiles).toBe(0)
     expect(checksumReads).toBe(0)
-    expect(calls.processedFiles).toEqual(["unchanged", "changed"])
+    expect(calls.processedFiles).toEqual(["unchanged.pdf", "changed.pdf"])
   })
 })

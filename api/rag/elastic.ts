@@ -6,17 +6,6 @@ import { RAG_MAPPING } from "~/database/mappings/rag"
 
 const PUBLICATION_SCAN_SIZE = 500
 
-// interface IndexedPublication {
-//   sourceId: string
-//   doiUrl?: string | null
-//   title: string
-//   published?: string | null
-//   accessRight?: string | null
-//   publicationType?: string | null
-//   keywords?: string[]
-//   files?: ZenodoPublicationFile[]
-// }
-
 export async function fetchZenodoRecords(catalogIndex: string): Promise<ZenodoRecord[]> {
   const records: ZenodoRecord[] = []
   let scrollId: string | undefined
@@ -88,8 +77,8 @@ export async function createRagIndex(index = createRagIndexName()): Promise<stri
   return index
 }
 
-export async function refreshRagIndex(): Promise<void> {
-  await elastic.indices.refresh({ index: RAG_ALIAS })
+export async function refreshRagIndex(index = RAG_ALIAS): Promise<void> {
+  await elastic.indices.refresh({ index })
 }
 
 export async function indexRagChunks(chunks: Array<DocumentChunk & { embedding: number[] }>): Promise<void> {
@@ -103,12 +92,12 @@ export async function indexRagChunks(chunks: Array<DocumentChunk & { embedding: 
   }
 }
 
-export async function removeStaleFileVersions(file: ZenodoFile): Promise<void> {
+export async function removeStaleFileVersions(file: ZenodoFile, recordId: string, index = RAG_ALIAS): Promise<void> {
   const result = await elastic.deleteByQuery({
-    index: RAG_ALIAS,
+    index,
     query: {
       bool: {
-        filter: [{ term: { "metadata.file_key": file.key } }],
+        filter: [{ term: { "metadata.record_id": recordId } }, { term: { "metadata.file_key": file.key } }],
         ...(file.checksum ? { must_not: [{ term: { "metadata.file_checksum": file.checksum } }] } : {}),
       },
     },
@@ -120,9 +109,9 @@ export async function removeStaleFileVersions(file: ZenodoFile): Promise<void> {
   }
 }
 
-export async function removeStaleFiles(recordId: string, currentFileKeys: string[]): Promise<void> {
+export async function removeStaleFiles(recordId: string, currentFileKeys: string[], index = RAG_ALIAS): Promise<void> {
   const result = await elastic.deleteByQuery({
-    index: RAG_ALIAS,
+    index,
     query: {
       bool: {
         filter: [{ term: { "metadata.record_id": recordId } }],
@@ -135,6 +124,10 @@ export async function removeStaleFiles(recordId: string, currentFileKeys: string
   if (failures.length > 0) {
     throw new Error(`Failed to remove stale chunks for record ${recordId}: ${JSON.stringify(failures[0])}`)
   }
+}
+
+export function getFileIdentity(recordId: string, fileKey: string): string {
+  return `${recordId}\u0000${fileKey}`
 }
 
 export async function getIndexedChecksums(): Promise<Map<string, Set<string>>> {
@@ -150,11 +143,16 @@ export async function getIndexedChecksums(): Promise<Map<string, Set<string>>> {
         indexed_files: {
           composite: {
             size: 1_000,
-            sources: [{ file_id: { terms: { field: "metadata.file_id" } } }],
+            sources: [
+              { record_id: { terms: { field: "metadata.record_id" } } },
+              { file_key: { terms: { field: "metadata.file_key" } } },
+            ],
             ...(after ? { after } : {}),
           },
           aggregations: {
-            checksums: { terms: { field: "metadata.file_checksum", size: 10 } },
+            checksums: {
+              terms: { field: "metadata.file_checksum", size: 10 },
+            },
           },
         },
       },
@@ -165,8 +163,9 @@ export async function getIndexedChecksums(): Promise<Map<string, Set<string>>> {
 
     const fileBuckets = Array.isArray(aggregation.buckets) ? aggregation.buckets : Object.values(aggregation.buckets)
     for (const bucket of fileBuckets) {
-      const fileId = bucket.key.file_id
-      if (typeof fileId !== "string") continue
+      const recordId = bucket.key.record_id
+      const fileKey = bucket.key.file_key
+      if (typeof recordId !== "string" || typeof fileKey !== "string") continue
 
       const checksums = bucket.checksums as estypes.AggregationsStringTermsAggregate | undefined
       const checksumBuckets = checksums
@@ -177,7 +176,7 @@ export async function getIndexedChecksums(): Promise<Map<string, Set<string>>> {
       const values = checksumBuckets
         .map((checksum) => checksum.key)
         .filter((checksum): checksum is string => typeof checksum === "string")
-      if (values.length > 0) indexedChecksums.set(fileId, new Set(values))
+      if (values.length > 0) indexedChecksums.set(getFileIdentity(recordId, fileKey), new Set(values))
     }
 
     after = aggregation.after_key
