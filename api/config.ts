@@ -29,6 +29,9 @@ export const config = {
   mistral: {
     apiKey: process.env.MISTRAL_API_KEY || "",
   },
+  rag: {
+    ocrCacheDir: process.env.RAG_OCR_CACHE_DIR || "local/rag/ocr",
+  },
   ods: {
     apiKey: process.env.ODS_API_KEY || "",
   },

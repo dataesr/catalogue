@@ -4,8 +4,8 @@ import { RAG_EMBEDDING_DIMENSIONS } from "~/database/mappings/rag"
 import type { DocumentChunk, MistralOcrDocument } from "./types"
 import type { ChatCompletionRequest } from "@mistralai/mistralai/models/components"
 
-const OCR_MODEL = "mistral-ocr-4-1"
 const EMBEDDING_MODEL = "mistral-embed-2312"
+export const OCR_MODEL = "mistral-ocr-4-1"
 export const EMBEDDING_BATCH_SIZE = 8
 
 const mistral = new Mistral({ apiKey: config.mistral.apiKey })

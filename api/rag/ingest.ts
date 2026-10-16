@@ -1,6 +1,6 @@
+import { access, mkdir, readFile, writeFile } from "node:fs/promises"
+import { join, resolve } from "node:path"
 import { config } from "~/config"
-import transformFile from "./transform"
-import type { DocumentChunk } from "./types"
 import { runMistralOcr, runMistralEmbeddings, EMBEDDING_BATCH_SIZE } from "./mistral"
 import {
   ensureRagIndex,
@@ -12,8 +12,9 @@ import {
   removeStaleFileVersions,
   removeStaleFiles,
 } from "./elastic"
+import transformFile from "./transform"
+import type { DocumentChunk, MistralOcrDocument, RagCatalogItem } from "./types"
 import type { CatalogItemFile } from "~/schemas/catalog"
-import type { RagCatalogItem } from "./types"
 
 export interface IngestionResult {
   records: number
@@ -21,11 +22,28 @@ export interface IngestionResult {
   indexedFiles: number
   skippedFiles: number
   indexedChunks: number
+  cachedOcr: number
 }
 
-async function processFile(item: RagCatalogItem, file: CatalogItemFile): Promise<DocumentChunk[]> {
-  const ocr = await runMistralOcr(file.key, file.url)
-  return transformFile(item, file, ocr)
+export async function extractFile(
+  item: RagCatalogItem,
+  file: CatalogItemFile,
+): Promise<{ document: MistralOcrDocument; cached: boolean }> {
+  const ocrPath = join(resolve(config.rag.ocrCacheDir), String(item.sourceId), `${file.key}.json`)
+
+  try {
+    await access(ocrPath)
+    const document = JSON.parse(await readFile(ocrPath, "utf8")) as MistralOcrDocument
+    return { document, cached: true }
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error
+  }
+
+  // run OCR
+  const document = await runMistralOcr(file.key, file.url)
+  await mkdir(resolve(config.rag.ocrCacheDir, String(item.sourceId)), { recursive: true })
+  await writeFile(ocrPath, JSON.stringify(document), "utf8")
+  return { document, cached: false }
 }
 
 async function indexChunks(chunks: DocumentChunk[]): Promise<void> {
@@ -63,6 +81,7 @@ export async function ingestCatalogItems(
   let indexedFiles = 0
   let skippedFiles = 0
   let indexedChunks = 0
+  let cachedOcr = 0
 
   for (const item of items) {
     const recordId = String(item.sourceId)
@@ -82,15 +101,17 @@ export async function ingestCatalogItems(
         continue
       }
 
-      options.onProgress?.(`OCR and indexing publication ${recordId}, file ${file.key}`)
+      options.onProgress?.(`Transforming and indexing publication ${recordId}, file ${file.key}`)
+      // OCR document
+      const { document: ocr, cached } = await extractFile(item, file)
+      if (cached) cachedOcr += 1
       // chunk document
-      const chunks = await processFile(item, file)
+      const chunks = transformFile(item, file, ocr)
       // index chunks
       await indexChunks(chunks)
       // remove old documents chunks
       await removeStaleFileVersions(file, recordId)
       if (checksum) {
-        // add newly indexed file to cheksum mapping
         const checksums = indexedChecksums.get(fileIdentity) ?? new Set<string>()
         checksums.add(checksum)
         indexedChecksums.set(fileIdentity, checksums)
@@ -104,5 +125,5 @@ export async function ingestCatalogItems(
   }
 
   await refreshRagIndex()
-  return { records: items.length, pdfFiles, indexedFiles, skippedFiles, indexedChunks }
+  return { records: items.length, pdfFiles, indexedFiles, skippedFiles, indexedChunks, cachedOcr }
 }

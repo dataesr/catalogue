@@ -69,10 +69,10 @@ export async function refreshRagIndex(index = RAG_ALIAS): Promise<void> {
   await elastic.indices.refresh({ index })
 }
 
-export async function indexRagChunks(chunks: IndexedChunk[]): Promise<void> {
+export async function indexRagChunks(chunks: IndexedChunk[], index = RAG_ALIAS): Promise<void> {
   if (!chunks.length) return
 
-  const operations = chunks.flatMap((chunk) => [{ index: { _index: RAG_ALIAS, _id: chunk.id } }, chunk])
+  const operations = chunks.flatMap((chunk) => [{ index: { _index: index, _id: chunk.id } }, chunk])
   const result = await elastic.bulk({ operations })
   if (result.errors) {
     const failedItem = result.items.find((item) => item.index?.error)
