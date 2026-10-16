@@ -8,7 +8,7 @@ export const syncRag = flow({
   options: { maxAttempts: 3, maxConcurrency: 1, timeoutMs: 2 * 60 * 60 * 1000 },
   input: t.Object({
     catalog_index: t.Optional(t.String()),
-    force_reindex: t.Optional(t.Boolean({ default: false })),
+    force_ocr: t.Optional(t.Boolean({ default: false })),
   }),
   run: async ({ input, step }) => {
     const result = await step.run("ingest-publications", async ({ logger }) => {
@@ -16,7 +16,7 @@ export const syncRag = flow({
 
       const ingestion = await ingestCatalogItems({
         catalogIndex: input.catalog_index,
-        forceReindex: input.force_reindex,
+        forceOcr: input.force_ocr,
         onProgress: (message) => logger.info(message),
       })
 

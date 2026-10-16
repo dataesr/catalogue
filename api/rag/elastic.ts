@@ -1,7 +1,5 @@
-import type { estypes } from "@elastic/elasticsearch"
 import { elastic, RAG_ALIAS, createRagIndexName } from "~/database/elastic"
 import type { IndexedChunk } from "./types"
-import type { CatalogItemFile } from "~/schemas/catalog"
 import type { RagCatalogItem } from "./types"
 import { RAG_MAPPING } from "~/database/mappings/rag"
 
@@ -46,15 +44,6 @@ export async function fetchCatalogItems(catalogIndex: string): Promise<RagCatalo
   return records
 }
 
-export async function ensureRagIndex(): Promise<void> {
-  if (await elastic.indices.exists({ index: RAG_ALIAS })) return
-
-  const index = await createRagIndex(createRagIndexName())
-  await elastic.indices.updateAliases({
-    actions: [{ add: { index, alias: RAG_ALIAS, is_write_index: true } }],
-  })
-}
-
 export async function createRagIndex(index = createRagIndexName()): Promise<string> {
   await elastic.indices.create({
     index,
@@ -65,7 +54,30 @@ export async function createRagIndex(index = createRagIndexName()): Promise<stri
   return index
 }
 
-export async function refreshRagIndex(index = RAG_ALIAS): Promise<void> {
+export async function createNextRagIndex(date = new Date()): Promise<string> {
+  for (let suffix = 0; ; suffix += 1) {
+    const index = createRagIndexName(date, suffix)
+    if (await elastic.indices.exists({ index })) continue
+    return createRagIndex(index)
+  }
+}
+
+export async function promoteRagIndex(index: string): Promise<void> {
+  const previousIndices = (await elastic.indices.existsAlias({ name: RAG_ALIAS }))
+    ? Object.keys(await elastic.indices.getAlias({ name: RAG_ALIAS }))
+    : []
+
+  await elastic.indices.updateAliases({
+    actions: [
+      ...previousIndices.map((previousIndex) => ({
+        remove: { index: previousIndex, alias: RAG_ALIAS },
+      })),
+      { add: { index, alias: RAG_ALIAS, is_write_index: true } },
+    ],
+  })
+}
+
+export async function refreshRagIndex(index: string): Promise<void> {
   await elastic.indices.refresh({ index })
 }
 
@@ -78,97 +90,4 @@ export async function indexRagChunks(chunks: IndexedChunk[], index = RAG_ALIAS):
     const failedItem = result.items.find((item) => item.index?.error)
     throw new Error(`Failed to index chunk: ${JSON.stringify(failedItem?.index?.error)}`)
   }
-}
-
-export async function removeStaleFileVersions(file: CatalogItemFile, recordId: string, index = RAG_ALIAS): Promise<void> {
-  const result = await elastic.deleteByQuery({
-    index,
-    query: {
-      bool: {
-        filter: [{ term: { "metadata.record_id": recordId } }, { term: { "metadata.file_key": file.key } }],
-        ...(file.checksum ? { must_not: [{ term: { "metadata.file_checksum": file.checksum } }] } : {}),
-      },
-    },
-    conflicts: "proceed",
-  })
-  const failures = result.failures ?? []
-  if (failures.length > 0) {
-    throw new Error(`Failed to remove stale chunks for file ${file.key}: ${JSON.stringify(failures[0])}`)
-  }
-}
-
-export async function removeStaleFiles(recordId: string, currentFileKeys: string[], index = RAG_ALIAS): Promise<void> {
-  const result = await elastic.deleteByQuery({
-    index,
-    query: {
-      bool: {
-        filter: [{ term: { "metadata.record_id": recordId } }],
-        ...(currentFileKeys.length > 0 ? { must_not: [{ terms: { "metadata.file_key": currentFileKeys } }] } : {}),
-      },
-    },
-    conflicts: "proceed",
-  })
-  const failures = result.failures ?? []
-  if (failures.length > 0) {
-    throw new Error(`Failed to remove stale chunks for record ${recordId}: ${JSON.stringify(failures[0])}`)
-  }
-}
-
-export function getFileIdentity(recordId: string, fileKey: string): string {
-  return `${recordId}\u0000${fileKey}`
-}
-
-export async function getIndexedChecksums(): Promise<Map<string, Set<string>>> {
-  const indexedChecksums = new Map<string, Set<string>>()
-  if (!(await elastic.indices.exists({ index: RAG_ALIAS }))) return indexedChecksums
-
-  let after: estypes.AggregationsCompositeAggregateKey | undefined
-  do {
-    const response = await elastic.search({
-      index: RAG_ALIAS,
-      size: 0,
-      aggregations: {
-        indexed_files: {
-          composite: {
-            size: 1_000,
-            sources: [
-              { record_id: { terms: { field: "metadata.record_id" } } },
-              { file_key: { terms: { field: "metadata.file_key" } } },
-            ],
-            ...(after ? { after } : {}),
-          },
-          aggregations: {
-            checksums: {
-              terms: { field: "metadata.file_checksum", size: 10 },
-            },
-          },
-        },
-      },
-    })
-
-    const aggregation = response.aggregations?.indexed_files as estypes.AggregationsCompositeAggregate | undefined
-    if (!aggregation) throw new Error("Elasticsearch did not return indexed-file aggregation results")
-
-    const fileBuckets = Array.isArray(aggregation.buckets) ? aggregation.buckets : Object.values(aggregation.buckets)
-    for (const bucket of fileBuckets) {
-      const recordId = bucket.key.record_id
-      const fileKey = bucket.key.file_key
-      if (typeof recordId !== "string" || typeof fileKey !== "string") continue
-
-      const checksums = bucket.checksums as estypes.AggregationsStringTermsAggregate | undefined
-      const checksumBuckets = checksums
-        ? Array.isArray(checksums.buckets)
-          ? checksums.buckets
-          : Object.values(checksums.buckets)
-        : []
-      const values = checksumBuckets
-        .map((checksum) => checksum.key)
-        .filter((checksum): checksum is string => typeof checksum === "string")
-      if (values.length > 0) indexedChecksums.set(getFileIdentity(recordId, fileKey), new Set(values))
-    }
-
-    after = aggregation.after_key
-  } while (after)
-
-  return indexedChecksums
 }

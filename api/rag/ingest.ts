@@ -2,25 +2,17 @@ import { access, mkdir, readFile, writeFile } from "node:fs/promises"
 import { join, resolve } from "node:path"
 import { config } from "~/config"
 import { runMistralOcr, runMistralEmbeddings, EMBEDDING_BATCH_SIZE } from "./mistral"
-import {
-  ensureRagIndex,
-  fetchCatalogItems,
-  getIndexedChecksums,
-  getFileIdentity,
-  indexRagChunks,
-  refreshRagIndex,
-  removeStaleFileVersions,
-  removeStaleFiles,
-} from "./elastic"
+import { createNextRagIndex, fetchCatalogItems, indexRagChunks, promoteRagIndex, refreshRagIndex } from "./elastic"
+import { elastic } from "~/database/elastic"
 import transformFile from "./transform"
 import type { DocumentChunk, MistralOcrDocument, RagCatalogItem } from "./types"
 import type { CatalogItemFile } from "~/schemas/catalog"
 
 export interface IngestionResult {
+  index: string
   records: number
-  pdfFiles: number
+  processedFiles: number
   indexedFiles: number
-  skippedFiles: number
   indexedChunks: number
   cachedOcr: number
 }
@@ -28,15 +20,18 @@ export interface IngestionResult {
 export async function extractFile(
   item: RagCatalogItem,
   file: CatalogItemFile,
+  forceOcr?: boolean,
 ): Promise<{ document: MistralOcrDocument; cached: boolean }> {
   const ocrPath = join(resolve(config.rag.ocrCacheDir), String(item.sourceId), `${file.key}.json`)
 
-  try {
-    await access(ocrPath)
-    const document = JSON.parse(await readFile(ocrPath, "utf8")) as MistralOcrDocument
-    return { document, cached: true }
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error
+  if (!forceOcr) {
+    try {
+      await access(ocrPath)
+      const document = JSON.parse(await readFile(ocrPath, "utf8")) as MistralOcrDocument
+      return { document, cached: true }
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error
+    }
   }
 
   // run OCR
@@ -46,7 +41,7 @@ export async function extractFile(
   return { document, cached: false }
 }
 
-async function indexChunks(chunks: DocumentChunk[]): Promise<void> {
+async function indexChunks(chunks: DocumentChunk[], index: string): Promise<void> {
   for (let offset = 0; offset < chunks.length; offset += EMBEDDING_BATCH_SIZE) {
     const batch = chunks.slice(offset, offset + EMBEDDING_BATCH_SIZE)
     const embeddings = await runMistralEmbeddings(batch.map((chunk) => chunk.document))
@@ -57,73 +52,63 @@ async function indexChunks(chunks: DocumentChunk[]): Promise<void> {
       }
       return { ...chunk, embedding: result }
     })
-    await indexRagChunks(embeddedChunks)
+    await indexRagChunks(embeddedChunks, index)
   }
 }
 
 export async function ingestCatalogItems(
   options: {
     catalogIndex?: string
-    forceReindex?: boolean
+    forceOcr?: boolean
     onProgress?: (message: string) => void
   } = {},
 ): Promise<IngestionResult> {
-  // create rag index
-  await ensureRagIndex()
-
   // fetch zenodo records from catalog index
   const items = await fetchCatalogItems(options.catalogIndex ?? config.elastic.indexes.catalog)
+  if (items.length === 0) {
+    throw new Error("No catalog items found to ingest")
+  }
+  options.onProgress?.(`Found ${items.length} catalog items to ingest`)
 
-  // fetch files checksums from rag index
-  const indexedChecksums = options.forceReindex ? new Map<string, Set<string>>() : await getIndexedChecksums()
+  const index = await createNextRagIndex()
+  options.onProgress?.(`Created new RAG index ${index} for ingestion`)
 
-  let pdfFiles = 0
+  let processedFiles = 0
   let indexedFiles = 0
-  let skippedFiles = 0
   let indexedChunks = 0
   let cachedOcr = 0
 
   for (const item of items) {
     const recordId = String(item.sourceId)
 
-    console.warn("Only PDF files will be ingested to RAG index")
+    // filter pdf files
     const files = (item.files ?? []).filter((file) => file.key.toLowerCase().endsWith(".pdf"))
-    const currentFileKeys = files.map((file) => file.key)
+    options.onProgress?.(`Processing catalog item ${recordId} with ${files.length} PDF files`)
 
     for (const file of files) {
-      pdfFiles += 1
-      const checksum = file.checksum ?? undefined
-      const fileIdentity = getFileIdentity(recordId, file.key)
-      if (checksum && indexedChecksums.get(fileIdentity)?.has(checksum)) {
-        // remove other versions of this file
-        await removeStaleFileVersions(file, recordId)
-        skippedFiles += 1
-        continue
-      }
-
-      options.onProgress?.(`Transforming and indexing publication ${recordId}, file ${file.key}`)
+      processedFiles += 1
+      options.onProgress?.(`Transforming and indexing publication ${recordId}, file ${file.key})`)
       // OCR document
-      const { document: ocr, cached } = await extractFile(item, file)
+      const { document: ocr, cached } = await extractFile(item, file, options?.forceOcr)
       if (cached) cachedOcr += 1
       // chunk document
       const chunks = transformFile(item, file, ocr)
       // index chunks
-      await indexChunks(chunks)
-      // remove old documents chunks
-      await removeStaleFileVersions(file, recordId)
-      if (checksum) {
-        const checksums = indexedChecksums.get(fileIdentity) ?? new Set<string>()
-        checksums.add(checksum)
-        indexedChecksums.set(fileIdentity, checksums)
-      }
+      await indexChunks(chunks, index)
       indexedFiles += 1
       indexedChunks += chunks.length
     }
-
-    // remove other files version of this record
-    await removeStaleFiles(recordId, currentFileKeys)
   }
 
-  await refreshRagIndex()
-  return { records: items.length, pdfFiles, indexedFiles, skippedFiles, indexedChunks, cachedOcr }
+  if (indexedChunks === 0) {
+    throw new Error(`RAG index ${index} contains no chunks; refusing to promote an empty index`)
+  }
+
+  await refreshRagIndex(index)
+  const indexedCount = (await elastic.count({ index })).count
+  if (indexedCount !== indexedChunks) {
+    throw new Error(`RAG index ${index} contains ${indexedCount} chunks, expected ${indexedChunks}`)
+  }
+  // await promoteRagIndex(index) // TODO: manual promotion for now
+  return { index, records: items.length, processedFiles, indexedFiles, indexedChunks, cachedOcr }
 }
