@@ -5,12 +5,14 @@ import { catalogItemSchema } from "./catalog"
 
 const ragChunkSchema = t.Object({
   id: t.String(),
+  catalog_item_id: t.Optional(t.String()),
   document: t.String(),
   metadata: t.Record(t.String(), t.Any()),
-  distance: t.Number(),
-  rerank_score: t.Optional(t.Number()),
-  bm25_score: t.Optional(t.Nullable(t.Number())),
-  rrf_score: t.Optional(t.Nullable(t.Number())),
+  distance: t.Optional(t.Nullable(t.Number())),
+  denseScore: t.Optional(t.Nullable(t.Number())),
+  rerankScore: t.Optional(t.Nullable(t.Number())),
+  sparseScore: t.Optional(t.Nullable(t.Number())),
+  rrfScore: t.Optional(t.Nullable(t.Number())),
 })
 export type RagChunk = typeof ragChunkSchema.static
 
@@ -22,6 +24,8 @@ export const ragSearchParamsSchema = t.Object({
   topic: t.Optional(t.Array(t.String())),
   publicationType: t.Optional(t.String()),
   accessRight: t.Optional(t.String()),
+  useRerank: t.Optional(t.Boolean({ default: true })),
+  useHybrid: t.Optional(t.Boolean({ default: true })),
 })
 export type RagSearchParams = typeof ragSearchParamsSchema.static
 
@@ -48,4 +52,3 @@ export const ragCompletionParamsSchema = t.Object({
   chunks: t.Array(ragChunkSchema),
 })
 export type RagCompletionParams = typeof ragCompletionParamsSchema.static
-

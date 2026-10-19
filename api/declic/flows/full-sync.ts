@@ -36,7 +36,7 @@ export const fullSync = flow({
 
     const odsResult = odsResults?.[0];
     const zenodoResult = zenodoResults?.[0];
-    const catalogResult = catalogResults?.[0];
+    const catalogResult = catalogResults?.[0]
 
     const allCompleted =
       odsResult?.status === 'completed' &&
@@ -81,6 +81,6 @@ export const fullSync = flow({
       ods: odsResult?.status ?? 'unknown',
       zenodo: zenodoResult?.status ?? 'unknown',
       catalog: catalogResult?.status ?? 'unknown',
-    };
+    }
   },
 });

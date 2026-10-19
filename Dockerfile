@@ -17,6 +17,7 @@ FROM gcr.io/distroless/cc-debian12:nonroot
 WORKDIR /app
 
 COPY --from=builder /app/dist/server ./server
+COPY --from=builder /app/PAGE_EESR19.zip ./PAGE_EESR19.zip
 
 EXPOSE 3000
 

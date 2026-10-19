@@ -5,7 +5,6 @@ import { resolveZenodoTopics } from '../mappings/resolve-topics';
 import { stripHtml } from '../utils';
 import { config } from '~/config';
 
-
 const ZENODO_COMMUNITY_ID = config.zenodoCommunityId;
 const ZENODO_BASE = `https://zenodo.org/api/communities/${ZENODO_COMMUNITY_ID}/records`;
 const PAGE_SIZE = 20;
@@ -135,39 +134,40 @@ async function fetchPage(
 // Normalizer — maps a Zenodo hit to the unified CatalogItem shape
 // ---------------------------------------------------------------------------
 
-function normalizeZenodoPublication(hit: ZenodoHit) {
-  const m = hit.metadata;
-  const journal = m.journal?.title ?? null;
-  const { topics, keywords } = resolveZenodoTopics(m.keywords ?? []);
+export function normalizeZenodoPublication(hit: ZenodoHit) {
+  const m = hit.metadata
+  const journal = m.journal?.title ?? null
+  const { topics, keywords } = resolveZenodoTopics(m.keywords ?? [])
 
   const files = (hit.files ?? []).map((f) => ({
+    id: f.id,
     key: f.key,
     size: f.size,
-    url: f.links?.self ?? '',
+    url: f.links?.self ?? "",
     type: getFileType(f.key),
     checksum: f.checksum ?? null,
-  }));
+  }))
 
-  const fileTypes = [...new Set(files.map((f) => f.type).filter((t): t is string => t !== null))];
+  const fileTypes = [...new Set(files.map((f) => f.type).filter((t): t is string => t !== null))]
 
   const authors = (m.creators ?? []).map((c) => ({
     name: c.name,
     affiliation: c.affiliation ?? null,
     orcid: c.orcid ?? null,
-  }));
+  }))
 
   return {
     id: `zenodo-${hit.id}`,
-    type: 'publication' as const,
-    source: 'zenodo' as const,
+    type: "publication" as const,
+    source: "zenodo" as const,
     sourceId: String(hit.id),
     title: m.title,
-    description: m.description ? stripHtml(m.description) : '',
+    description: m.description ? stripHtml(m.description) : "",
     topics,
     keywords,
     url: hit.links?.self_html ?? null,
-    thumbnailUrl: hit.links?.thumbnails?.['250'] ?? null,
-    language: 'fr',
+    thumbnailUrl: hit.links?.thumbnails?.["250"] ?? null,
+    language: "fr",
     license: m.license?.id ?? null,
     licenseUrl: null,
 
@@ -202,11 +202,11 @@ function normalizeZenodoPublication(hit: ZenodoHit) {
     doi: hit.doi ?? null,
     doiUrl: hit.doi_url ?? null,
     conceptDoi: hit.conceptdoi ?? null,
-    publicationType: m.resource_type?.subtype ?? 'article',
+    publicationType: m.resource_type?.subtype ?? null,
     journal,
     issue: m.journal?.issue ?? null,
     issn: extractIssn(m.alternate_identifiers),
-    accessRight: m.access_right ?? 'open',
+    accessRight: m.access_right ?? null,
 
     format: null,
     internalPath: null,
@@ -214,7 +214,7 @@ function normalizeZenodoPublication(hit: ZenodoHit) {
 
     relatedIds: [],
     indexedAt: new Date().toISOString(),
-  };
+  }
 }
 
 // ---------------------------------------------------------------------------
