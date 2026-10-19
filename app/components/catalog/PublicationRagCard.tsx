@@ -97,7 +97,8 @@ export default function PublicationRagCard({ chunks, item, query }: PublicationR
                 </div>
                 {chunk.distance != null &&
                   (() => {
-                    const confidence = getChunkConfidence(chunk.distance)
+                    const distance = chunk.denseScore ? 1 - Math.max(0, Math.min(1, chunk.denseScore)) : chunk.distance
+                    const confidence = getChunkConfidence(distance)
                     return (
                       <span className={cn("fr-badge fr-badge--sm fr-badge--no-icon", confidence.className)}>
                         Pertinence {confidence.label}

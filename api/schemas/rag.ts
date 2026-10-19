@@ -9,6 +9,7 @@ const ragChunkSchema = t.Object({
   document: t.String(),
   metadata: t.Record(t.String(), t.Any()),
   distance: t.Optional(t.Nullable(t.Number())),
+  denseScore: t.Optional(t.Nullable(t.Number())),
   rerankScore: t.Optional(t.Nullable(t.Number())),
   sparseScore: t.Optional(t.Nullable(t.Number())),
   rrfScore: t.Optional(t.Nullable(t.Number())),

@@ -65,7 +65,8 @@ export interface IndexedChunk extends DocumentChunk {
 
 export interface RetrievedChunk extends DocumentChunk {
   distance?: number | null
-  rerankScore?: number | null
+  denseScore?: number | null
   sparseScore?: number | null
   rrfScore?: number | null
+  rerankScore?: number | null
 }

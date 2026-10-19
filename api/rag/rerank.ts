@@ -1,6 +1,15 @@
 import { config } from "~/config"
 import type { RetrievedChunk } from "./types"
 
+export function normalizeRerankScores(scores: number[]): number[] {
+  if (scores.length === 0) return []
+  const minScore = Math.min(...scores)
+  const maxScore = Math.max(...scores)
+  const range = maxScore - minScore
+  if (range === 0) return scores.map(() => 0.5)
+  return scores.map((score) => (score - minScore) / range)
+}
+
 export function runLightReranker(query: string, sources: RetrievedChunk[]): RetrievedChunk[] {
   const queryLower = query.toLowerCase().trim()
   const queryWords = new Set(queryLower.split(/\s+/).filter(Boolean))
@@ -11,10 +20,14 @@ export function runLightReranker(query: string, sources: RetrievedChunk[]): Retr
   for (const source of sources) {
     const titleWords = new Set((source.metadata.title ?? "").toLowerCase().split(/\s+/).filter(Boolean))
     const titleScore = [...titleWords].filter((word) => queryWords.has(word)).length / Math.max(1, titleWords.size)
+
     const publicationEpoch = source.metadata.publication_epoch
     const temporalScore =
       yearEpoch !== undefined && typeof publicationEpoch === "number" && publicationEpoch >= yearEpoch ? 1 : 0
-    source.rerankScore = 0.85 * (1 - (source.distance ?? 0)) + 0.05 * titleScore + 0.1 * temporalScore
+
+    const semanticRelevance = 1 - Math.max(0, Math.min(1, source.distance ?? 1))
+    source.rerankScore = 0.85 * semanticRelevance + 0.05 * titleScore + 0.1 * temporalScore
+    source.distance = 1 - source.rerankScore
   }
 
   return [...sources].sort((a, b) => (b.rerankScore ?? 0) - (a.rerankScore ?? 0))
@@ -22,7 +35,7 @@ export function runLightReranker(query: string, sources: RetrievedChunk[]): Retr
 
 export async function runCrossEncoder(query: string, sources: RetrievedChunk[]): Promise<RetrievedChunk[]> {
   if (!config.mlHub.url || !config.mlHub.apiKey || sources.length === 0) {
-    console.warn("[RAG] ML Hub not configured; using lightweight reranking")
+    console.warn("ML Hub not configured; using lightweight reranking")
     return runLightReranker(query, sources)
   }
 
@@ -48,13 +61,18 @@ export async function runCrossEncoder(query: string, sources: RetrievedChunk[]):
       }
       numericScores.push(score)
     }
-
+    const normalizedScores = normalizeRerankScores(numericScores)
     return sources
-      .map((source, index) => ({ ...source, rerankScore: numericScores[index] }))
+      .map((source, index) => ({
+        ...source,
+        rerankScore: numericScores[index],
+        distance: 1 - (normalizedScores[index] ?? 0.5),
+      }))
       .sort((a, b) => (b.rerankScore ?? 0) - (a.rerankScore ?? 0))
+
   } catch (error) {
     console.warn(
-      `[RAG] ML Hub cross-encoder failed; using lightweight reranking: ${error instanceof Error ? error.message : String(error)}`,
+      `ML Hub cross-encoder failed; using lightweight reranking: ${error instanceof Error ? error.message : String(error)}`,
     )
     return runLightReranker(query, sources)
   }

@@ -6,6 +6,7 @@ import { runMistralEmbeddings } from "./mistral"
 import { runCrossEncoder } from "./rerank"
 import type { IndexedChunk, RetrievedChunk } from "./types"
 
+const DEFAULT_RESULTS = 5
 const MAX_RESULTS = 50
 const RETRIEVAL_MULTIPLIER = 5
 const RRF_K = 60
@@ -14,7 +15,7 @@ const SPARSE_WEIGHT = 0.3
 const MIN_CHUNK_LENGTH = 50
 
 function clampTopK(topK: number | undefined): number {
-  if (topK === undefined || !Number.isFinite(topK)) return 5
+  if (topK === undefined || !Number.isFinite(topK)) return DEFAULT_RESULTS
   return Math.max(1, Math.min(Math.trunc(topK), MAX_RESULTS))
 }
 
@@ -32,13 +33,11 @@ export function buildRagFilters(params: RagSearchParams, now = new Date()): esty
   return filters
 }
 
-export function cosineDistanceFromElasticScore(score: number): number {
-  return Math.max(0, Math.min(2, 2 - 2 * score))
-}
-
 export function reciprocalRankFusion(denseResults: RetrievedChunk[], sparseResults: RetrievedChunk[]): RetrievedChunk[] {
   if (!sparseResults.length) return denseResults
 
+  const maximumScore =
+    (denseResults.length ? DENSE_WEIGHT / (RRF_K + 1) : 0) + (sparseResults.length ? SPARSE_WEIGHT / (RRF_K + 1) : 0)
   const fused = new Map<string, RetrievedChunk>()
   denseResults.forEach((result, index) => {
     const rank = index + 1
@@ -57,11 +56,20 @@ export function reciprocalRankFusion(denseResults: RetrievedChunk[], sparseResul
       existing.sparseScore = result.sparseScore
       existing.rrfScore = (existing.rrfScore ?? 0) + contribution
     } else {
-      fused.set(result.id, { ...result, distance: 0, sparseScore: result.sparseScore, rrfScore: contribution })
+      fused.set(result.id, {
+        ...result,
+        sparseScore: result.sparseScore,
+        rrfScore: contribution,
+      })
     }
   })
 
-  return [...fused.values()].sort((a, b) => (b.rrfScore ?? 0) - (a.rrfScore ?? 0))
+  return [...fused.values()]
+    .map((result) => ({
+      ...result,
+      distance: 1 - Math.min(1, (result.rrfScore ?? 0) / maximumScore),
+    }))
+    .sort((a, b) => (b.rrfScore ?? 0) - (a.rrfScore ?? 0))
 }
 
 export async function searchRag(params: RagSearchParams): Promise<RagResponse> {
@@ -128,7 +136,8 @@ export async function searchRag(params: RagSearchParams): Promise<RagResponse> {
         catalog_item_id: hit._source.catalog_item_id ?? `zenodo-${hit._source.metadata.record_id}`,
         document: hit._source.document,
         metadata: hit._source.metadata,
-        distance: cosineDistanceFromElasticScore(hit._score),
+        denseScore: hit._score,
+        distance: 1 - Math.max(0, Math.min(1, hit._score)),
       },
     ]
   })
@@ -140,7 +149,7 @@ export async function searchRag(params: RagSearchParams): Promise<RagResponse> {
         catalog_item_id: hit._source.catalog_item_id ?? `zenodo-${hit._source.metadata.record_id}`,
         document: hit._source.document,
         metadata: hit._source.metadata,
-        bm25_score: hit._score,
+        sparseScore: hit._score,
       },
     ]
   })
