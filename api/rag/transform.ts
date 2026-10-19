@@ -17,7 +17,7 @@ const OCR_IMAGE_REF = /!\[[^\]]*\]\([^)]+\)/g
 const OCR_SUPERSCRIPT = /\$\^\{([^}]+)\}\$/g
 const MARKDOWN_HEADING = /^(#{1,6})\s+(.*)/
 
-function toUnixEpoch(date: string): number {
+export function toUnixEpoch(date: string): number {
   const normalizedDate = /^\d{4}-\d{2}$/.test(date) ? `${date}-01` : date
   const milliseconds = Date.parse(normalizedDate)
   if (!Number.isFinite(milliseconds)) {
@@ -26,7 +26,7 @@ function toUnixEpoch(date: string): number {
   return Math.floor(milliseconds / 1000)
 }
 
-function splitText(text: string, maxLength: number): string[] {
+export function splitText(text: string, maxLength: number): string[] {
   const remainingText = text.trim()
   if (remainingText.length <= maxLength) return remainingText ? [remainingText] : []
 

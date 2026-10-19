@@ -2,19 +2,57 @@ import { access, mkdir, readFile, writeFile } from "node:fs/promises"
 import { join, resolve } from "node:path"
 import { config } from "~/config"
 import { runMistralOcr, runMistralEmbeddings, EMBEDDING_BATCH_SIZE } from "./mistral"
-import { createNextRagIndex, fetchCatalogItems, indexRagChunks, promoteRagIndex, refreshRagIndex } from "./elastic"
+import { indexRagChunks } from "./elastic"
 import { elastic } from "~/database/elastic"
 import transformFile from "./transform"
 import type { DocumentChunk, MistralOcrDocument, RagCatalogItem } from "./types"
 import type { CatalogItemFile } from "~/schemas/catalog"
 
-export interface IngestionResult {
-  index: string
-  records: number
-  processedFiles: number
-  indexedFiles: number
-  indexedChunks: number
-  cachedOcr: number
+const PUBLICATION_SCAN_SIZE = 500
+const BOOK_IDS = ["18660928"] // L'état de l'emploi scientifque en France - Edition 2025
+
+async function fetchCatalogItems(catalogIndex: string): Promise<RagCatalogItem[]> {
+  const items: RagCatalogItem[] = []
+  let scrollId: string | undefined
+
+  try {
+    let response = await elastic.search<RagCatalogItem>({
+      index: catalogIndex,
+      scroll: "2m",
+      size: PUBLICATION_SCAN_SIZE,
+      query: {
+        bool: {
+          filter: [{ term: { source: "zenodo" } }, { term: { type: "publication" } }],
+          should: [
+            { term: { publicationType: "article" } },
+            {
+              bool: {
+                filter: [{ term: { publicationType: "book" } }, { terms: { sourceId: BOOK_IDS } }],
+              },
+            },
+          ],
+          minimum_should_match: 1,
+        },
+      },
+      _source: ["id", "source", "sourceId", "title", "published", "accessRight", "publicationType", "keywords", "files"],
+    })
+
+    while (response.hits.hits.length > 0) {
+      scrollId = response._scroll_id ?? scrollId
+      for (const hit of response.hits.hits) {
+        const source = hit._source
+        if (!source) throw new Error(`Zenodo publication ${hit._id ?? "unknown"} is missing its Elasticsearch source`)
+        items.push(source)
+      }
+
+      if (!response._scroll_id) break
+      response = await elastic.scroll<RagCatalogItem>({ scroll_id: response._scroll_id, scroll: "2m" })
+    }
+  } finally {
+    if (scrollId) await elastic.clearScroll({ scroll_id: scrollId })
+  }
+
+  return items
 }
 
 export async function extractFile(
@@ -41,7 +79,7 @@ export async function extractFile(
   return { document, cached: false }
 }
 
-async function indexChunks(chunks: DocumentChunk[], index: string): Promise<void> {
+export async function indexDocumentChunks(chunks: DocumentChunk[], index: string): Promise<void> {
   for (let offset = 0; offset < chunks.length; offset += EMBEDDING_BATCH_SIZE) {
     const batch = chunks.slice(offset, offset + EMBEDDING_BATCH_SIZE)
     const embeddings = await runMistralEmbeddings(batch.map((chunk) => chunk.document))
@@ -56,7 +94,16 @@ async function indexChunks(chunks: DocumentChunk[], index: string): Promise<void
   }
 }
 
+export interface IngestionResult {
+  fetchedItems: number
+  processedFiles: number
+  indexedFiles: number
+  indexedChunks: number
+  cachedOcr: number
+}
+
 export async function ingestCatalogItems(
+  index: string,
   options: {
     catalogIndex?: string
     forceOcr?: boolean
@@ -70,9 +117,6 @@ export async function ingestCatalogItems(
   }
   options.onProgress?.(`Found ${items.length} catalog items to ingest`)
 
-  const index = await createNextRagIndex()
-  options.onProgress?.(`Created new RAG index ${index} for ingestion`)
-
   let processedFiles = 0
   let indexedFiles = 0
   let indexedChunks = 0
@@ -83,32 +127,24 @@ export async function ingestCatalogItems(
 
     // filter pdf files
     const files = (item.files ?? []).filter((file) => file.key.toLowerCase().endsWith(".pdf"))
-    options.onProgress?.(`Processing catalog item ${recordId} with ${files.length} PDF files`)
 
     for (const file of files) {
       processedFiles += 1
-      options.onProgress?.(`Transforming and indexing publication ${recordId}, file ${file.key})`)
       // OCR document
       const { document: ocr, cached } = await extractFile(item, file, options?.forceOcr)
       if (cached) cachedOcr += 1
       // chunk document
       const chunks = transformFile(item, file, ocr)
       // index chunks
-      await indexChunks(chunks, index)
+      await indexDocumentChunks(chunks, index)
       indexedFiles += 1
       indexedChunks += chunks.length
     }
   }
 
   if (indexedChunks === 0) {
-    throw new Error(`RAG index ${index} contains no chunks; refusing to promote an empty index`)
+    throw new Error(`RAG index ${index} contains no chunks`)
   }
 
-  await refreshRagIndex(index)
-  const indexedCount = (await elastic.count({ index })).count
-  if (indexedCount !== indexedChunks) {
-    throw new Error(`RAG index ${index} contains ${indexedCount} chunks, expected ${indexedChunks}`)
-  }
-  // await promoteRagIndex(index) // TODO: manual promotion for now
-  return { index, records: items.length, processedFiles, indexedFiles, indexedChunks, cachedOcr }
+  return { fetchedItems: items.length, processedFiles, indexedFiles, indexedChunks, cachedOcr }
 }

@@ -25,6 +25,7 @@ export const RAG_MAPPING: { settings: estypes.IndicesIndexSettings; mappings: es
     },
   },
   mappings: {
+    _source: { excludes: ["embedding"] },
     properties: {
       id: { type: "keyword" },
       catalog_item_id: { type: "keyword" },

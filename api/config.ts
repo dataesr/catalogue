@@ -19,6 +19,7 @@ export const config = {
     password: process.env.ELASTIC_PASSWORD || "",
     indexes: {
       catalog: process.env.ES_PLATEFORM_CATALOG_INDEX || "catalog",
+      catalogRag: process.env.ES_PLATEFORM_CATALOG_RAG_INDEX || "catalog-rag",
     },
     apiKey: process.env.ES_API_KEY || "",
   },

@@ -1,5 +1,4 @@
 import type { estypes } from "@elastic/elasticsearch"
-import { config } from "~/config"
 import { elastic, RAG_ALIAS } from "~/database/elastic"
 import type { RagResponse, RagSearchParams } from "~/schemas/rag"
 import { runMistralEmbeddings } from "./mistral"

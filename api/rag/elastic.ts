@@ -1,48 +1,6 @@
 import { elastic, RAG_ALIAS, createRagIndexName } from "~/database/elastic"
 import type { IndexedChunk } from "./types"
-import type { RagCatalogItem } from "./types"
 import { RAG_MAPPING } from "~/database/mappings/rag"
-
-const PUBLICATION_SCAN_SIZE = 500
-
-export async function fetchCatalogItems(catalogIndex: string): Promise<RagCatalogItem[]> {
-  const records: RagCatalogItem[] = []
-  let scrollId: string | undefined
-
-  try {
-    let response = await elastic.search<RagCatalogItem>({
-      index: catalogIndex,
-      scroll: "2m",
-      size: PUBLICATION_SCAN_SIZE,
-      query: {
-        bool: {
-          filter: [
-            { term: { source: "zenodo" } },
-            { term: { type: "publication" } },
-            { term: { publicationType: "article" } },
-          ],
-        },
-      },
-      _source: ["id", "source", "sourceId", "title", "published", "accessRight", "publicationType", "keywords", "files"],
-    })
-
-    while (response.hits.hits.length > 0) {
-      scrollId = response._scroll_id ?? scrollId
-      for (const hit of response.hits.hits) {
-        const source = hit._source
-        if (!source) throw new Error(`Zenodo publication ${hit._id ?? "unknown"} is missing its Elasticsearch source`)
-        records.push(source)
-      }
-
-      if (!response._scroll_id) break
-      response = await elastic.scroll<RagCatalogItem>({ scroll_id: response._scroll_id, scroll: "2m" })
-    }
-  } finally {
-    if (scrollId) await elastic.clearScroll({ scroll_id: scrollId })
-  }
-
-  return records
-}
 
 export async function createRagIndex(index = createRagIndexName()): Promise<string> {
   await elastic.indices.create({
@@ -62,17 +20,17 @@ export async function createNextRagIndex(date = new Date()): Promise<string> {
   }
 }
 
-export async function promoteRagIndex(index: string): Promise<void> {
-  const previousIndices = (await elastic.indices.existsAlias({ name: RAG_ALIAS }))
-    ? Object.keys(await elastic.indices.getAlias({ name: RAG_ALIAS }))
+export async function promoteRagIndex(index: string, alias = RAG_ALIAS): Promise<void> {
+  const previousIndices = (await elastic.indices.existsAlias({ name: alias }))
+    ? Object.keys(await elastic.indices.getAlias({ name: alias }))
     : []
 
   await elastic.indices.updateAliases({
     actions: [
       ...previousIndices.map((previousIndex) => ({
-        remove: { index: previousIndex, alias: RAG_ALIAS },
+        remove: { index: previousIndex, alias: alias },
       })),
-      { add: { index, alias: RAG_ALIAS, is_write_index: true } },
+      { add: { index, alias: alias, is_write_index: true } },
     ],
   })
 }
