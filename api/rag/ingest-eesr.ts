@@ -1,8 +1,8 @@
 import { readFile } from "node:fs/promises"
 import { basename, join } from "node:path"
 import { strFromU8, unzipSync } from "fflate"
-import { indexDocumentChunks } from "./ingest"
-import { MAX_CHUNK_LENGTH, MIN_CHUNK_LENGTH, splitText, toUnixEpoch } from "./transform"
+import { MAX_CHUNK_LENGTH, MIN_CHUNK_LENGTH, indexDocumentChunks } from "./ingest-catalog"
+import { splitText, toUnixEpoch } from "./utils"
 import type { DocumentChunk, DocumentChunkMetadata } from "./types"
 
 const EESR_ZENODO_ID = "19450708"

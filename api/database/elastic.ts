@@ -32,7 +32,7 @@ export function createIndexName(): string {
 export function createRagIndexName(date = new Date(), suffix = 0): string {
   const dateSuffix = date.toISOString().substring(0, 10).replace(/-/g, "")
   const uniqueSuffix = suffix > 0 ? `-${suffix}` : ""
-  return `${RAG_ALIAS}-${dateSuffix}${uniqueSuffix}`
+  return `catalog-rag-${dateSuffix}${uniqueSuffix}`
 }
 
 export async function swapAlias(alias: string, newIndex: string): Promise<string[]> {

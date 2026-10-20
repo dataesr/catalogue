@@ -35,11 +35,7 @@ export async function promoteRagIndex(index: string, alias = RAG_ALIAS): Promise
   })
 }
 
-export async function refreshRagIndex(index: string): Promise<void> {
-  await elastic.indices.refresh({ index })
-}
-
-export async function indexRagChunks(chunks: IndexedChunk[], index = RAG_ALIAS): Promise<void> {
+export async function indexRagChunks(chunks: IndexedChunk[], index: string): Promise<void> {
   if (!chunks.length) return
 
   const operations = chunks.flatMap((chunk) => [{ index: { _index: index, _id: chunk.id } }, chunk])
