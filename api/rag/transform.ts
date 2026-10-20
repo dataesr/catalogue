@@ -63,7 +63,7 @@ function buildFileMetadata(item: RagCatalogItem, file: CatalogItemFile): Documen
     publication_epoch: item.published ? toUnixEpoch(item.published) : 0,
     file_key: file.key,
     file_type: file.type ?? "unknown",
-    file_url: file.url,
+    file_url: file.url.replace("/api", "").replace(/\/files.*$/, ""),
     file_access: item.accessRight ?? "closed",
     ...(file.checksum ? { file_checksum: file.checksum } : {}),
     ...(item.keywords.length > 0 ? { keywords: item.keywords } : {}),
