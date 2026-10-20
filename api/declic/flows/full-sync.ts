@@ -2,7 +2,6 @@ import { flow } from '@dataesr/declic-sdk';
 // import { createIndexName, ES_ALIAS, elastic, swapAlias } from '~/database/elastic';
 import { createIndexName, elastic } from '~/database/elastic';
 import { CATALOG_MAPPING } from '~/database/mappings/catalog';
-import { createNextRagIndex } from '../../rag/elastic';
 import { syncCatalogResources } from './sync-catalog-resources';
 import { syncOdsDatasets } from './sync-ods-datasets';
 import { syncRag } from "./sync-rag"
@@ -12,7 +11,7 @@ export const fullSync = flow({
   id: 'full-sync',
   // description: 'Full catalog sync: create fresh index → populate in parallel → atomic alias swap',
   description: 'Full catalog sync: create fresh index → populate sources → sync RAG',
-  options: { maxAttempts: 1, maxConcurrency: 1, timeoutMs: 2 * 60 * 60 * 1000 },
+  options: { maxAttempts: 1, maxConcurrency: 1, timeoutMs: 60 * 60 * 1000 },
   run: async ({ step }) => {
     const { index } = await step.run('create-index', async ({ logger }) => {
       const newIndex = createIndexName();

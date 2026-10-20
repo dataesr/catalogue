@@ -8,7 +8,7 @@ import { ingestEESR } from "../../rag/ingest-eesr"
 export const syncRag = flow({
   id: "sync-rag",
   description: "Create and populate Catalogue RAG index",
-  options: { maxAttempts: 3, maxConcurrency: 1, timeoutMs: 2 * 60 * 60 * 1000 },
+  options: { maxAttempts: 3, maxConcurrency: 1, timeoutMs: 60 * 60 * 1000 },
   input: t.Object({
     targetIndex: t.Optional(t.String()),
     catalogIndex: t.Optional(t.String()),
@@ -16,7 +16,7 @@ export const syncRag = flow({
   }),
   run: async ({ input, step }) => {
     const index = await step.run("create-index", async ({ logger }) => {
-      const index = input.targetIndex ?? (await createNextRagIndex())
+      const index = input.targetIndex || (await createNextRagIndex())
       logger.info(`${input.targetIndex ? "Using" : "Created"} RAG index ${index}`)
       return index
     })

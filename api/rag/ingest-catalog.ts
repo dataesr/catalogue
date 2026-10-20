@@ -237,7 +237,7 @@ export async function ingestCatalogItems(
   } = {},
 ): Promise<IngestionResult> {
   // fetch zenodo records from catalog index
-  const items = await fetchCatalogItems(options.catalogIndex ?? config.elastic.indexes.catalog)
+  const items = await fetchCatalogItems(options.catalogIndex || config.elastic.indexes.catalog)
   if (items.length === 0) {
     throw new Error("No catalog items found to ingest")
   }
