@@ -30,7 +30,7 @@ export async function promoteRagIndex(index: string, alias = RAG_ALIAS): Promise
       ...previousIndices.map((previousIndex) => ({
         remove: { index: previousIndex, alias: alias },
       })),
-      { add: { index, alias: alias, is_write_index: true } },
+      { add: { index, alias: alias } },
     ],
   })
 }
