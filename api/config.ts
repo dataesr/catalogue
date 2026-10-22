@@ -48,8 +48,7 @@ export const config = {
 
 const REQUIRED_WHEN_DEPLOYED = [
   'ENV', 'ELASTIC_NODE', 'ELASTIC_USERNAME', 'ELASTIC_PASSWORD',
-  'ZENODO_COMMUNITY_ID', 'DECLIC_URL', 'DECLIC_KEY',
-  'FLASH_RAG_URL', 'FLASH_RAG_API_KEY', 'ODS_API_KEY',
+  'ZENODO_COMMUNITY_ID', 'DECLIC_URL', 'DECLIC_KEY', 'ODS_API_KEY',
 ] as const;
 
 export function validateConfig() {
