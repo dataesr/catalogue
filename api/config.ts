@@ -1,69 +1,71 @@
 const port = parseInt(process.env.PORT || '3000', 10);
 
+const isDeployed = process.env.NODE_ENV === 'production'
+
+const APP_ENVS = ["local", "development", "staging", "production"] as const;
+type AppEnv = (typeof APP_ENVS)[number];
+const env = (isDeployed ? process.env.ENV : 'local') as AppEnv
+
 export const config = {
-  nodeEnv: process.env.NODE_ENV || "development",
-  isDevelopment: (process.env.NODE_ENV || "development") === "development",
-  isStaging: process.env.ENV === "staging",
-  isProduction: process.env.NODE_ENV === "production",
-  env: process.env.ENV || process.env.NODE_ENV || "development",
-  appName: "catalogue",
-  zenodoCommunityId: process.env.ZENODO_COMMUNITY_ID || "",
+  env,
+  isDeployed,
+  isDevelopment: env === 'development',
+  isStaging: env === 'staging',
+  isProduction: env === 'production',
+  appName: 'catalogue',
+  zenodoCommunityId: process.env.ZENODO_COMMUNITY_ID || '',
   port,
   declic: {
-    url: process.env.DECLIC_URL || "ws://localhost:4100/api/connect",
-    key: process.env.DECLIC_KEY || "",
+    env: isDeployed ? env : 'development',
+    enable: process.env.DECLIC_WORKER_ENABLED !== 'false',
+    url: process.env.DECLIC_URL || 'ws://localhost:4100/api/connect',
+    key: process.env.DECLIC_KEY || '',
   },
   elastic: {
-    node: process.env.ELASTIC_NODE || "http://localhost:9200",
-    username: process.env.ELASTIC_USERNAME || "",
-    password: process.env.ELASTIC_PASSWORD || "",
+    node: process.env.ELASTIC_NODE || 'http://localhost:9200',
+    username: process.env.ELASTIC_USERNAME || '',
+    password: process.env.ELASTIC_PASSWORD || '',
     indexes: {
-      catalog: process.env.ES_PLATEFORM_CATALOG_INDEX || "catalog",
-      catalogRag: process.env.ES_PLATEFORM_CATALOG_RAG_INDEX || "catalog-rag",
+      catalog: process.env.ES_PLATEFORM_CATALOG_INDEX || 'catalog',
+      catalogRag: process.env.ES_PLATEFORM_CATALOG_RAG_INDEX || 'catalog-rag',
     },
-    apiKey: process.env.ES_API_KEY || "",
+    apiKey: process.env.ES_API_KEY || '',
   },
   mlHub: {
-    url: process.env.ML_HUB_API_URL || "",
-    apiKey: process.env.ML_HUB_API_KEY || "",
+    url: process.env.ML_HUB_API_URL || '',
+    apiKey: process.env.ML_HUB_API_KEY || '',
   },
   mistral: {
-    apiKey: process.env.MISTRAL_API_KEY || "",
+    apiKey: process.env.MISTRAL_API_KEY || '',
   },
   rag: {
-    ocrCacheDir: process.env.RAG_OCR_CACHE_DIR || "pvc/rag/ocr",
+    ocrCacheDir: process.env.RAG_OCR_CACHE_DIR || 'pvc/rag/ocr',
   },
   ods: {
-    apiKey: process.env.ODS_API_KEY || "",
+    apiKey: process.env.ODS_API_KEY || '',
   },
 } as const
 
+const REQUIRED_WHEN_DEPLOYED = [
+  'ENV', 'ELASTIC_NODE', 'ELASTIC_USERNAME', 'ELASTIC_PASSWORD',
+  'ZENODO_COMMUNITY_ID', 'DECLIC_URL', 'DECLIC_KEY',
+  'FLASH_RAG_URL', 'FLASH_RAG_API_KEY', 'ODS_API_KEY',
+] as const;
+
 export function validateConfig() {
-  if (config.isProduction && !process.env.ELASTIC_NODE) {
-    throw new Error('ELASTIC_NODE is required in production');
+  const errors = []
+
+  if (!APP_ENVS.includes(env as AppEnv)) {
+    errors.push(`ENV must be one of ${APP_ENVS.join(", ")} (got ${env ?? "nothing"})`);
   }
-  if (config.isProduction && !process.env.ELASTIC_USERNAME) {
-    throw new Error('ELASTIC_USERNAME is required in production');
+  if (isDeployed) {
+    for (const name of REQUIRED_WHEN_DEPLOYED) {
+      if (!process.env[name]) errors.push(`${name} is required`);
+    }
+    if (Boolean(config.mlHub.url) !== Boolean(config.mlHub.apiKey)) {
+      errors.push('ML_HUB_API_URL and ML_HUB_API_KEY must be configured together');
+    }
   }
-  if (config.isProduction && !process.env.ELASTIC_PASSWORD) {
-    throw new Error('ELASTIC_PASSWORD is required in production');
-  }
-  if (config.isProduction && !process.env.ZENODO_COMMUNITY_ID) {
-    throw new Error('ZENODO_COMMUNITY_ID is required in production');
-  }
-  if (config.isProduction && !process.env.DECLIC_KEY) {
-    throw new Error('DECLIC_KEY is required in production');
-  }
-  if (config.isProduction && !process.env.DECLIC_URL) {
-    throw new Error('DECLIC_URL is required in production');
-  }
-  if (Boolean(config.mlHub.url) !== Boolean(config.mlHub.apiKey)) {
-    throw new Error('ML_HUB_API_URL and ML_HUB_API_KEY must be configured together');
-  }
-  if (config.isProduction && !process.env.ODS_API_KEY) {
-    throw new Error('ODS_API_KEY is required in production');
-  }
-  if (config.isProduction && !process.env.MISTRAL_API_KEY) {
-    throw new Error('MISTRAL_API_KEY is required in production');
-  }
+
+  if (errors.length > 0) throw new Error(`Invalid configuration:\n- ${errors.join('\n- ')}`)
 }

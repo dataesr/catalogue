@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun --hot server.ts",
     "build": "bun build app/main.tsx --outdir=dist/client --target=browser --minify --sourcemap",
-    "compile": "bun build --compile --target=bun-linux-x64 server.ts --outfile=dist/server",
+    "compile": "bun build --compile --production --target=bun-linux-x64 server.ts --outfile=dist/server",
     "start": "NODE_ENV=production bun server.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist node_modules"

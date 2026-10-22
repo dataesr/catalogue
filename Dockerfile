@@ -9,7 +9,7 @@ RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
 
 COPY . .
 
-RUN bun build --compile --target=bun server.ts --outfile=dist/server
+RUN bun build --compile --production --target=bun server.ts --outfile=dist/server
 
 # Stage 2: run
 FROM gcr.io/distroless/cc-debian12:nonroot
