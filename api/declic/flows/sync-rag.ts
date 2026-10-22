@@ -1,7 +1,7 @@
 import { flow } from "@dataesr/declic-sdk"
 import { t } from "elysia"
 import { elastic, RAG_ALIAS } from "~/database/elastic"
-import { createNextRagIndex, promoteRagIndex } from "../../rag/elastic"
+import { createRagIndex, promoteRagIndex } from "../../rag/elastic"
 import { ingestCatalogItems } from "../../rag/ingest-catalog"
 import { ingestEESR } from "../../rag/ingest-eesr"
 
@@ -16,8 +16,8 @@ export const syncRag = flow({
   }),
   run: async ({ input, step }) => {
     const index = await step.run("create-index", async ({ logger }) => {
-      const index = input.targetIndex || (await createNextRagIndex())
-      logger.info(`${input.targetIndex ? "Using" : "Created"} RAG index ${index}`)
+      const index = await createRagIndex(input.targetIndex)
+      logger.info(`Created RAG index ${index}`)
       return index
     })
 

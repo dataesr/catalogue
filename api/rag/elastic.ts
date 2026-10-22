@@ -1,23 +1,16 @@
-import { elastic, RAG_ALIAS, createRagIndexName } from "~/database/elastic"
+import { elastic, RAG_ALIAS, createIndexName } from "~/database/elastic"
 import type { IndexedChunk } from "./types"
 import { RAG_MAPPING } from "~/database/mappings/rag"
 
-export async function createRagIndex(index = createRagIndexName()): Promise<string> {
+export async function createRagIndex(index: string = ""): Promise<string> {
+  const ragIndex = index || (await createIndexName("catalog-rag"))
   await elastic.indices.create({
-    index,
+    index: ragIndex,
     settings: RAG_MAPPING.settings,
     mappings: RAG_MAPPING.mappings,
   })
 
-  return index
-}
-
-export async function createNextRagIndex(date = new Date()): Promise<string> {
-  for (let suffix = 0; ; suffix += 1) {
-    const index = createRagIndexName(date, suffix)
-    if (await elastic.indices.exists({ index })) continue
-    return createRagIndex(index)
-  }
+  return ragIndex
 }
 
 export async function promoteRagIndex(index: string, alias = RAG_ALIAS): Promise<void> {

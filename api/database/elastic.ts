@@ -23,16 +23,14 @@ export const RAG_ALIAS = config.elastic.indexes.catalogRag
 // Index / alias management helpers
 // ---------------------------------------------------------------------------
 
-export function createIndexName(): string {
-  // The ES index name should be suffix by YYYYMMDD instead of timestamp
-  const today = new Date()
-  return `catalog-${today.toISOString().substring(0, 10).replace(/-/g, '')}`
-}
-
-export function createRagIndexName(date = new Date(), suffix = 0): string {
+export async function createIndexName(base: string = "catalog", date = new Date()): Promise<string> {
   const dateSuffix = date.toISOString().substring(0, 10).replace(/-/g, "")
-  const uniqueSuffix = suffix > 0 ? `-${suffix}` : ""
-  return `catalog-rag-${dateSuffix}${uniqueSuffix}`
+  // Add suffix if index already exists
+  for (let suffix = 0; ; suffix += 1) {
+    const index = `${base}-${dateSuffix}${suffix > 0 ? `-${suffix}` : ""}`
+    if (await elastic.indices.exists({ index })) continue
+    return index
+  }
 }
 
 export async function swapAlias(alias: string, newIndex: string): Promise<string[]> {

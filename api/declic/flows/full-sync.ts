@@ -14,7 +14,7 @@ export const fullSync = flow({
   options: { maxAttempts: 1, maxConcurrency: 1, timeoutMs: 60 * 60 * 1000 },
   run: async ({ step }) => {
     const { index } = await step.run('create-index', async ({ logger }) => {
-      const newIndex = createIndexName();
+      const newIndex = await createIndexName();
       logger.info(`Creating fresh index "${newIndex}"`);
       await elastic.indices.create({
         index: newIndex,
