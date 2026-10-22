@@ -12,7 +12,7 @@ async function bootstrap() {
   try {
     validateConfig();
 
-    if (process.env.DECLIC_WORKER_ENABLED !== 'false' && config.declic.key) {
+    if (config.declic.enable && config.declic.key) {
       worker = createDeclicWorker().connect();
     }
 
@@ -21,7 +21,7 @@ async function bootstrap() {
         '/api/*': app.handle,
         '/*': client,
       },
-      development: config.isDevelopment,
+      development: !config.isDeployed,
       port: config.port,
       idleTimeout: 60,
       maxRequestBodySize: 1024 * 1024,
@@ -34,7 +34,7 @@ async function bootstrap() {
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-    📊 Environment: ${config.nodeEnv}
+    📊 Environment: ${config.env}
 
     🌐 Web Client: ${server.url}
 

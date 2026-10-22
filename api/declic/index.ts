@@ -4,15 +4,17 @@ import { fullSync } from './flows/full-sync';
 import { syncCatalogResources } from './flows/sync-catalog-resources';
 import { syncOdsDatasets } from './flows/sync-ods-datasets';
 import { syncZenodoPublications } from './flows/sync-zenodo-publications';
+import { syncRag } from "./flows/sync-rag"
 
-export const platformFlows = [fullSync, syncOdsDatasets, syncZenodoPublications, syncCatalogResources];
+export const platformFlows = [fullSync, syncOdsDatasets, syncZenodoPublications, syncCatalogResources, syncRag]
 
 export function createDeclicWorker() {
+
   return new Declic({
     url: config.declic.url,
     key: config.declic.key,
     app: 'plateform',
-    env: config.env === 'staging' ? 'staging' : config.isProduction ? 'production' : 'development',
+    env: config.env === 'local' ? 'development' : config.env,
     concurrency: 5,
   }).register(platformFlows);
 }

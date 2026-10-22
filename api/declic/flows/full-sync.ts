@@ -4,16 +4,17 @@ import { createIndexName, elastic } from '~/database/elastic';
 import { CATALOG_MAPPING } from '~/database/mappings/catalog';
 import { syncCatalogResources } from './sync-catalog-resources';
 import { syncOdsDatasets } from './sync-ods-datasets';
+import { syncRag } from "./sync-rag"
 import { syncZenodoPublications } from './sync-zenodo-publications';
 
 export const fullSync = flow({
   id: 'full-sync',
   // description: 'Full catalog sync: create fresh index → populate in parallel → atomic alias swap',
-  description: 'Full catalog sync: create fresh index → populate in parallel',
-  options: { maxAttempts: 1, maxConcurrency: 1, timeoutMs: 30 * 60 * 1000 },
+  description: 'Full catalog sync: create fresh index → populate sources → sync RAG',
+  options: { maxAttempts: 1, maxConcurrency: 1, timeoutMs: 60 * 60 * 1000 },
   run: async ({ step }) => {
     const { index } = await step.run('create-index', async ({ logger }) => {
-      const newIndex = createIndexName();
+      const newIndex = await createIndexName();
       logger.info(`Creating fresh index "${newIndex}"`);
       await elastic.indices.create({
         index: newIndex,
@@ -59,6 +60,8 @@ export const fullSync = flow({
       throw new Error(`One or more sync sources failed: ${JSON.stringify(statuses)}`);
     }
 
+    const [ragResult] = await step.distribute("sync-rag", syncRag, [{ catalogIndex: index }])
+
     const stats = await step.run('swap-alias', async ({ logger }) => {
       await elastic.indices.refresh({ index });
 
@@ -81,6 +84,7 @@ export const fullSync = flow({
       ods: odsResult?.status ?? 'unknown',
       zenodo: zenodoResult?.status ?? 'unknown',
       catalog: catalogResult?.status ?? 'unknown',
-    };
+      rag: ragResult?.status ?? "unknown",
+    }
   },
 });

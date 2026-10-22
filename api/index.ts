@@ -10,7 +10,7 @@ import { ragRoutes } from "~/routes/rag"
 
 export const app = new Elysia({ prefix: "/api/plateform" })
   .use(cors({ credentials: true }))
-  .use(createLogger({ isProduction: config.isProduction }))
+  .use(createLogger({ isProduction: config.isDeployed }))
   .use(
     openapi({
       documentation: {
@@ -22,7 +22,7 @@ export const app = new Elysia({ prefix: "/api/plateform" })
       },
     }),
   )
-  .use(createErrorHandler({ isProduction: config.isProduction }))
+  .use(createErrorHandler({ isProduction: config.isDeployed }))
   .use(searchRoutes)
   .use(searchGroupedRoutes)
   .use(ragRoutes)

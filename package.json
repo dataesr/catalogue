@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun --hot server.ts",
     "build": "bun build app/main.tsx --outdir=dist/client --target=browser --minify --sourcemap",
-    "compile": "bun build --compile --target=bun-linux-x64 server.ts --outfile=dist/server",
+    "compile": "bun build --compile --production --target=bun-linux-x64 server.ts --outfile=dist/server",
     "start": "NODE_ENV=production bun server.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist node_modules"
@@ -23,6 +23,7 @@
     "@tanstack/react-query": "^5.90.16",
     "classnames": "^2.5.1",
     "elysia": "^1.4.30",
+    "fflate": "^0.8.3",
     "he": "^1.2.0",
     "nuqs": "^2.8.6",
     "react": "^19.2.3",

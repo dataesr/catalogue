@@ -17,7 +17,6 @@ import ResultCard from "@/components/catalog/ResultCard"
 import { ragResultsByPublications } from "./rag-helpers"
 import { formatNumber } from "@/components/catalog/utils"
 import "@/components/catalog/styles.css"
-import { isProduction } from "@/utils/helpers"
 
 const PAGE_SIZE = 20
 
@@ -61,6 +60,17 @@ function ResultsSkeleton() {
           </div>
         </div>
       ))}
+    </div>
+  )
+}
+
+function RagResultsLoading() {
+  return (
+    <div className="fr-grid-row fr-grid-row--center fr-py-8w" aria-busy="true">
+      <div className="fx-flex fx-flex-col fx-items-center fx-gap-1w" role="status" aria-live="polite">
+        <span className="fr-icon-refresh-line fr-icon--lg fr-icon--spin" aria-hidden="true" />
+        <span className="fr-text--sm">Recherche sémantique en cours…</span>
+      </div>
     </div>
   )
 }
@@ -265,22 +275,20 @@ export default function Publications() {
                   </span>
                 )}
 
-                {!isProduction && (
-                  <div className="fr-toggle fr-toggle--label-left">
-                    <input
-                      className="fr-toggle__input"
-                      color=""
-                      type="checkbox"
-                      id="toggle-semantic-search"
-                      checked={isSemanticSearch}
-                      onChange={(event) => handleSearchModeChange(event.target.checked)}
-                    />
-                    <label className="fr-toggle__label" htmlFor="toggle-semantic-search">
-                      Recherche sémantique
-                      <span className="fr-ml-1w fr-badge fr-badge--sm fr-badge--no-icon fr-badge--warning">Bêta</span>
-                    </label>
-                  </div>
-                )}
+                <div className="fr-toggle fr-toggle--label-left">
+                  <input
+                    className="fr-toggle__input"
+                    color=""
+                    type="checkbox"
+                    id="toggle-semantic-search"
+                    checked={isSemanticSearch}
+                    onChange={(event) => handleSearchModeChange(event.target.checked)}
+                  />
+                  <label className="fr-toggle__label" htmlFor="toggle-semantic-search">
+                    Recherche sémantique
+                    <span className="fr-ml-1w fr-badge fr-badge--sm fr-badge--no-icon fr-badge--warning">Bêta</span>
+                  </label>
+                </div>
 
                 <Select
                   label={SORT_OPTIONS.find((o) => o.value === params.sort)?.label ?? "Trier"}
@@ -305,7 +313,11 @@ export default function Publications() {
             {isSemanticSearch && !params.q ? (
               <CatalogRagEmpty />
             ) : currentIsLoading ? (
-              <ResultsSkeleton />
+              isSemanticSearch ? (
+                <RagResultsLoading />
+              ) : (
+                <ResultsSkeleton />
+              )
             ) : isSemanticSearch && ragResults.length > 0 ? (
               <div className={cn("catalog-results", { "catalog-results--stale": isStale })} aria-busy={isStale}>
                 {ragResults.map((publication) => (
