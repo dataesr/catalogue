@@ -39,8 +39,9 @@ export default function CatalogHero({
                   {isLoading
                     ? 'Chargement…'
                     : totalCount !== undefined
-                      ? `${formatNumber(totalCount)} résultat${totalCount > 1 ? 's' : ''}`
+                      ? `${formatNumber(totalCount)} résultat${totalCount > 1 ? 's ' : ' '}`
                       : null}
+                  {isSies ? <>Retrouvez le jeu de données complet en <a href="https://data.enseignementsup-recherche.gouv.fr/explore/assets/fr-esr-publications-statistiques/view/" target="_blank" rel='noopener noreferrer'>opendata</a></> : undefined }
                 </p>
               </div>
               <search className="catalog-hero__search">
@@ -65,7 +66,7 @@ export default function CatalogHero({
           </div>
           {isSies && (
             <div className="fr-col">
-              <SiesLogo width={300} />
+              <SiesLogo width={200} />
             </div>
           )}
         </div>

@@ -176,6 +176,7 @@ export function normalizeZenodoPublication(hit: ZenodoHit) {
     published: m.publication_date ?? null,
 
     authors,
+    authorNames: authors.map((a) => a.name),
     publisher: m.imprint?.publisher ?? null,
     creator: null,
 

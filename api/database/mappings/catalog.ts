@@ -54,7 +54,8 @@ export const CATALOG_MAPPING: { settings: estypes.IndicesIndexSettings; mappings
         },
       },
       publisher: { type: 'text', fields: { keyword: { type: 'keyword' } } },
-      creator:   { type: 'text', fields: { keyword: { type: 'keyword' } } },
+      creator: { type: 'text', fields: { keyword: { type: 'keyword' } } },
+      authorNames: { type: 'text', analyzer: 'french_text', fields: { keyword: { type: 'keyword' } } },
 
       // ─── STATS / POPULARITY ────────────────────────────────
       downloads:       { type: 'integer' },

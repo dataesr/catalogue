@@ -126,6 +126,7 @@ export const catalogFacetsSchema = t.Object({
   features: t.Array(facetBucketSchema),
   fileTypes: t.Array(facetBucketSchema),
   accessRight: t.Array(facetBucketSchema),
+  authors: t.Array(facetBucketSchema)
 });
 
 export type CatalogFacets = typeof catalogFacetsSchema.static;
@@ -142,6 +143,7 @@ export const catalogSearchParamsSchema = t.Object({
   features: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   fileType: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   accessRight: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  author: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   sort: t.Optional(t.String()),
   page: t.Optional(t.Number({ default: 1 })),
   limit: t.Optional(t.Number({ default: 20 })),

@@ -28,15 +28,16 @@ const SORT_OPTIONS = [
   { value: "downloads", label: "Téléchargements" },
 ]
 
-type FilterKey = "publicationType" | "topic" | "accessRight"
+type FilterKey = "publicationType" | "topic" | "accessRight" | "author"
 
 const FILTER_META: Record<FilterKey, { label: string }> = {
   publicationType: { label: "Type de publication" },
   topic: { label: "Thématique" },
   accessRight: { label: "Droit d'accès" },
+  author: { label: 'Auteurs'},
 }
 
-const FILTER_KEYS: FilterKey[] = ["publicationType", "topic", "accessRight"]
+const FILTER_KEYS: FilterKey[] = ["publicationType", "topic", "accessRight", "author"]
 
 const ACCESS_LABELS: Record<string, string> = {
   open: "Accès ouvert",
@@ -84,6 +85,7 @@ export default function Publications() {
       accessRight: parseAsArrayOf(parseAsString).withDefault([]),
       page: parseAsInteger.withDefault(1),
       sort: parseAsString.withDefault("relevance"),
+      author: parseAsArrayOf(parseAsString).withDefault([]),
       semantic: parseAsBoolean.withDefault(false),
     },
     { history: "push", shallow: true },
@@ -99,6 +101,7 @@ export default function Publications() {
     publicationType: params.publicationType.length > 0 ? params.publicationType : undefined,
     topic: params.topic.length > 0 ? params.topic : undefined,
     accessRight: params.accessRight.length > 0 ? params.accessRight : undefined,
+    author: params.author.length > 0 ? params.author : undefined,
     sort: params.sort !== "relevance" ? params.sort : undefined,
     page: params.page,
     limit: PAGE_SIZE,
@@ -166,6 +169,7 @@ export default function Publications() {
       publicationType: [],
       topic: [],
       accessRight: [],
+      author: [],
       sort: "relevance",
       page: 1,
     })
@@ -246,11 +250,12 @@ export default function Publications() {
                 initialCount={8}
               />
               <FacetSection
-                title="Droit d'accès"
-                items={data?.facets.accessRight ?? []}
-                activeValues={params.accessRight}
-                onChange={handleFacetChange("accessRight")}
-                labelMap={ACCESS_LABELS}
+                title="Auteurs"
+                items={data?.facets.authors ?? []}
+                activeValues={params.author}
+                onChange={handleFacetChange("author")}
+                searchable
+                initialCount={12}
               />
             </aside>
           </div>

@@ -19,6 +19,7 @@ const FACET_FIELD_MAP: Record<string, string> = {
   features: 'features',
   fileType: 'fileTypes',
   accessRight: 'accessRight',
+  author: 'authorNames.keyword'
 };
 
 const AGG_FIELDS: Record<string, string> = {
@@ -30,6 +31,7 @@ const AGG_FIELDS: Record<string, string> = {
   features: 'features',
   fileTypes: 'fileTypes',
   accessRight: 'accessRight',
+  authors: 'authorNames.keyword'
 };
 
 function toArray(value: string | string[] | undefined): string[] {
@@ -76,6 +78,7 @@ export const searchRoutes = new Elysia({ prefix: '/search' })
         features,
         fileType,
         accessRight,
+        author,
       } = query;
 
       const sort = query.sort ?? 'relevance';
@@ -101,6 +104,7 @@ export const searchRoutes = new Elysia({ prefix: '/search' })
         features,
         fileType,
         accessRight,
+        author,
       };
       const filter: estypes.QueryDslQueryContainer[] = [];
 
@@ -113,7 +117,11 @@ export const searchRoutes = new Elysia({ prefix: '/search' })
 
       const aggs: Record<string, estypes.AggregationsAggregationContainer> = {};
       for (const [aggName, field] of Object.entries(AGG_FIELDS)) {
-        aggs[aggName] = { terms: { field, size: 50 } };
+        if (aggName === 'authors') {
+          aggs[aggName] = { terms: { field, size: 500, exclude: 'Collectif' } };
+        } else {
+          aggs[aggName] = { terms: { field, size: 50 } };
+        }
       }
 
       const response = await elastic.search<CatalogItem>({
@@ -140,6 +148,7 @@ export const searchRoutes = new Elysia({ prefix: '/search' })
           features: extractBuckets(aggregations.features),
           fileTypes: extractBuckets(aggregations.fileTypes),
           accessRight: extractBuckets(aggregations.accessRight),
+          authors: extractBuckets(aggregations.authors)
         },
       };
     },
