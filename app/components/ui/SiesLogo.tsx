@@ -1,15 +1,17 @@
 interface SiesLogoProps {
   width?: string | number;
+  className?: string;
 }
 
-export function SiesLogo({ width = 300 }: SiesLogoProps) {
+export function SiesLogo({ width = 200, className }: SiesLogoProps) {
   return (
     <svg
       role="img"
-      aria-label="Logo SIES"
+      aria-label="Statistique publique de l'enseignement supérieur et de la recherche"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1167.77 752.85"
+      viewBox="145 128 869 473"
       width={width}
+      className={className}
       style={{ display: 'block' }}
     >
       <g fill="currentColor">

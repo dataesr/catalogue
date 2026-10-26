@@ -29,9 +29,9 @@ export default function CatalogHero({
   return (
     <div className="catalog-hero">
       <div className="fr-container">
-        <div className="fr-grid-row">
-          <div className="fr-col-8">
-            <Breadcrumb items={breadcrumbItems} appName="#dataESR" />
+        <Breadcrumb items={breadcrumbItems} appName="#dataESR" />
+        <div className="fr-grid-row fr-grid-row--middle">
+          <div className="fr-col-12 fr-col-md-8">
             <div className="catalog-hero__inner">
               <div className="catalog-hero__text">
                 <h1 className="fr-h3 fr-mb-1v">{title}</h1>
@@ -39,9 +39,9 @@ export default function CatalogHero({
                   {isLoading
                     ? 'Chargement…'
                     : totalCount !== undefined
-                      ? `${formatNumber(totalCount)} résultat${totalCount > 1 ? 's ' : ' '}`
+                      ? `${formatNumber(totalCount)} résultat${totalCount > 1 ? 's' : ''}`
                       : null}
-                  {isSies ? <>Retrouvez le jeu de données complet en <a href="https://data.enseignementsup-recherche.gouv.fr/explore/assets/fr-esr-publications-statistiques/view/" target="_blank" rel='noopener noreferrer'>opendata</a></> : undefined }
+                  {isSies ? <>. Retrouvez le jeu de données complet en <a href="https://data.enseignementsup-recherche.gouv.fr/explore/assets/fr-esr-publications-statistiques/view/" target="_blank" rel='noopener noreferrer'>opendata</a></> : undefined }
                 </p>
               </div>
               <search className="catalog-hero__search">
@@ -65,8 +65,8 @@ export default function CatalogHero({
             </div>
           </div>
           {isSies && (
-            <div className="fr-col">
-              <SiesLogo width={200} />
+            <div className="fr-col-12 fr-col-md-4 fr-mb-2w fr-mb-md-0 catalog-hero__logo">
+              <SiesLogo className="fr-ml-md-auto" />
             </div>
           )}
         </div>

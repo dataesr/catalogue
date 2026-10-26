@@ -33,6 +33,11 @@
   max-width: 40rem;
 }
 
+/* Kept shorter than title + search so the hero is as tall as on pages without a logo */
+.catalog-hero__logo svg {
+  width: 10rem;
+}
+
 /* --------------------------------------------------------------------------
    Active filters bar
    -------------------------------------------------------------------------- */
@@ -594,6 +599,14 @@
 @media (max-width: 767px) {
   .catalog-hero {
     padding: 0.75rem 0 1.5rem;
+  }
+
+  .catalog-hero__logo {
+    order: -1;
+  }
+
+  .catalog-hero__logo svg {
+    width: 9rem;
   }
 
   .catalog-sidebar {
