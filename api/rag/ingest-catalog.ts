@@ -69,7 +69,7 @@ async function extractFile(
   file: CatalogItemFile,
   forceOcr?: boolean,
 ): Promise<{ document: MistralOcrDocument; cached: boolean }> {
-  // needs AWS_ACCESS_KEY_ID, AWS_SECRET_KEY, AWS_REGION, AWS_ENDPOINT, AWS_BUCKET env vars
+  // needs AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_ENDPOINT, AWS_BUCKET env vars
   const s3path = join(resolve(config.rag.ocrCacheDir), String(item.sourceId), `${file.key}.json`)
   const s3file = s3.file(s3path)
 
