@@ -1,4 +1,4 @@
-import { access, mkdir, readFile, writeFile } from "node:fs/promises"
+import { s3 } from "bun"
 import { join, resolve } from "node:path"
 import { config } from "~/config"
 import { runMistralOcr, runMistralEmbeddings, EMBEDDING_BATCH_SIZE } from "./mistral"
@@ -69,22 +69,25 @@ async function extractFile(
   file: CatalogItemFile,
   forceOcr?: boolean,
 ): Promise<{ document: MistralOcrDocument; cached: boolean }> {
-  const ocrPath = join(resolve(config.rag.ocrCacheDir), String(item.sourceId), `${file.key}.json`)
+  // needs AWS_ACCESS_KEY_ID, AWS_SECRET_KEY, AWS_REGION, AWS_ENDPOINT, AWS_BUCKET env vars
+  const s3path = join(resolve(config.rag.ocrCacheDir), String(item.sourceId), `${file.key}.json`)
+  const s3file = s3.file(s3path)
 
   if (!forceOcr) {
     try {
-      await access(ocrPath)
-      const document = JSON.parse(await readFile(ocrPath, "utf8")) as MistralOcrDocument
-      return { document, cached: true }
+      const exists = await s3file.exists()
+      if (exists) {
+        const document = (await s3file.json()) as MistralOcrDocument
+        return { document, cached: true }
+      }
     } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error
+      throw error
     }
   }
 
   // run OCR
   const document = await runMistralOcr(file.key, file.url)
-  await mkdir(resolve(config.rag.ocrCacheDir, String(item.sourceId)), { recursive: true })
-  await writeFile(ocrPath, JSON.stringify(document), "utf8")
+  await s3file.write(JSON.stringify(document), { type: "application/json" })
   return { document, cached: false }
 }
 

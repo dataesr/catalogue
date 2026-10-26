@@ -9,46 +9,47 @@ const env = (isDeployed ? process.env.ENV : 'local') as AppEnv
 export const config = {
   env,
   isDeployed,
-  isDevelopment: env === 'development',
-  isStaging: env === 'staging',
-  isProduction: env === 'production',
-  appName: 'catalogue',
-  zenodoCommunityId: process.env.ZENODO_COMMUNITY_ID || '',
+  isDevelopment: env === "development",
+  isStaging: env === "staging",
+  isProduction: env === "production",
+  appName: "catalogue",
+  zenodoCommunityId: process.env.ZENODO_COMMUNITY_ID || "",
   port,
   declic: {
-    env: isDeployed ? env : 'development',
-    enable: process.env.DECLIC_WORKER_ENABLED !== 'false',
-    url: process.env.DECLIC_URL || 'ws://localhost:4100/api/connect',
-    key: process.env.DECLIC_KEY || '',
+    env: isDeployed ? env : "development",
+    enable: process.env.DECLIC_WORKER_ENABLED !== "false",
+    url: process.env.DECLIC_URL || "ws://localhost:4100/api/connect",
+    key: process.env.DECLIC_KEY || "",
   },
   elastic: {
-    node: process.env.ELASTIC_NODE || 'http://localhost:9200',
-    username: process.env.ELASTIC_USERNAME || '',
-    password: process.env.ELASTIC_PASSWORD || '',
+    node: process.env.ELASTIC_NODE || "http://localhost:9200",
+    username: process.env.ELASTIC_USERNAME || "",
+    password: process.env.ELASTIC_PASSWORD || "",
     indexes: {
-      catalog: process.env.ES_PLATEFORM_CATALOG_INDEX || 'catalog',
-      catalogRag: process.env.ES_PLATEFORM_CATALOG_RAG_INDEX || 'catalog-rag',
+      catalog: process.env.ES_PLATEFORM_CATALOG_INDEX || "catalog",
+      catalogRag: process.env.ES_PLATEFORM_CATALOG_RAG_INDEX || "catalog-rag",
     },
-    apiKey: process.env.ES_API_KEY || '',
+    apiKey: process.env.ES_API_KEY || "",
   },
   mlHub: {
-    url: process.env.ML_HUB_API_URL || '',
-    apiKey: process.env.ML_HUB_API_KEY || '',
+    url: process.env.ML_HUB_API_URL || "",
+    apiKey: process.env.ML_HUB_API_KEY || "",
   },
   mistral: {
-    apiKey: process.env.MISTRAL_API_KEY || '',
+    apiKey: process.env.MISTRAL_API_KEY || "",
   },
   rag: {
-    ocrCacheDir: process.env.RAG_OCR_CACHE_DIR || 'pvc/rag/ocr',
+    ocrCacheDir: process.env.RAG_OCR_CACHE_DIR || "/ocr",
   },
   ods: {
-    apiKey: process.env.ODS_API_KEY || '',
+    apiKey: process.env.ODS_API_KEY || "",
   },
 } as const
 
 const REQUIRED_WHEN_DEPLOYED = [
   'ENV', 'ELASTIC_NODE', 'ELASTIC_USERNAME', 'ELASTIC_PASSWORD',
   'ZENODO_COMMUNITY_ID', 'DECLIC_URL', 'DECLIC_KEY', 'ODS_API_KEY',
+  'AWS_ACCESS_KEY_ID', 'AWS_SECRET_KEY', 'AWS_REGION', 'AWS_ENDPOINT', 'AWS_BUCKET',
 ] as const;
 
 export function validateConfig() {
