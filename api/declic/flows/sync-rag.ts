@@ -1,7 +1,7 @@
 import { flow } from "@dataesr/declic-sdk"
 import { t } from "elysia"
 import { elastic, RAG_ALIAS } from "~/database/elastic"
-import { createRagIndex, promoteRagIndex } from "../../rag/elastic"
+import { createRagIndex, getPrevRagIndex, promoteRagIndex } from "../../rag/elastic"
 import { ingestCatalogItems } from "../../rag/ingest-catalog"
 import { ingestEESR } from "../../rag/ingest-eesr"
 
@@ -13,8 +13,16 @@ export const syncRag = flow({
     targetIndex: t.Optional(t.String()),
     catalogIndex: t.Optional(t.String()),
     forceOcr: t.Optional(t.Boolean({ default: false })),
+    forceEmbeddings: t.Optional(t.Boolean({ default: false })),
   }),
   run: async ({ input, step }) => {
+    // resolved before the new index is promoted, used as embedding cache
+    const previousIndex = await step.run("resolve-previous-index", async ({ logger }) => {
+      const index = input.forceEmbeddings ? undefined : ((await getPrevRagIndex(RAG_ALIAS)) ?? null)
+      logger.info(index ? `Reusing embeddings from ${index}` : "No previous index, embedding everything")
+      return index ?? null
+    })
+
     const index = await step.run("create-index", async ({ logger }) => {
       const index = await createRagIndex(input.targetIndex)
       logger.info(`Created RAG index ${index}`)
@@ -26,6 +34,7 @@ export const syncRag = flow({
       const ingestion = await ingestCatalogItems(index, {
         catalogIndex: input.catalogIndex,
         forceOcr: input.forceOcr,
+        cacheIndex: previousIndex ?? undefined,
         onProgress: (message) => logger.info(message),
       })
       logger.info(`CATALOG ingestion finished: ${JSON.stringify(ingestion)}`)
@@ -35,6 +44,7 @@ export const syncRag = flow({
     const eesr = await step.run("ingest-eesr", async ({ logger }) => {
       logger.info("Starting EESR ingestion")
       const ingestion = await ingestEESR(index, {
+        cacheIndex: previousIndex ?? undefined,
         onProgress: (message) => logger.info(message),
       })
       logger.info(`EESR ingestion finished: ${JSON.stringify(ingestion)}`)

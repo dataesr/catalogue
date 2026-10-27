@@ -1,12 +1,12 @@
 import { s3 } from "bun"
 import { join, resolve } from "node:path"
 import { config } from "~/config"
-import { runMistralOcr, runMistralEmbeddings, EMBEDDING_BATCH_SIZE } from "./mistral"
-import { indexRagChunks } from "./elastic"
+import { runMistralOcr, runMistralEmbeddings, EMBEDDING_BATCH_SIZE, EMBEDDING_MODEL } from "./mistral"
+import { getRagIndexEmbeddings, INDEX_BATCH_SIZE, indexRagChunks } from "./elastic"
 import { elastic } from "~/database/elastic"
 import type { DocumentChunk, DocumentFileMetadata, MistralOcrDocument, MistralOcrPage, RagCatalogItem } from "./types"
 import type { CatalogItemFile } from "~/schemas/catalog"
-import { splitText, toUnixEpoch } from "./utils"
+import { computeHkey, splitText, toUnixEpoch } from "./utils"
 
 export const MIN_CHUNK_LENGTH = 50
 export const MAX_CHUNK_LENGTH = 3_000
@@ -208,37 +208,65 @@ function transformFile(item: RagCatalogItem, file: CatalogItemFile, ocr: Mistral
   return pages.flatMap((page) => transformOcrPage(page, item.id, fileMetadata))
 }
 
-export async function indexDocumentChunks(chunks: DocumentChunk[], index: string): Promise<void> {
-  for (let offset = 0; offset < chunks.length; offset += EMBEDDING_BATCH_SIZE) {
-    const batch = chunks.slice(offset, offset + EMBEDDING_BATCH_SIZE)
-    const embeddings = await runMistralEmbeddings(batch.map((chunk) => chunk.document))
-    const embeddedChunks = batch.map((chunk, index) => {
-      const result = embeddings[index]
-      if (!result) {
-        throw new Error(`Mistral returned an invalid embedding for chunk ${chunk.id}`)
-      }
-      return { ...chunk, embedding: result }
+export async function indexDocumentChunks(
+  chunks: DocumentChunk[],
+  index: string,
+  cacheIndex?: string,
+): Promise<{ cachedEmbeddings: number; newEmbeddings: number }> {
+  const hkeys = chunks.map((chunk) => computeHkey(`${EMBEDDING_MODEL}\n${chunk.document}`))
+  const vectors = new Map<string, number[]>()
+
+  // get cached embeddings first
+  if (cacheIndex) {
+    for (const [hkey, vector] of await getRagIndexEmbeddings(cacheIndex, hkeys)) vectors.set(hkey, vector)
+  }
+  const cachedEmbeddings = chunks.filter((_, i) => vectors.has(hkeys[i]!)).length
+
+  // embed new chunks
+  const newEmbeddings = new Map<string, string>()
+  chunks.forEach((chunk, i) => {
+    if (!vectors.has(hkeys[i]!)) newEmbeddings.set(hkeys[i]!, chunk.document)
+  })
+  const nextEmbeddings = [...newEmbeddings]
+  for (let offset = 0; offset < nextEmbeddings.length; offset += EMBEDDING_BATCH_SIZE) {
+    const batch = nextEmbeddings.slice(offset, offset + EMBEDDING_BATCH_SIZE)
+    const embeddings = await runMistralEmbeddings(batch.map(([, document]) => document))
+    batch.forEach(([hkey], i) => {
+      const result = embeddings[i]
+      if (!result) throw new Error(`Mistral returned an invalid embedding for chunk ${hkey}`)
+      vectors.set(hkey, result)
+    })
+  }
+
+  // index all by batches
+  for (let offset = 0; offset < chunks.length; offset += INDEX_BATCH_SIZE) {
+    const embeddedChunks = chunks.slice(offset, offset + INDEX_BATCH_SIZE).map((chunk, i) => {
+      const hkey = hkeys[offset + i]!
+      return { ...chunk, hkey, embedding: vectors.get(hkey)! }
     })
     await indexRagChunks(embeddedChunks, index)
   }
-}
 
-interface IngestionResult {
-  fetchedItems: number
-  processedFiles: number
-  indexedFiles: number
-  indexedChunks: number
-  cachedOcr: number
-}
+  return { cachedEmbeddings, newEmbeddings: chunks.length - cachedEmbeddings }
+} 
 
 export async function ingestCatalogItems(
   index: string,
   options: {
     catalogIndex?: string
+    cacheIndex?: string
     forceOcr?: boolean
     onProgress?: (message: string) => void
   } = {},
-): Promise<IngestionResult> {
+): Promise<{
+  fetchedItems: number
+  processedFiles: number
+  indexedFiles: number
+  indexedChunks: number
+  cachedOcr: number
+  cachedEmbeddings: number
+  newEmbeddings: number
+}> {
   // fetch zenodo records from catalog index
   const items = await fetchCatalogItems(options.catalogIndex || config.elastic.indexes.catalog)
   if (items.length === 0) {
@@ -250,6 +278,8 @@ export async function ingestCatalogItems(
   let indexedFiles = 0
   let indexedChunks = 0
   let cachedOcr = 0
+  let cachedEmbeddings = 0
+  let newEmbeddings = 0
 
   for (const item of items) {
     // filter pdf files
@@ -263,7 +293,9 @@ export async function ingestCatalogItems(
       // chunk document
       const chunks = transformFile(item, file, ocr)
       // index chunks
-      await indexDocumentChunks(chunks, index)
+      const result = await indexDocumentChunks(chunks, index, options.cacheIndex)
+      cachedEmbeddings += result.cachedEmbeddings
+      newEmbeddings += result.newEmbeddings
       indexedFiles += 1
       indexedChunks += chunks.length
     }
@@ -273,5 +305,13 @@ export async function ingestCatalogItems(
     throw new Error(`RAG index ${index} contains no chunks`)
   }
 
-  return { fetchedItems: items.length, processedFiles, indexedFiles, indexedChunks, cachedOcr }
+  return {
+    fetchedItems: items.length,
+    processedFiles,
+    indexedFiles,
+    indexedChunks,
+    cachedOcr,
+    cachedEmbeddings,
+    newEmbeddings,
+  }
 }

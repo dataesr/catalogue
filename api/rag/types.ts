@@ -60,6 +60,7 @@ export interface DocumentChunk {
 }
 
 export interface IndexedChunk extends DocumentChunk {
+  hkey?: string
   embedding?: number[]
 }
 

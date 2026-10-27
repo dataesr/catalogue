@@ -242,9 +242,10 @@ export async function ingestEESR(
   index: string,
   options: {
     archivePath?: string
+    cacheIndex?: string
     onProgress?: (message: string) => void
   } = {},
-): Promise<{ indexedFiles: number; indexedChunks: number }> {
+): Promise<{ indexedFiles: number; indexedChunks: number; cachedEmbeddings: number; newEmbeddings: number }> {
   const archivePath = options.archivePath ?? DEFAULT_EESR_ARCHIVE_PATH
   options.onProgress?.(`Loading EESR pages from ${archivePath}`)
 
@@ -261,9 +262,11 @@ export async function ingestEESR(
   if (chunks.length === 0) throw new Error("EESR archive produced no chunks")
 
   options.onProgress?.(`Transformed ${chunks.length} EESR chunks from the latest Zenodo record ${recordId}`)
-  await indexDocumentChunks(chunks, index)
+  const { cachedEmbeddings, newEmbeddings } = await indexDocumentChunks(chunks, index, options.cacheIndex)
 
   return {
+    cachedEmbeddings,
+    newEmbeddings,
     indexedFiles: new Set(chunks.map((chunk) => chunk.metadata.file_key)).size,
     indexedChunks: chunks.length,
   }

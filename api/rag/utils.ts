@@ -24,3 +24,7 @@ export function splitText(text: string, maxLength: number): string[] {
   if (remaining) chunks.push(remaining)
   return chunks
 }
+
+export function computeHkey(text: string): string {
+  return new Bun.CryptoHasher("sha256").update(text).digest("hex")
+}
