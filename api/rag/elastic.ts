@@ -51,6 +51,15 @@ export async function indexRagChunks(chunks: IndexedChunk[], index: string): Pro
 
 export async function getRagIndexEmbeddings(index: string, hkeys: string[]): Promise<Map<string, number[]>> {
   const embeddings = new Map<string, number[]>()
+
+  // if no hkey field, return
+  const mappings = await elastic.indices.getMapping({ index })
+  const hasField = Object.values(mappings).some((entry) => Boolean(entry.mappings?.properties?.hkey))
+  if (!hasField) {
+    console.warn(`Index ${index} has no hkey field`)
+    return embeddings
+  }
+
   const unique = [...new Set(hkeys)]
 
   for (let offset = 0; offset < unique.length; offset += LOOKUP_BATCH_SIZE) {
