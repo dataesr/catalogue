@@ -11,6 +11,8 @@ export type RagCatalogItem = Pick<
   | "publicationType"
   | "keywords"
   | "files"
+  | "topics"
+  | "authorNames"
 >
 
 export interface MistralOcrTable {
@@ -41,6 +43,8 @@ export interface DocumentFileMetadata {
   file_access: string
   file_checksum?: string
   keywords?: string[]
+  topics?: string[]
+  author_names?: string[]
 }
 
 export interface DocumentChunkMetadata extends DocumentFileMetadata {

@@ -21,9 +21,10 @@ export type RagChunk = typeof ragChunkSchema.static
 export const ragSearchParamsSchema = t.Object({
   q: t.String(),
   topK: t.Optional(t.Number()),
-  topic: t.Optional(t.Array(t.String())),
-  publicationType: t.Optional(t.String()),
-  accessRight: t.Optional(t.String()),
+  topic: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  publicationType: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  accessRight: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  author: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   useRerank: t.Optional(t.Boolean({ default: true })),
   useHybrid: t.Optional(t.Boolean({ default: true })),
 })

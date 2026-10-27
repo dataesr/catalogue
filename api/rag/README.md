@@ -73,7 +73,7 @@ The HTTP API exposes:
 - `GET /rag`: embeds the query, performs dense vector and sparse text search, optionally fuses results with reciprocal rank fusion, and optionally reranks them. Defaults enable both hybrid fusion and reranking.
 - `POST /rag/mistral`: generates a French answer from the supplied chunks.
 
-Search accepts `q`, `topK`, `topic`, `publicationType`, `accessRight`, `useHybrid`, and `useRerank`. Results include chunk metadata and scores; the `/rag` route also looks up matching catalog items where available.
+Search accepts `q`, `topK`, `topic`, `publicationType`, `accessRight`, `author`, `useHybrid`, and `useRerank`. Results include chunk metadata and scores; the `/rag` route also looks up matching catalog items where available.
 
 Retrieval filters out chunks shorter than 50 characters and publications older than the four-year cutoff used by `buildRagFilters` in [retrieval.ts](./retrieval.ts). Hybrid search combines dense and sparse rankings; reranking uses the configured ML Hub cross-encoder when available and otherwise a local heuristic.
 

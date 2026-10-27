@@ -58,6 +58,7 @@ export const catalogItemSchema = t.Object({
 
   // People
   authors: t.Array(authorSchema),
+  authorNames: t.Optional(t.Array(t.String())),
   publisher: t.Nullable(t.String()),
   creator: t.Nullable(t.String()),
 

@@ -43,7 +43,7 @@ async function fetchCatalogItems(catalogIndex: string): Promise<RagCatalogItem[]
           minimum_should_match: 1,
         },
       },
-      _source: ["id", "source", "sourceId", "title", "published", "accessRight", "publicationType", "keywords", "files"],
+      _source: ["id", "source", "sourceId", "title", "published", "accessRight", "publicationType", "keywords", "files", "topics", "authorNames"],
     })
 
     while (response.hits.hits.length > 0) {
@@ -190,7 +190,7 @@ function transformFile(item: RagCatalogItem, file: CatalogItemFile, ocr: Mistral
   const pages = ocr.pages ?? []
   if (pages.length === 0) return []
 
-  const fileMetadata = {
+  const fileMetadata: DocumentFileMetadata = {
     record_id: String(item.sourceId),
     source: item.source,
     title: item.title ?? "",
@@ -201,8 +201,10 @@ function transformFile(item: RagCatalogItem, file: CatalogItemFile, ocr: Mistral
     file_type: file.type ?? "unknown",
     file_url: file.url.replace("/api", "").replace(/\/files.*$/, ""),
     file_access: item.accessRight ?? "closed",
-    ...(file.checksum ? { file_checksum: file.checksum } : {}),
-    ...(item.keywords.length > 0 ? { keywords: item.keywords } : {}),
+    file_checksum: file.checksum ?? undefined,
+    keywords: item.keywords.length ? item.keywords : undefined,
+    topics: item.topics.length ? item.topics : undefined,
+    author_names: item.authorNames?.length ? item.authorNames : undefined,
   }
 
   return pages.flatMap((page) => transformOcrPage(page, item.id, fileMetadata))

@@ -94,17 +94,21 @@ export default function Publications() {
   const debouncedQ = useDebounce(params.q, { delay: 300 })
   const isSemanticSearch = params.semantic
 
+  const filters = {
+    publicationType: params.publicationType,
+    topic: params.topic,
+    accessRight: params.accessRight,
+    author: params.author,
+  }
+
   // Standard search
   const { data, isLoading, isFetching, isPlaceholderData } = useCatalogSearch({
     q: !isSemanticSearch && debouncedQ ? debouncedQ : undefined,
     type: "publication",
-    publicationType: params.publicationType.length > 0 ? params.publicationType : undefined,
-    topic: params.topic.length > 0 ? params.topic : undefined,
-    accessRight: params.accessRight.length > 0 ? params.accessRight : undefined,
-    author: params.author.length > 0 ? params.author : undefined,
     sort: params.sort !== "relevance" ? params.sort : undefined,
     page: params.page,
     limit: PAGE_SIZE,
+    ...filters,
   })
 
   // Semantic search
@@ -116,9 +120,7 @@ export default function Publications() {
   } = useRagSearch({
     q: isSemanticSearch && debouncedQ ? debouncedQ : "",
     topK: 10,
-    publicationType: params.publicationType.length > 0 ? params.publicationType[0] : undefined,
-    accessRight: params.accessRight.length > 0 ? params.accessRight[0] : undefined,
-    topic: params.topic.length > 0 ? params.topic : undefined,
+    ...filters,
   })
   const ragResults = useMemo(
     () => ragResultsByPublications(ragData?.sources ?? [], ragData?.items ?? {}, params.sort),

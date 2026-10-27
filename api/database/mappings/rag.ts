@@ -11,10 +11,11 @@ export const RAG_MAPPING: { settings: estypes.IndicesIndexSettings; mappings: es
         french_text: {
           type: "custom" as const,
           tokenizer: "standard",
-          filter: ["lowercase", "french_elision", "french_stemmer", "asciifolding"],
+          filter: ["lowercase", "french_elision", "french_stop", "french_stemmer", "asciifolding"],
         },
       },
       filter: {
+        french_stop: { type: "stop", stopwords: "_french_" },
         french_elision: {
           type: "elision" as const,
           articles_case: true,
@@ -57,7 +58,9 @@ export const RAG_MAPPING: { settings: estypes.IndicesIndexSettings; mappings: es
           section_level: { type: "integer" },
           chunk_len: { type: "integer" },
           chunk_type: { type: "keyword" },
-          keywords: { type: "keyword" },
+          keywords: { type: "text", analyzer: "french_text", fields: { keyword: { type: "keyword" } } },
+          topics: { type: "keyword" },
+          author_names: { type: "keyword" },
         },
       },
     },

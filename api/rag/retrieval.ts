@@ -18,17 +18,27 @@ function clampTopK(topK: number | undefined): number {
   return Math.max(1, Math.min(Math.trunc(topK), MAX_RESULTS))
 }
 
+type RagFilterParam = "accessRight" | "publicationType" | "topic" | "author"
+
+const FILTER_FIELDS = new Map<RagFilterParam, string>([
+  ["accessRight", "metadata.file_access"],
+  ["publicationType", "metadata.publication_type"],
+  ["topic", "metadata.topics"],
+  ["author", "metadata.author_names"],
+])
+
 export function buildRagFilters(params: RagSearchParams, now = new Date()): estypes.QueryDslQueryContainer[] {
   const filters: estypes.QueryDslQueryContainer[] = [
     { range: { "metadata.publication_epoch": { gte: Date.UTC(now.getUTCFullYear() - 4, 0, 1) / 1000 } } }, // 4 last years
     { range: { "metadata.chunk_len": { gte: MIN_CHUNK_LENGTH } } },
   ]
 
-  if (params.accessRight) filters.push({ term: { "metadata.file_access": params.accessRight } })
-  if (params.publicationType) filters.push({ term: { "metadata.publication_type": params.publicationType } })
-  if (params.topic?.length) {
-    filters.push({ terms: { "metadata.keywords": params.topic.map((topic) => topic.toLowerCase()) } })
+  // Always use terms so we can iterate, doesn't matter in filter clause.
+  for (const [param, field] of FILTER_FIELDS) {
+    const values = [params[param] ?? []].flat().filter(Boolean)
+    if (values.length) filters.push({ terms: { [field]: values } })
   }
+
   return filters
 }
 
@@ -102,24 +112,11 @@ export async function searchRag(params: RagSearchParams): Promise<RagResponse> {
       query: {
         bool: {
           filter: filters,
-          must: [
-            {
-              bool: {
-                should: [
-                  {
-                    multi_match: {
-                      query,
-                      fields: ["document", "metadata.title^2", "metadata.section_title^1.5"],
-                      type: "best_fields",
-                    },
-                  },
-                  ...(query.split(/\s+/).filter(Boolean).length
-                    ? [{ terms: { "metadata.keywords": query.toLowerCase().split(/\s+/).filter(Boolean) } }]
-                    : []),
-                ],
-                minimum_should_match: 1,
-              },
-            },
+          must: [{ match: { document: query } }],
+          should: [
+            { match: { "metadata.title": { query, boost: 2 } } },
+            { match: { "metadata.section_title": { query, boost: 1.5 } } },
+            { match: { "metadata.keywords": { query, boost: 1.5 } } },
           ],
         },
       },
